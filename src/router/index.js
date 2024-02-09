@@ -1,9 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import DashBord from '../views/DashBord.vue'
+
 
 Vue.use(VueRouter);
 
-const routes = [];
+const routes = [
+  { path: '/', component: DashBord },
+];
 
 const router = new VueRouter({
   routes,
