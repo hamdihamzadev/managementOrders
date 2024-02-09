@@ -1,0 +1,46 @@
+<template>
+    <div>
+        <TableGlobal 
+        :titletable="titletable" 
+        :orders="DelivredOrders"
+        @remove-order="removeorder"
+         />
+    </div>
+</template>
+
+<script>
+    import {
+        mapState,
+        mapActions
+    } from 'vuex'
+    import TableGlobal from '@/components/TableGlobal.vue'
+    export default {
+
+        name: 'TableDelivred',
+        components: {
+            TableGlobal
+        },
+
+        data() {
+            return {
+                titletable: 'Today Deliverd'
+            }
+        },
+
+        computed: {
+            // GET MODULE STATE DELIVRED
+            ...mapState('DelivredOrders', {
+                DelivredOrders: 'DelivredOredrs'
+            }),
+        },
+
+        methods: {
+            ...mapActions('DelivredOrders', ['ac_RemoveOrderDelivred']),
+            //REMOVE ORDER
+            removeorder(index) {
+                this.ac_RemoveOrderDelivred(index) // ===> REMOVE ORDER IN STORE VUEX POSTPOND ACTIONS
+                localStorage.setItem('Delivered', JSON.stringify(this.DelivredOrders)) // UPDATE STOCK POSTPOND
+            }
+        }
+    }
+</script>

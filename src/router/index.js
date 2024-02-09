@@ -4,6 +4,7 @@ import DashBord from '../views/DashBord.vue'
 import NewOrders from '../views/NewOrders.vue'
 import ConfirmedOredrs from '../views/ConfirmedOrders.vue'
 import ShippedOrder from '../views/ShippedOrder.vue'
+import DeliVerd from '../views/DeliVerd.vue'
 
 
 Vue.use(VueRouter);
@@ -13,6 +14,7 @@ const routes = [
   { path: '/Orders/NewOrders', component: NewOrders },
   { path: '/Orders/Confirmed', component: ConfirmedOredrs},
   { path: '/Orders/Shipped', component: ShippedOrder},
+  { path: '/Orders/Deliverd', component: DeliVerd},
 ];
 
 const router = new VueRouter({
