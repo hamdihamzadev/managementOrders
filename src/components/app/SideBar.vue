@@ -22,7 +22,7 @@
                 <router-link to="/Orders/PostPond" tag="li"><a href="#" class="linkdrop">Postpond</a></router-link>
                 <router-link to="/Orders/Return" tag="li"><a href="#" class="linkdrop">Return</a></router-link>
                 <router-link to="/Orders/Canceld" tag="li"><a href="#" class="linkdrop">Canceld</a></router-link>
-                <router-link to="/Orders/In-Progress" tag="li"><a href="#" class="linkdrop">In Progress</a></router-link>
+                <router-link to="/Orders/InProgress" tag="li"><a href="#" class="linkdrop">In Progress</a></router-link>
               </b-collapse>
             </li>
   

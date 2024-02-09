@@ -7,7 +7,8 @@ import ShippedOrder from '../views/ShippedOrder.vue'
 import DeliVerd from '../views/DeliVerd.vue'
 import PostPond from '../views/PostPond.vue'
 import ReTurn from '../views/ReTurn.vue'
-
+import CanCeld from '../views/CanCeld.vue'
+import InProgress from '../views/InProgress.vue'
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,8 @@ const routes = [
   { path: '/Orders/Deliverd', component: DeliVerd},
   { path: '/Orders/PostPond', component: PostPond},
   { path: '/Orders/Return', component: ReTurn},
+  { path: '/Orders/Canceld', component: CanCeld},
+  { path: '/Orders/InProgress', component: InProgress},
 ];
 
 const router = new VueRouter({
