@@ -16,10 +16,10 @@
       </b-row>
   
       <!---------- TABLE --------------->
-      <b-table-simple responsive id="table-Order">
+      <b-table-simple responsive id="table-Order"  hover>
         <b-thead>
           <b-tr>
-            <b-th class="border-top-0">Customer</b-th>
+            <b-th variant="danger" class="border-top-0">Customer</b-th>
             <b-th class="border-top-0">Phone</b-th>
             <b-th class="border-top-0">City</b-th>
             <b-th class="border-top-0">Adress</b-th>
@@ -36,7 +36,7 @@
   
         <!----------------TBODY-------------->
   
-        <b-tbody ref="myTable">
+        <b-tbody ref="myTable" id="tbody">
           <b-tr v-for="(order,index) in rowsOrders" :key="order.id" :id="`order${index}`">
   
             <b-td v-for="information in order" :key="information">{{ information }}</b-td>
@@ -225,6 +225,7 @@
       padding: 41px 26px;
       border-radius: 12px;
     }
+
   
     #filter-input {
       background: transparent;
@@ -237,9 +238,17 @@
       margin-left: 676px;
     }
   
-    .table th {
+    #table-Order th {
       border-top: none;
+      background-color:var(--couleur-primaire-1) ;
+      color: var(--couleur-primaire-3);
     }
+
+    #tbody td{
+      background-color:var(--couleur-primaire-1) ;
+      color: var(--couleur-primaire-3);
+    }
+
   
     #select {
       border-radius: 13.25rem;
