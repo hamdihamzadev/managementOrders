@@ -66,7 +66,7 @@
   
       </b-table-simple>
 
-      <h6 v-if="rowsOrders.length===0">{{ sentenceorders }}</h6>
+      <h6 v-if="rowsOrders.length===0" class="text-center">{{ sentenceorders }}</h6>
   
        <!---------- SHOW POPUP --------------->
        <b-modal  id="modal-footer-sm" title=" Add TimePost orders" button-size="sm" 
