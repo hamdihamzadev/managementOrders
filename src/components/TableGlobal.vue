@@ -3,12 +3,12 @@
   
       <!---------- TITLE AND SEARCH --------------->
   
-      <b-row>
+      <b-row class="mb-5">
         <!----- TITLE ----->
         <b-col>
           <h1 class="title">{{ titletable }}</h1>
         </b-col>
-        <b-col id="searchInput">
+        <b-col id="searchInput" v-if="rowsOrders.length!==0">
           <!----- SEARCH INPUT ----->
           <b-form-input id="filter-input" type="search" placeholder="Search product or ..."  @input="searchprd" >
           </b-form-input>
@@ -29,7 +29,7 @@
             <b-th class="border-top-0">Quantity</b-th>
             <b-th class="border-top-0">Total</b-th>
             <b-th class="border-top-0" v-show="thTimepost">TimePost</b-th>
-            <b-th class="border-top-0">Status</b-th>
+            <b-th class="border-top-0" v-if="showStatu">Status</b-th>
             <b-th class="border-top-0">Action</b-th>
           </b-tr>
         </b-thead>
@@ -43,7 +43,7 @@
   
             <!----------------STATUS-------------->
   
-            <b-td>
+            <b-td v-if="showStatu" >
               <b-form-select @change="changeBackSelect(index)" @input="ShowPopup(index)" ref="select" id="select"
                 :options="options" class="mb-3" size="sm">
               </b-form-select>
@@ -127,6 +127,10 @@
         rowsOrders() {
           return this.orders.slice(this.start, this.end)
         },
+        
+        showStatu(){
+          return this.$route.path==='/Orders/Return' || this.$route.path==='/Orders/Deliverd' || this.$route.path==='/Orders/Canceld' ? false : true
+        }
       },
   
       methods: {
