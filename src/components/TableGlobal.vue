@@ -56,8 +56,8 @@
                 <template #button-content>
                   <i class='bx bx-dots-horizontal-rounded'></i>
                 </template>
-                <b-dropdown-item href="#" @click="sendorder(index)">Send</b-dropdown-item>
-                <b-dropdown-item href="#" @click="removeorder(index)">Remove</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendorder(index)" v-if="showActionSend">Send</b-dropdown-item>
+                <b-dropdown-item href="#" @click="removeorder(index)" >Remove</b-dropdown-item>
               </b-dropdown>
             </b-td>
   
@@ -129,6 +129,9 @@
         },
         
         showStatu(){
+          return this.$route.path==='/Orders/Return' || this.$route.path==='/Orders/Deliverd' || this.$route.path==='/Orders/Canceld' ? false : true
+        },
+        showActionSend(){
           return this.$route.path==='/Orders/Return' || this.$route.path==='/Orders/Deliverd' || this.$route.path==='/Orders/Canceld' ? false : true
         }
       },
