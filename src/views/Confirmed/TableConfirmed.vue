@@ -1,7 +1,7 @@
 <template>
   <div class="table-confirmed mt-4">
     <TableGlobal :options="options" :orders="OrderConfirmed" :titletable="titletable" @send-order="SendOrder"
-      @remove-order="removeorder" />
+      @remove-order="removeorder"  sentenceorders="No Confirmed Orders Today"/>
   </div>
 </template>
 

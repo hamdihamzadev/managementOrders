@@ -4,6 +4,7 @@
         :titletable="titletable" 
         :orders="DelivredOrders"
         @remove-order="removeorder"
+        sentenceorders="No order delivred today"
          />
     </div>
 </template>

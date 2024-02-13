@@ -1,7 +1,7 @@
 <template>
     <div class="table-shipped mt-4">
         <TableGlobal :titletable="titletable" :options="options" :orders="ShippedOrders" @send-order="SendOrder"
-            @Show-Popup="ShowPopup" :visibel-popup="visibelPopup" @remove-order="removeorder" />
+            @Show-Popup="ShowPopup" :visibel-popup="visibelPopup" @remove-order="removeorder" sentenceorders="No order shipped today" />
     </div>
 </template>
 
