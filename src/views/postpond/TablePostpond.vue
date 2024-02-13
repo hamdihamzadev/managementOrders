@@ -7,6 +7,7 @@
          :thTimepost="thTimepost"
          @send-order="SendOrder"
          @remove-order="removeorder"
+         sentenceorders="No order postpond today"
          />
     </div>
 </template>

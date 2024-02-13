@@ -65,6 +65,8 @@
         </b-tbody>
   
       </b-table-simple>
+
+      <h6 v-if="rowsOrders.length===0">{{ sentenceorders }}</h6>
   
        <!---------- SHOW POPUP --------------->
        <b-modal  id="modal-footer-sm" title=" Add TimePost orders" button-size="sm" 
@@ -82,7 +84,7 @@
   
         </b-modal>
       <!---------- PAGINATION --------------->
-      <div class="pagination">
+      <div class="pagination" v-show="totalPages>=1">
         <b-button pill size="sm" variant="outline-primary" @click="previouslist"><i class='bx bx-chevron-left'></i>
           Previous</b-button>
         {{ currentPage }} of {{ totalPages }}
@@ -99,7 +101,7 @@
     } from 'vuex'
     export default {
       name: "TableGlobal",
-      props: ['titletable', 'orders', 'options','thTimepost','ShowStatus'],
+      props: ['titletable', 'orders', 'options','thTimepost','ShowStatus','sentenceorders'],
       data() {
         return {
           currentPage: 1,
@@ -189,21 +191,6 @@
         },
   
   
-        // addValueTimePost(event) {
-  
-        //   // push value in td==> textcontent
-        //   if (this.valuePopup !== '') {
-        //     tdTimePost.textContent = this.valuePopup
-        //   } 
-        //   else {
-        //     this.$refs.select[this.indexPopup].$el.value = null
-        //     this.$refs.select[this.indexPopup].$emit('input', null);
-        //     event.preventDefault()
-        //   }
-        //   // initialize value input
-        //   this.valuePopup = ''
-  
-        // },
   
         // CHECK IF INPUT IS FIELD OR NO
         checkvalueState(value) {
@@ -212,9 +199,7 @@
   
       },
   
-      mounted(){
-        console.log(this.valuePopup)
-      }
+
   
     }
   </script>

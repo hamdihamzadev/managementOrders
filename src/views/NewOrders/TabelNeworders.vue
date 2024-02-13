@@ -1,7 +1,7 @@
 <template>
 
     <div class="tabelNeworders mt-4">
-        <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder" />
+        <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder" sentenceorders="No Orders Today"/>
     </div>
 
 </template>

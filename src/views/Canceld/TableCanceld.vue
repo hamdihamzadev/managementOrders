@@ -6,6 +6,7 @@
         :orders="OrdersCanceld"
         :options="options" 
         @remove-order="removeorder"
+        sentenceorders="No order canceld today"
          />
     </div>
 
