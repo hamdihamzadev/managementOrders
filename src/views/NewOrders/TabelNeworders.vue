@@ -21,7 +21,7 @@
         data() {
             return {
                 titletable: 'Orders Today',
-                options: ['Confirmed', 'Canceled'],
+                options: ['Confirmed', 'Canceled','Not treat'],
             }
         },
         computed: {

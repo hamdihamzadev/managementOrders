@@ -19,7 +19,7 @@
         },
         data() {
             return {
-                options: ['Delivered', 'Return'],
+                options: ['Delivered', 'Return','Not treat'],
                 titletable: 'Today',
             }
         },

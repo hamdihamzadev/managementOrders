@@ -24,7 +24,7 @@
     data() {
       return {
         valueinitial: '',
-        options: ['Shipped', 'Progress'],
+        options: ['Shipped', 'Progress','Not treat'],
         titletable: 'Orders Confirmed',
       }
     },

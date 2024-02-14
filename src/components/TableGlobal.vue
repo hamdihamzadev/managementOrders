@@ -44,7 +44,7 @@
           <!----------------STATUS-------------->
 
           <b-td v-if="showStatu">
-            <b-form-select @change="changeBackSelect(index)" ref="select" id="select" :options="options" class="mb-3"
+            <b-form-select  @change="changeBackSelect(index)" ref="select" id="select" :options="options" class="mb-3"
               size="sm">
             </b-form-select>
           </b-td>
@@ -196,7 +196,7 @@
 
       // SEND OK popup
       handleOk(bvModalEvent){
-        
+
         let inputPopup=this.$refs.inputPopup.$el.value
         inputPopup===''?(bvModalEvent.preventDefault(),this.stateInputPopup=false) :  this.stateInputPopup=null
         
