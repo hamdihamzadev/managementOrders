@@ -17,6 +17,10 @@
       TableGlobal
     },
 
+    mounted(){
+      console.log(this.OrderConfirmed)
+    },
+
     data() {
       return {
         valueinitial: '',
@@ -74,18 +78,25 @@
 
           this.ac_addShipped(objectOrder); // ===> PUSH IN STORE ORDER SHIPPED 
           localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders)) // ===> PUSH IN STOCK SHIPPED
-          this.ac_RemoveOrderConfirmed(index) // ===> REMOVE ORDER IN STORE VUEX CONFIRMED ACTIONS
-          localStorage.setItem('Confirmed', JSON.stringify(this.OrderConfirmed)) // UPDATE STOCK CONFIRMED
+          
+           // ===> REMOVE IN STORE / UPDATE STOCK CONFIRMED
+           this.removeorder()
 
         }
         if (valueselected === 'Progress') {
 
           this.ac_addProgress(objectOrder); // ===> PUSH IN STORE ORDER PROGRESS
           localStorage.setItem('Progress', JSON.stringify(this.ProgressOrders)) // ===> PUSH IN STOCK PROGRESS
-          this.ac_RemoveOrderConfirmed(index) // ===> REMOVE ORDER IN STORE VUEX CONFIRMED ACTIONS
-          localStorage.setItem('Confirmed', JSON.stringify(this.OrderConfirmed)) // UPDATE STOCK CONFIRMED
+
+          // ===> REMOVE IN STORE / UPDATE STOCK CONFIRMED
+          this.removeorder()
 
         }
+
+        // ===> init value select 
+        let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
+        valueselectedAfter.value=''
+        valueselectedAfter.style.cssText ='background: #ffffff;  border-color: #2e3033;'
       },
 
       //REMOVE ORDER

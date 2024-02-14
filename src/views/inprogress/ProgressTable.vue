@@ -70,9 +70,16 @@ export default{
           // PUSH IN STORE ORDER CONFIRMED AND IN STOCK CONFIRMED
           this.ac_addShipped(objectOrder);
           localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders))
-          this.ac_RemoveOrderProgress(index)  // ===> REMOVE ORDER IN STORE VUEX PROGRESS ACTIONS
-          localStorage.setItem('Progress',JSON.stringify(this.ProgressOrders))  // UPDATE STOCK PROGRESS
+          
+          //REMOVE ORDER in store progress and localstorage
+          this.removeorder()
+
+           // ===> init value select 
+          let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
+            valueselectedAfter.value = ''
+            valueselectedAfter.style.cssText = 'background: #ffffff;  border-color: #2e3033;'
         }
+        
       },
 
       //REMOVE ORDER

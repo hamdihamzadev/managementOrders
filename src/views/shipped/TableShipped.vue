@@ -1,7 +1,7 @@
 <template>
     <div class="table-shipped mt-4">
         <TableGlobal :titletable="titletable" :options="options" :orders="ShippedOrders" @send-order="SendOrder"
-            @Show-Popup="ShowPopup" :visibel-popup="visibelPopup" @remove-order="removeorder" sentenceorders="No order shipped today" />
+            @remove-order="removeorder" sentenceorders="No order shipped today" v-model="popupVal" />
     </div>
 </template>
 
@@ -12,10 +12,12 @@
     } from 'vuex'
     import TableGlobal from '@/components/TableGlobal.vue'
 
+
     export default {
         name: 'TableShipped',
         components: {
-            TableGlobal
+            TableGlobal,
+
         },
 
         data() {
@@ -23,9 +25,7 @@
 
                 titletable: 'Orders Shipping',
                 options: ['Delivered', 'Postponed', 'Return'],
-                visibelPopup: false,
-                Timepost: '',
-                valPopup: ''
+                popupVal:''
             }
         },
 
@@ -49,6 +49,7 @@
                 ReturnOrders: 'ReturnOrders'
             }),
 
+
         },
 
         methods: {
@@ -62,8 +63,9 @@
             // GET MODULE ACTIONS FOR RETURN
             ...mapActions('ReturnOrders', ['ac_addReturn']),
 
+
             // CREATE FUNCTION FOR SEND ORDER IN PAGE SPECIFICE
-            SendOrder(index, valuePopup) {
+            SendOrder(index) {
 
                 // GET ORDER CLICKED
                 let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
@@ -92,40 +94,42 @@
                     this.ac_addDelivred(objectOrder); // ===> PUSH IN STORE ORDER DELIVRED 
                     localStorage.setItem('Delivered', JSON.stringify(this
                         .DelivredOrders)) // ===> PUSH IN STOCK DELIVRED
-                    this.ac_RemoveOrderShipped(index) // ===> REMOVE ORDER IN STORE VUEX SHIPPED ACTIONS
-                    localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders)) // UPDATE STOCK SHIPPED
+
+                    //REMOVE ORDER in table shipped
+                    this.removeorder()
 
                 }
-
 
                 if (valueselected === 'Postponed') {
-                    // CREATE OBJECT SPECIFIFCE FOR POSTPONED
-                    let objectOrderPostpond = {
-                        Customer: order[0],
-                        Phone: order[1],
-                        city: order[2],
-                        Adress: order[3],
-                        Product: order[4],
-                        Price: order[5],
-                        Delivery: order[6],
-                        Quantity: order[7],
-                        Total: order[8],
-                        Timepost: valuePopup
-                    }
-                    this.ac_addPostpond(objectOrderPostpond);
-                    localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs))
-                    this.ac_RemoveOrderShipped(index)
-                    localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders))
-                }
 
+                    // CREATE OBJECT SPECIFIFCE FOR POSTPONED
+                    objectOrder['Timepost']=this.popupVal
+
+                    if(this.valpopup !== '' ){
+                        this.ac_addPostpond(objectOrder)
+                        localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) 
+
+                        //REMOVE ORDER in table shipped
+                        this.removeorder()
+                    }
+                    
+                }
 
                 if (valueselected === 'Return') {
 
                     this.ac_addReturn(objectOrder);
                     localStorage.setItem('Return', JSON.stringify(this.ReturnOrders))
-                    this.ac_RemoveOrderShipped(index)
-                    localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders))
+
+                    //REMOVE ORDER in table shipped
+                    this.removeorder()
                 }
+
+                // ===> init value select 
+                let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
+                valueselectedAfter.value = ''
+                valueselectedAfter.style.cssText = 'background: #ffffff;  border-color: #2e3033;'
+
+
             },
 
             //REMOVE ORDER
@@ -133,10 +137,10 @@
                 this.ac_RemoveOrderShipped(index) // ===> REMOVE ORDER IN STORE VUEX SHIPPED ACTIONS
                 localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders)) // UPDATE STOCK SHIPPED
             }
-        }
+        },
+
     }
 </script>
-
 
 
 

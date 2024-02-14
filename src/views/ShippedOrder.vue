@@ -10,11 +10,15 @@
 <script>
     import CardsShipped from '@/views/shipped/CardsShipped.vue'
     import TableShipped from '@/views/shipped/TableShipped.vue'
+
     export default {
         name: 'ShippedOrder',
         components: {
             CardsShipped,
-            TableShipped
-        }
+            TableShipped,
+           
+        },
+
+
     }
 </script>

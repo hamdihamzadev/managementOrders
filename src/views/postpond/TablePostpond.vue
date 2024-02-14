@@ -1,14 +1,7 @@
 <template>
     <div class="mt-4" id="tablePostPond">
-        <TableGlobal 
-         :orders="PostpondOredrs"
-         :options="options"
-         :titletable="titletable"
-         :thTimepost="thTimepost"
-         @send-order="SendOrder"
-         @remove-order="removeorder"
-         sentenceorders="No order postpond today"
-         />
+        <TableGlobal :orders="PostpondOredrs" :options="options" :titletable="titletable" thTimepost="true"
+            @send-order="SendOrder" @remove-order="removeorder" sentenceorders="No order postpond today" />
     </div>
 </template>
 
@@ -28,7 +21,6 @@
             return {
                 options: ['Delivered', 'Return'],
                 titletable: 'Today',
-                thTimepost:true,
             }
         },
         computed: {
@@ -79,9 +71,9 @@
 
                     this.ac_addDelivred(objectOrder); // ===> PUSH IN STORE ORDER DELIVRED 
                     localStorage.setItem('Delivered', JSON.stringify(this.DelivredOrders)) // ===> PUSH IN STOCK DELIVRED
-                    this.ac_RemoveOrderPostpond(index)  // ===> REMOVE ORDER IN STORE VUEX POSTPOND ACTIONS
-                    localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) // UPDATE STOCK POSTPOND
-
+                    
+                    //REMOVE ORDER in table postpond and localstorage
+                    this.removeorder()
                 }
 
                 // PUSH IN STORE ORDER CANCELED AND IN STOCK Return
@@ -89,15 +81,22 @@
 
                     this.ac_addReturn(objectOrder);
                     localStorage.setItem('Return', JSON.stringify(this.ReturnOrders))
-                    this.ac_RemoveOrderPostpond(index)
-                    localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs))
+
+                    //REMOVE ORDER in table postpond and localstorage
+                    this.removeorder()
+            
                 }
+
+                // ===> init value select 
+                let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
+                valueselectedAfter.value = ''
+                valueselectedAfter.style.cssText = 'background: #ffffff;  border-color: #2e3033;'
             },
 
             //REMOVE ORDER
             removeorder(index) {
-                this.ac_RemoveOrderPostpond(index) // ===> REMOVE ORDER IN STORE VUEX POSTPOND ACTIONS
-                localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) // UPDATE STOCK POSTPOND
+                this.ac_RemoveOrderPostpond(index) 
+                localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) 
             }
         }
     }

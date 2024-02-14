@@ -5,3 +5,13 @@
     --couleur-primaire-4: #365CF5; /* Bleu */
       
   }
+
+  @media screen and (max-width: 768px) {
+    .aside {
+      display: none;
+      width: 54%;
+    }
+    #app .head-cont {
+      margin-left: 0%;
+    }
+  }  
