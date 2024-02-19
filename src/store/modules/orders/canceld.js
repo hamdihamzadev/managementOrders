@@ -13,12 +13,14 @@ const mutations={
 }
 
 const actions ={
-    ac_addCanceld({commit},order){
+    ac_addCanceld({commit,state},order){
         commit('addorder',order)
+        localStorage.setItem('Canceled', JSON.stringify(state.ordercanceld))
     },
 
-    ac_RemoveOrderCanceld({commit},index){
+    ac_RemoveOrderCanceld({commit,state},index){
         commit('m_RemoveOrderCanceld',index)
+        localStorage.setItem('Canceled', JSON.stringify(state.ordercanceld))
     }
 }
   

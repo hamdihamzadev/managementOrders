@@ -13,15 +13,17 @@ const mutations={
 }
 
 const actions ={
-    ac_addReturn({commit},order){
+    ac_addReturn({commit,state},order){
         commit('m_addReturn',order)
+        localStorage.setItem('Return', JSON.stringify(state.ReturnOrders))
     },
 
-    ac_RemoveOrderReturn({commit},index){
+    ac_RemoveOrderReturn({commit,state},index){
         commit('m_RemoveOrderReturn',index)
+        localStorage.setItem('Return', JSON.stringify(state.ReturnOrders))
     }
 }
-  
+
 export default{
     namespaced: true,
     state,

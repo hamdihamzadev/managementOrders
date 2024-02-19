@@ -1,7 +1,8 @@
 <template>
     <div class="mt-4" id="tablePostPond">
         <TableGlobal :orders="PostpondOredrs" :options="options" :titletable="titletable" thTimepost="true"
-            @send-order="SendOrder" @remove-order="removeorder" sentenceorders="No order postpond today" />
+            @send-order="SendOrder" @remove-order="removeorder" sentenceorders="No order postpond today"
+            @save-status="saveStatus" />
     </div>
 </template>
 
@@ -19,7 +20,7 @@
         },
         data() {
             return {
-                options: ['Delivered', 'Return','Not treat'],
+                options: ['Delivered', 'Return', 'Not treat'],
                 titletable: 'Today',
             }
         },
@@ -28,17 +29,22 @@
             ...mapState('PostpondOrders', {
                 PostpondOredrs: 'PostpondOredrs'
             }),
-            // GET MODULE STATE DELIVRED
-            ...mapState('DelivredOrders', {
-                DelivredOrders: 'DelivredOredrs'
-            }),
-            // GET MODULE STATE RETURN
-            ...mapState('ReturnOrders', {
-                ReturnOrders: 'ReturnOrders'
-            }),
+
+            // GET ALL VALUES IN SELECTS
+            allValues() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                return allValues
+            }
+        },
+
+        mounted() {
+            this.getOrdersConfirmed()
         },
 
         methods: {
+
+            // GET ACTION ADD ORDER FOR POSTPOND
+            ...mapActions('PostpondOrders', ['ac_addPostpond']),
             // GET ACTION DELETE ORDER FPR POSTPOND
             ...mapActions('PostpondOrders', ['ac_RemoveOrderPostpond']),
             // GET ACTION FOR DELIVRED
@@ -46,8 +52,25 @@
             // GET ACTION FOR RETURN
             ...mapActions('ReturnOrders', ['ac_addReturn']),
 
+            // GET ALL ORDERS POSTPOND AND SHOW IN TABLE
+            getOrdersConfirmed() {
+                let orderPostponedlocal = JSON.parse(localStorage.getItem('Postponed'))
+                orderPostponedlocal && orderPostponedlocal.length > this.OrderConfirmed.length ?
+                    orderPostponedlocal.forEach(order => {
+                        this.ac_addPostpond(order)
+                    }) : ''
+            },
+
+            // SEND ORDER IN YOUR PLACE
+            saveStatus() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                window.localStorage.setItem('statusPostponed', JSON.stringify(allValues))
+            },
+
             // SEND ORDER IN YOUR PLACE
             SendOrder(index) {
+
+                this.allValues
                 // GET TD IN DOM FOR ORDER
                 let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
                     .textContent)
@@ -67,36 +90,33 @@
                 let valueselected = Array.from(document.querySelector(`#order${index}`).children)[10].firstChild.value
 
                 // -------------- CHECK VALUE --------------
-                if (valueselected === 'Delivered') {
+                valueselected === 'Delivered' ? this.ac_addDelivred(objectOrder) :
+                    valueselected === 'Return' ? this.ac_addReturn(objectOrder) : ''
 
-                    this.ac_addDelivred(objectOrder); // ===> PUSH IN STORE ORDER DELIVRED 
-                    localStorage.setItem('Delivered', JSON.stringify(this.DelivredOrders)) // ===> PUSH IN STOCK DELIVRED
-                    
-                    //REMOVE ORDER in table postpond and localstorage
-                    this.removeorder()
-                }
 
-                // PUSH IN STORE ORDER CANCELED AND IN STOCK Return
-                if (valueselected === 'Return') {
+                // Reset values
+                this.ResetvaluesRemoSend(index)
 
-                    this.ac_addReturn(objectOrder);
-                    localStorage.setItem('Return', JSON.stringify(this.ReturnOrders))
-
-                    //REMOVE ORDER in table postpond and localstorage
-                    this.removeorder()
-            
-                }
-
-                // ===> init value select 
-                let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
-                valueselectedAfter.value = ''
-                valueselectedAfter.style.cssText = 'background: #ffffff;  border-color: #2e3033;'
             },
 
             //REMOVE ORDER
             removeorder(index) {
-                this.ac_RemoveOrderPostpond(index) 
-                localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) 
+                this.allValues
+                this.ac_RemoveOrderPostpond(index)
+
+                // Reset values
+                this.ResetvaluesRemoSend(index)
+            },
+
+            // RESET VALUE AFTER REMOVE OR SEND
+            ResetvaluesRemoSend(index) {
+                // get value for any select after remove or send order
+                this.allValues.splice(index, 1)
+                let statuAfter = document.querySelectorAll('select')
+                this.allValues.forEach((value, i) => {
+                    statuAfter[i].value = value
+                })
+                window.localStorage.setItem('statusPostponed', JSON.stringify(this.allValues))
             }
         }
     }

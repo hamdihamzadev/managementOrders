@@ -1,7 +1,8 @@
 <template>
     <div class="table-shipped mt-4">
         <TableGlobal :titletable="titletable" :options="options" :orders="ShippedOrders" @send-order="SendOrder"
-            @remove-order="removeorder" sentenceorders="No order shipped today" v-model="popupVal" />
+            @remove-order="removeorder" sentenceorders="No order shipped today" v-model="popupVal"
+            @save-status="saveStatus" />
     </div>
 </template>
 
@@ -24,8 +25,8 @@
             return {
 
                 titletable: 'Orders Shipping',
-                options: ['Delivered', 'Postponed', 'Return'],
-                popupVal:''
+                options: ['Delivered', 'Postponed', 'Return', 'Not treat'],
+                popupVal: ''
             }
         },
 
@@ -36,26 +37,27 @@
                 ShippedOrders: 'ShippedOrders'
             }),
 
-            // GET MODULE STATE DELIVRED
-            ...mapState('DelivredOrders', {
-                DelivredOrders: 'DelivredOredrs'
-            }),
-            // GET MODULE STATE POSTPOND
-            ...mapState('PostpondOrders', {
-                PostpondOredrs: 'PostpondOredrs'
-            }),
-            // GET MODULE STATE RETURN
-            ...mapState('ReturnOrders', {
-                ReturnOrders: 'ReturnOrders'
-            }),
-
+            // GET ALL VALUES IN SELECTS
+            allValues() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                return allValues
+            }
 
         },
+
+        mounted() {
+            // GET ALL ORDERS SHIPPED IN LOCALSTORAGE
+            this.getOrderShipped()
+
+        },
+
 
         methods: {
 
             // GET MODULE ACTIONS FOR SHIPPED
             ...mapActions('ShippedOrders', ['ac_RemoveOrderShipped']),
+            // GET MODULE ACTIONS FOR ADD ORDER SHIPPED
+            ...mapActions('ShippedOrders', ['ac_addShipped']),
             // GET MODULE ACTIONS FOR DELIVRED
             ...mapActions('DelivredOrders', ['ac_addDelivred']),
             // GET MODULE ACTIONS FOR POSTPOND
@@ -63,10 +65,28 @@
             // GET MODULE ACTIONS FOR RETURN
             ...mapActions('ReturnOrders', ['ac_addReturn']),
 
+            // GET ORDERS SHIPPED IN LOCAL
+            getOrderShipped() {
+
+                let OrdersShippedLocal = JSON.parse(localStorage.getItem('Shipped'))
+
+                OrdersShippedLocal && OrdersShippedLocal.length > this.ShippedOrders.length ?
+                    OrdersShippedLocal.forEach(order => {
+                        this.ac_addShipped(order)
+                    }) : ''
+            },
+
+            // SAVE ALL VALUES STATUS IN LOCAL STORAGE
+            saveStatus() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                window.localStorage.setItem('statusShipped', JSON.stringify(allValues))
+            },
 
             // CREATE FUNCTION FOR SEND ORDER IN PAGE SPECIFICE
             SendOrder(index) {
 
+                // GET ALL VALUES BEFORE SEND
+                this.allValues
                 // GET ORDER CLICKED
                 let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
                     .textContent)
@@ -85,68 +105,46 @@
                 }
 
                 // GET VALUE SELECTED
-                let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
+                let valueselected = document.querySelector(`#select${index}`) // 1
 
                 // -------------- CHECK VALUE --------------
 
-                if (valueselected === 'Delivered') {
+                valueselected.value === 'Delivered' ? (this.ac_addDelivred(objectOrder), this.ac_RemoveOrderShipped(
+                        index)) :
+                    valueselected.value === 'Return' ? (this.ac_addReturn(objectOrder), this.ac_RemoveOrderShipped(
+                        index)) :
+                    valueselected.value === 'Postponed' && this.valpopup !== '' ?
+                    (objectOrder['Timepost'] = this.popupVal, this.ac_RemoveOrderShipped(index)) : ''
 
-                    this.ac_addDelivred(objectOrder); // ===> PUSH IN STORE ORDER DELIVRED 
-                    localStorage.setItem('Delivered', JSON.stringify(this
-                        .DelivredOrders)) // ===> PUSH IN STOCK DELIVRED
-
-                    //REMOVE ORDER in table shipped
-                    this.removeorder()
-
-                }
-
-                if (valueselected === 'Postponed') {
-
-                    // CREATE OBJECT SPECIFIFCE FOR POSTPONED
-                    objectOrder['Timepost']=this.popupVal
-
-                    if(this.valpopup !== '' ){
-                        this.ac_addPostpond(objectOrder)
-                        localStorage.setItem('Postponed', JSON.stringify(this.PostpondOredrs)) 
-
-                        //REMOVE ORDER in table shipped
-                        this.removeorder()
-                    }
-                    
-                }
-
-                if (valueselected === 'Return') {
-
-                    this.ac_addReturn(objectOrder);
-                    localStorage.setItem('Return', JSON.stringify(this.ReturnOrders))
-
-                    //REMOVE ORDER in table shipped
-                    this.removeorder()
-                }
-
-                // ===> init value select 
-                let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
-                valueselectedAfter.value = ''
-                valueselectedAfter.style.cssText = 'background: #ffffff;  border-color: #2e3033;'
-
+                // Reset values
+                this.ResetvaluesRemoSend(index)
 
             },
 
             //REMOVE ORDER
             removeorder(index) {
-                this.ac_RemoveOrderShipped(index) // ===> REMOVE ORDER IN STORE VUEX SHIPPED ACTIONS
-                localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders)) // UPDATE STOCK SHIPPED
-            }
+                this.allValues
+                this.ac_RemoveOrderShipped(index)
+
+                // Reset values
+                this.ResetvaluesRemoSend(index)
+
+            },
+
+            // RESET VALUE AFTER REMOVE OR SEND
+            ResetvaluesRemoSend(index) {
+                // get value for any select after remove or send order
+                this.allValues.splice(index, 1)
+                let statuAfter = document.querySelectorAll('select')
+                this.allValues.forEach((value, i) => {
+                    statuAfter[i].value = value
+                })
+                window.localStorage.setItem('statusShipped', JSON.stringify(this.allValues))
+            },
         },
 
     }
 </script>
-
-
-
-
-
-
 
 
 

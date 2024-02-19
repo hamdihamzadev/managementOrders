@@ -38,13 +38,25 @@
             }),
         },
 
+        mounted(){
+            this.getOrders()
+        },
+
          methods:{
         // GET ACTION REMOVE ORDER CANCELD IN VUEX
         ...mapActions('OrderCanceld',['ac_RemoveOrderCanceld']),
+         // GET FUNCTION ACTIONS IN VUEX CANCELD
+         ...mapActions('OrderCanceld', ['ac_addCanceld']),
+
+         // GET ORDERS FROM LOCALSTORAGE AND PUSH IN STORE
+         getOrders(){
+            let orderLocal=JSON.parse(localStorage.getItem('Canceled'))
+            console.log(orderLocal)
+            orderLocal && orderLocal.length > this.OrdersCanceld.length ? orderLocal.forEach(order=>this.ac_addCanceld(order)):''
+         },
         //REMOVE ORDER CANCELD
         removeorder(index){
-            this.ac_RemoveOrderCanceld(index)  // ===> REMOVE ORDER IN STORE VUEX CANCELD ACTIONS
-           localStorage.setItem('Canceled',JSON.stringify(this.OrdersCanceld))  // UPDATE STOCK CANCELD
+           this.ac_RemoveOrderCanceld(index)  // ===> REMOVE ORDER IN STORE VUEX CANCELD ACTIONS
         }
          }
     }

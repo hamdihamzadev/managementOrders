@@ -13,12 +13,14 @@ const mutations={
 }
 
 const actions ={
-    ac_addProgress({commit},order){
+    ac_addProgress({commit,state},order){
         commit('m_addProgress',order)
+        localStorage.setItem('Progress', JSON.stringify(state.ProgressOrders))
     },
 
-    ac_RemoveOrderProgress({commit},index){
+    ac_RemoveOrderProgress({commit,state},index){
         commit('m_RemoveOrderProgress',index)
+        localStorage.setItem('Progress', JSON.stringify(state.ProgressOrders))
     }
 }
 

@@ -13,12 +13,14 @@ const mutations={
 }
 
 const actions ={
-    ac_addPostpond({commit},order){
+    ac_addPostpond({commit,state},order){
         commit('m_addPostpond',order)
+        localStorage.setItem('Postponed', JSON.stringify(state.PostpondOredrs))
     },
 
-    ac_RemoveOrderPostpond({commit},index){
+    ac_RemoveOrderPostpond({commit,state},index){
         commit('m_RemoveOrderPostpond',index)
+        localStorage.setItem('Postponed', JSON.stringify(state.PostpondOredrs))
     }
 }
   

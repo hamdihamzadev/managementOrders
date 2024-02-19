@@ -31,6 +31,8 @@
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-dollar-circle'></i>Profitability</a></router-link>
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Contact</a></router-link>
             <router-link to="/TableBoot" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>table</a></router-link>
+            <router-link to="/LoginUser" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>LoginUser</a></router-link>
+            <router-link to="/test" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>test</a></router-link>
           </ul>
         </div>
       </div>

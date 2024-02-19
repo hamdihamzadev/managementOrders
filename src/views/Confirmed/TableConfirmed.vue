@@ -1,7 +1,7 @@
 <template>
   <div class="table-confirmed mt-4">
     <TableGlobal :options="options" :orders="OrderConfirmed" :titletable="titletable" @send-order="SendOrder"
-      @remove-order="removeorder"  sentenceorders="No Confirmed Orders Today"/>
+      @remove-order="removeorder" sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
   </div>
 </template>
 
@@ -17,17 +17,25 @@
       TableGlobal
     },
 
-    mounted(){
-      console.log(this.OrderConfirmed)
-    },
-
     data() {
       return {
-        valueinitial: '',
-        options: ['Shipped', 'Progress','Not treat'],
+        options: [{
+            value: 'Shipped',
+            text: 'Shipped'
+          },
+          {
+            value: 'Progress',
+            text: 'Progress'
+          },
+          {
+            value: 'Not treat',
+            text: 'Not treat'
+          },
+        ],
         titletable: 'Orders Confirmed',
       }
     },
+
 
     computed: {
 
@@ -35,28 +43,47 @@
       ...mapState('OrderConfirmed', {
         OrderConfirmed: 'dataConfrimed'
       }),
-      // GET STORE SHIPPED
-      ...mapState('ShippedOrders', {
-        ShippedOrders: 'ShippedOrders'
+      // GET STORE CONFIRMED
+      ...mapState('OrderConfirmed', {
+        Status: 'Status'
       }),
-      // GET STORE IN PROGRESS
-      ...mapState('InProgressOrders', {
-        ProgressOrders: 'ProgressOrders'
-      })
+
+      // GET ALL VALUES IN SELECTS
+      allValues() {
+        let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+        return allValues
+      }
 
     },
 
+    mounted() {
+      this.getOrdersConfirmed()
+    },
+
     methods: {
-      // GET ACTION IN STORE FOR ORDER CONFIRMED   
+
+      // GET FUNCTION ACTIONS IN VUEX CONFIRMED
+      ...mapActions('OrderConfirmed', ['ac_orderConfirmed']),
       ...mapActions('OrderConfirmed', ['ac_RemoveOrderConfirmed']),
-      //GET ACTIONS IN STORE FOR ORDER SHIPPED
       ...mapActions('ShippedOrders', ['ac_addShipped']),
-      //GET ACTIONS IN STORE FOR ORDER IN PROGRESS
       ...mapActions('InProgressOrders', ['ac_addProgress']),
 
+      getOrdersConfirmed() {
+        let orderConfirmedlocal = JSON.parse(localStorage.getItem('Confirmed'))
+        orderConfirmedlocal && orderConfirmedlocal.length>this.OrderConfirmed.length? 
+        orderConfirmedlocal.forEach(order => {this.ac_orderConfirmed(order)}) :''
+      },
+
+      saveStatus() {
+        let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+        window.localStorage.setItem('statusConfirmed', JSON.stringify(allValues))
+
+      },
 
       SendOrder(index) {
-        // GET TD IN DOM FOR ORDER
+
+        this.allValues
+        // ORDER
         let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
           .textContent)
         // PUSH ORDER IN OBJECT
@@ -71,42 +98,41 @@
           Quantity: order[7],
           Total: order[8]
         }
-        // GET VALUE SELECTED
+        //  VALUE SELECTED
         let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
         // CHECK VALUE 
-        if (valueselected === 'Shipped') {
+        valueselected === 'Shipped' ? (this.ac_addShipped(objectOrder), this.ac_RemoveOrderConfirmed(index)) :
+        valueselected === 'Progress' ? (this.ac_addProgress(objectOrder), this.ac_RemoveOrderConfirmed(index)) : ''
 
-          this.ac_addShipped(objectOrder); // ===> PUSH IN STORE ORDER SHIPPED 
-          localStorage.setItem('Shipped', JSON.stringify(this.ShippedOrders)) // ===> PUSH IN STOCK SHIPPED
-          
-           // ===> REMOVE IN STORE / UPDATE STOCK CONFIRMED
-           this.removeorder()
-
-        }
-        if (valueselected === 'Progress') {
-
-          this.ac_addProgress(objectOrder); // ===> PUSH IN STORE ORDER PROGRESS
-          localStorage.setItem('Progress', JSON.stringify(this.ProgressOrders)) // ===> PUSH IN STOCK PROGRESS
-
-          // ===> REMOVE IN STORE / UPDATE STOCK CONFIRMED
-          this.removeorder()
-
-        }
-
-        // ===> init value select 
-        let valueselectedAfter = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild
-        valueselectedAfter.value=''
-        valueselectedAfter.style.cssText ='background: #ffffff;  border-color: #2e3033;'
+        // Reset values
+        this.ResetvaluesRemoSend(index)
       },
 
       //REMOVE ORDER
-      removeorder(index) {
-        this.ac_RemoveOrderConfirmed(index) // ===> REMOVE ORDER IN STORE VUEX CONFIRMED ACTIONS
-        localStorage.setItem('Confirmed', JSON.stringify(this.OrderConfirmed)) // UPDATE STOCK CONFIRMED
-      }
-    }
+      removeorder(index){
+        this.allValues
+        this.ac_RemoveOrderConfirmed(index)
+
+        // Reset values
+        this.ResetvaluesRemoSend(index)
+      },
+         
+
+      // RESET VALUE AFTER REMOVE OR SEND
+      ResetvaluesRemoSend(index){
+      // get value for any select after remove or send order
+      this.allValues.splice(index, 1)
+      let statuAfter = document.querySelectorAll('select')
+      this.allValues.forEach((value, i) => {statuAfter[i].value = value})
+      window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
+       },
+
+      // CHANGE BACKGROUND 
+
+
+    },
+
+    
 
   }
-  // click remove ===> remove order in store and update localeStorage
-  // ===> 
 </script>

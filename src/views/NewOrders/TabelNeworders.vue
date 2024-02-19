@@ -1,7 +1,8 @@
 <template>
 
     <div class="tabelNeworders mt-4">
-        <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder" sentenceorders="No Orders Today"/>
+        <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder"
+            sentenceorders="No Orders Today" />
     </div>
 
 </template>
@@ -21,7 +22,7 @@
         data() {
             return {
                 titletable: 'Orders Today',
-                options: ['Confirmed', 'Canceled','Not treat'],
+                options: ['Confirmed', 'Canceled', 'Not treat'],
             }
         },
         computed: {
@@ -29,14 +30,6 @@
             // STORE NEW ORDERS
             ...mapState('NewOrders', {
                 TodayOrders: 'NewOrders'
-            }),
-            // STORE ORDER CONFIRMED
-            ...mapState('OrderConfirmed', {
-                OrderConfirmed: 'dataConfrimed'
-            }),
-            // STORE ORDER CANCELD
-            ...mapState('OrderCanceld', {
-                OrdersCanceld: 'ordercanceld'
             }),
 
         },
@@ -49,7 +42,7 @@
 
             // PUSH ORDER CONFIRMED IN ACTION
             SendOrder(index) {
-                
+
                 let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
                     .textContent)
                 let objectOrder = {
@@ -64,30 +57,17 @@
                     Total: order[8]
                 }
 
-                
                 // GET VALUE SELECTED
                 let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
 
                 // CHECK VALUE 
-                if(valueselected === 'Confirmed'){
-                    // PUSH IN STORE ORDER CONFIRMED AND IN STOCK CONFIRMED
-                    this.ac_orderConfirmed(objectOrder);
-                    localStorage.setItem('Confirmed',JSON.stringify(this.OrderConfirmed))
-                }
-                if(valueselected === 'Canceled'){
-                    // PUSH IN STORE ORDER CANCELED AND IN STOCK CANCELED
-                    this.ac_addCanceld(objectOrder) ;
-                    localStorage.setItem('Canceled',JSON.stringify(this.OrdersCanceld))
-                }
+                valueselected === 'Confirmed' ? this.ac_orderConfirmed(objectOrder) : 
+                valueselected === 'Canceled'  ?  this.ac_addCanceld(objectOrder) : ''
+
             },
         },
 
     }
-
-
-    // REMOVE ORDER:
-    //        =====> remove order in store vuex ==> update localstorage
-    //        =====> work in array ==> delete in array ===> indice for remove in array
 </script>
 
 <style>

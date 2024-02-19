@@ -13,12 +13,14 @@ const mutations={
 }
 
 const actions ={
-    ac_addShipped({commit},order){
+    ac_addShipped({commit,state},order){
         commit('m_addShipped',order)
+        localStorage.setItem('Shipped', JSON.stringify(state.ShippedOrders))
     },
 
-    ac_RemoveOrderShipped({commit},index){
+    ac_RemoveOrderShipped({commit,state},index){
         commit('m_RemoveOrderShipped',index)
+        localStorage.setItem('Shipped', JSON.stringify(state.ShippedOrders))
     }
 }
   

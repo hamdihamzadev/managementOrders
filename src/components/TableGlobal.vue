@@ -43,9 +43,10 @@
 
           <!----------------STATUS-------------->
 
-          <b-td v-if="showStatu">
-            <b-form-select  @change="changeBackSelect(index)" ref="select" id="select" :options="options" class="mb-3"
-              size="sm">
+          <b-td v-if="showStatu" >
+            <b-form-select @change="changeBackSelect(index)" ref="select" :id="`select${index}`" :options="options"
+              class="mb-3 <selectstatus>" size="sm" v-model="statusValues[index]" 
+                 >
             </b-form-select>
           </b-td>
 
@@ -73,7 +74,8 @@
     <b-modal id="modalPostpond" ref="modalPostpond" title="Submit Your Name" @ok="handleOk">
       <form ref="form">
         <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
-          <b-form-input id="name-input" ref="inputPopup" :value="valuePopup" @input="onInputpopup" :state="stateInputPopup" required>
+          <b-form-input id="name-input" ref="inputPopup" :value="valuePopup" @input="onInputpopup"
+            :state="stateInputPopup" required>
           </b-form-input>
         </b-form-group>
       </form>
@@ -88,6 +90,7 @@
       </b-button>
     </div>
 
+
   </b-container>
 </template>
 
@@ -97,19 +100,21 @@
   } from 'vuex'
   export default {
     name: "TableGlobal",
-    props:['titletable','orders','options','thTimepost','valuePopup','sentenceorders'],
-      
+    props: ['titletable', 'orders', 'options', 'thTimepost', 'valuePopup', 'sentenceorders'],
+
     data() {
       return {
         // FOR METHOdS NEXT AND PREV IN TABLE
         currentPage: 1,
         start: 0,
         end: 10,
+        statusValues: [],
         // FOR Popup
         stateInputPopup: null,
-
+    
       }
     },
+ 
     computed: {
       ...mapState('NewOrders', {
         TodayOrders: 'Orders Confirmed'
@@ -132,11 +137,12 @@
       }
     },
 
+
     methods: {
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
       sendorder(index) {
-        this.$emit('send-order',index)
-        
+        this.$emit('send-order', index)
+
       },
 
       // EMIT EVENT FOR REMOVE ORDER
@@ -180,6 +186,8 @@
       // STYLING SELECT IN CHANGE 
       changeBackSelect(index) {
 
+        this.$emit('save-status')
+
         let elem = this.$refs.select[index].$el
         // SHOW AND HIDE POPUP
         elem.value === 'Postponed' ? this.$root.$bvModal.show('modalPostpond') : ''
@@ -194,24 +202,33 @@
       },
 
 
-      // SEND OK popup
-      handleOk(bvModalEvent){
 
-        let inputPopup=this.$refs.inputPopup.$el.value
-        inputPopup===''?(bvModalEvent.preventDefault(),this.stateInputPopup=false) :  this.stateInputPopup=null
-        
+      // SEND OK popup
+      handleOk(bvModalEvent) {
+
+        let inputPopup = this.$refs.inputPopup.$el.value
+        inputPopup === '' ? (bvModalEvent.preventDefault(), this.stateInputPopup = false) : this.stateInputPopup = null
+
       },
 
       onInputpopup(val) {
         this.$emit('input', val)
       }
 
-
     },
 
+    mounted(){
 
+      this.$route.path==='/Orders/Confirmed' ? this.statusValues=JSON.parse(localStorage.getItem('statusConfirmed')) || [] :null
+      this.$route.path==='/Orders/Shipped' ? this.statusValues=JSON.parse(localStorage.getItem('statusShipped')) || [] :null
+      this.$route.path==='/Orders/InProgress' ? this.statusValues=JSON.parse(localStorage.getItem('statusProgress')) || [] :null
+      this.$route.path==='/Orders/PostPond' ? this.statusValues=JSON.parse(localStorage.getItem('statusPostponed')) || [] :null
+      
+    }
+    
   }
 </script>
+
 
 <style>
   #table-global {
@@ -244,7 +261,7 @@
   }
 
 
-  #select {
+  .selectstatus {
     border-radius: 13.25rem;
     font-weight: 700;
     font-size: 14px;
