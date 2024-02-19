@@ -2,7 +2,7 @@
 
     <div class="tabelNeworders mt-4">
         <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder"
-            sentenceorders="No Orders Today" />
+            sentenceorders="No Orders Today" @save-status="saveStatus" />
     </div>
 
 </template>
@@ -32,6 +32,12 @@
                 TodayOrders: 'NewOrders'
             }),
 
+            // GET ALL VALUES IN SELECTS
+            allValues() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                return allValues
+            }
+
         },
 
         methods: {
@@ -42,6 +48,8 @@
 
             // PUSH ORDER CONFIRMED IN ACTION
             SendOrder(index) {
+
+                this.allValues
 
                 let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
                     .textContent)
@@ -61,10 +69,21 @@
                 let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
 
                 // CHECK VALUE 
-                valueselected === 'Confirmed' ? this.ac_orderConfirmed(objectOrder) : 
-                valueselected === 'Canceled'  ?  this.ac_addCanceld(objectOrder) : ''
+                valueselected === 'Confirmed' ? this.ac_orderConfirmed(objectOrder) :
+                    valueselected === 'Canceled' ? this.ac_addCanceld(objectOrder) : ''
+
+   
 
             },
+
+            saveStatus() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                window.localStorage.setItem('statusNeworders', JSON.stringify(allValues))
+            },
+
+            
+
+
         },
 
     }

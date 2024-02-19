@@ -113,9 +113,7 @@
                 // get value for any select after remove or send order
                 this.allValues.splice(index, 1)
                 let statuAfter = document.querySelectorAll('select')
-                this.allValues.forEach((value, i) => {
-                    statuAfter[i].value = value
-                })
+                this.allValues.forEach((value, i) => {statuAfter[i].value = value})
                 window.localStorage.setItem('statusPostponed', JSON.stringify(this.allValues))
             }
         }

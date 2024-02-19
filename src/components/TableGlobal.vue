@@ -223,6 +223,7 @@
       this.$route.path==='/Orders/Shipped' ? this.statusValues=JSON.parse(localStorage.getItem('statusShipped')) || [] :null
       this.$route.path==='/Orders/InProgress' ? this.statusValues=JSON.parse(localStorage.getItem('statusProgress')) || [] :null
       this.$route.path==='/Orders/PostPond' ? this.statusValues=JSON.parse(localStorage.getItem('statusPostponed')) || [] :null
+      this.$route.path==='/Orders/NewOrders' ? this.statusValues=JSON.parse(localStorage.getItem('statusNeworders')) || [] :null
       
     }
     

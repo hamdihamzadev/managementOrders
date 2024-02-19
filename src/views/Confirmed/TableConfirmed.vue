@@ -77,7 +77,6 @@
       saveStatus() {
         let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
         window.localStorage.setItem('statusConfirmed', JSON.stringify(allValues))
-
       },
 
       SendOrder(index) {
