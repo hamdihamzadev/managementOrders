@@ -61,7 +61,6 @@
 
     mounted() {
       this.getUers()
-      console.log(this.users)
     },
 
     methods: {
@@ -69,7 +68,7 @@
 
       onSubmit(event) {
         event.preventDefault()
-        
+
         this.users.forEach(user => {
           user.email === this.email ? this.validationemail = true : this.validationemail = false
           user.password === this.password ? this.validationpassword = true : this.validationpassword = false
@@ -78,6 +77,7 @@
         })
       },
 
+      // GET USERS 
       getUers() {
         let usersLocal = JSON.parse(localStorage.getItem('Users'))
         usersLocal && usersLocal.length > this.users.length ? usersLocal.forEach(user => {this.ac_addUser(user)}) : ''

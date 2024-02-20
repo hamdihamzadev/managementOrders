@@ -11,24 +11,44 @@
             </b-nav-form>
             <!------ PROFILE MENU ------->
 
-            <b-avatar badge-variant="info" src="../assets/man.png" >
-                <template #badge>
-                    <b-icon icon="arrow-down-circle-fill"></b-icon>
+            <b-dropdown size="lg" variant="link" toggle-class="text-decoration-none" no-caret>
+                <template #button-content>
+                    <b-avatar variant="info" :src="imageSrc" @click="toggleDropdown">
+                        <template #badge>
+                            <b-icon icon="arrow-down-circle-fill"></b-icon>
+                        </template></b-avatar>
                 </template>
-            </b-avatar>
-
+                <b-dropdown-item href="#">Hello <strong>Hamza</strong></b-dropdown-item>
+                <b-dropdown-item href="#">Notification</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+                <b-dropdown-item href="#" @click="logout">Log out <b-icon icon="box-arrow-in-right"  variant="dark"></b-icon></b-dropdown-item>
+            </b-dropdown>
         </div>
-
     </div>
 </template>
 
 <script>
     export default {
         name: 'HeaDer',
+        data() {
+            return {
+                imageSrc: require('@/assets/man.png'),
+                listProfil: true,
+                dropdownVisible: false,
+            }
+        },
 
         methods: {
             toggle() {
                 this.$emit('toggel-header')
+            },
+
+            toggleDropdown() {
+                this.dropdownVisible = !this.dropdownVisible;
+            },
+
+            logout(){
+                this.$router.push('/Login')
             }
         }
 
@@ -67,5 +87,9 @@
     .prof {
         font-size: 12px;
         margin: 0px;
+    }
+
+    #img-profil {
+        object-fit: cover;
     }
 </style>
