@@ -70,9 +70,7 @@
 
                 // CHECK VALUE 
                 valueselected === 'Confirmed' ? this.ac_orderConfirmed(objectOrder) :
-                    valueselected === 'Canceled' ? this.ac_addCanceld(objectOrder) : ''
-
-   
+                valueselected === 'Canceled' ? this.ac_addCanceld(objectOrder) : ''
 
             },
 
@@ -80,8 +78,6 @@
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
                 window.localStorage.setItem('statusNeworders', JSON.stringify(allValues))
             },
-
-            
 
 
         },

@@ -11,21 +11,12 @@
             </b-nav-form>
             <!------ PROFILE MENU ------->
 
-            <div class="dropdown">
-                <b-avatar badge-variant="primary" class="dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <template #badge>
-                        <b-icon icon="arrow-down-circle-fill" variant="dark"></b-icon>
-                    </template>
-                </b-avatar>
+            <b-avatar badge-variant="info" src="../assets/man.png" >
+                <template #badge>
+                    <b-icon icon="arrow-down-circle-fill"></b-icon>
+                </template>
+            </b-avatar>
 
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </div>
-            
         </div>
 
     </div>

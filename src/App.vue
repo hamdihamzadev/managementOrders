@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="container-flui d-flex">
-    <div :class="{'invisible':toggelaside}">
+    <div :class="{'invisible':toggelaside}" v-if="showLogin">
       <SideBar />
     </div>
-    <div class="head-cont" :class="{'fullWidth':toggelaside}">
-      <HeaDer @toggel-header="toggelheader" />
+    <div class="head-cont" :class="{'fullWidth':toggelaside}" >
+      <HeaDer @toggel-header="toggelheader" v-if="showLogin" />
       <router-view />
     </div>
   </div>
@@ -24,6 +24,20 @@
       return {
         toggelaside: false,
       }
+    },
+
+    computed:{
+      showLogin(){
+      return  this.$route.path==='/Login' || this.$route.path==='/Signup'  ? false : true
+      }
+    },
+
+    mounted(){
+      
+      let headCont=document.querySelector('.head-cont')
+      this.$route.path==='/Login' ? headCont.style.marginLeft ='0px' :''
+      this.$route.path==='/Signup' ? headCont.style.marginLeft ='0px' :''
+      
     },
 
     methods: {

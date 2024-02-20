@@ -14,7 +14,11 @@ export default{
     components:{
         TableCanceld,
         CartsCanceld
-    }
+    },
+
+  
+
+ 
 }
 </script>
 

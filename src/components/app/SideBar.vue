@@ -32,7 +32,8 @@
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Contact</a></router-link>
             <router-link to="/TableBoot" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>table</a></router-link>
             <router-link to="/LoginUser" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>LoginUser</a></router-link>
-            <router-link to="/test" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>test</a></router-link>
+            <router-link to="/Signup" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Signup</a></router-link>
+            <router-link to="/Login" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Login</a></router-link>
           </ul>
         </div>
       </div>

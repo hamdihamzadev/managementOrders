@@ -10,6 +10,7 @@ import InProgressModule from '@/store/modules/orders/inprogress'
 import DelivredModule from '@/store/modules/orders/delivred'
 import PostpondModule from '@/store/modules/orders/postpond'
 import ReturnModule from '@/store/modules/orders/return'
+import UsersModule from '@/store/modules/users'
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     InProgressOrders:InProgressModule,
     DelivredOrders:DelivredModule,
     PostpondOrders:PostpondModule,
-    ReturnOrders:ReturnModule
+    ReturnOrders:ReturnModule,
+    UsersModule : UsersModule
   }
 });

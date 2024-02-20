@@ -9,7 +9,8 @@ import PostPond from '../views/PostPond.vue'
 import ReTurn from '../views/ReTurn.vue'
 import CanCeld from '../views/CanCeld.vue'
 import InProgress from '../views/InProgress.vue'
-import LoginUser from '../views/LoGin.vue'
+import LoginUser from '../views/LoginUser.vue'
+import SignUp from '../views/SignUp.vue'
 
 
 Vue.use(VueRouter);
@@ -24,11 +25,13 @@ const routes = [
   { path: '/Orders/Return', component: ReTurn},
   { path: '/Orders/Canceld', component: CanCeld},
   { path: '/Orders/InProgress', component: InProgress},
-  { path: '/LoginUser', component: LoginUser},
+  { path: '/Login', component: LoginUser},
+  { path: '/Signup', component: SignUp},
 
 ];
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 
