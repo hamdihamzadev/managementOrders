@@ -27,7 +27,7 @@
             </li>
   
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-doughnut-chart'></i>Stock</a></router-link>
-            <router-link to="/" tag="li"><a href=""><i class='bx bxs-bar-chart-alt-2'></i>Statistical</a></router-link>
+            <router-link to="/Products" tag="li"><a href=""><i class='bx bxs-bar-chart-alt-2'></i>Products</a></router-link>
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-dollar-circle'></i>Profitability</a></router-link>
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Contact</a></router-link>
             <router-link to="/TableBoot" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>table</a></router-link>

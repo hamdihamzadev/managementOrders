@@ -11,6 +11,7 @@ import DelivredModule from '@/store/modules/orders/delivred'
 import PostpondModule from '@/store/modules/orders/postpond'
 import ReturnModule from '@/store/modules/orders/return'
 import UsersModule from '@/store/modules/users'
+import ProductsModule from '@/store/modules/allproucts'
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     DelivredOrders:DelivredModule,
     PostpondOrders:PostpondModule,
     ReturnOrders:ReturnModule,
-    UsersModule : UsersModule
+    UsersModule : UsersModule,
+    ProductsModule
   }
 });

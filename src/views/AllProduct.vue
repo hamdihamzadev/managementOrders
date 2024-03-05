@@ -71,7 +71,7 @@
         },
 
         computed: {
-            ...mapState('ProductModule', {
+            ...mapState('ProductsModule', {
                 productModuleStates: state => state
             }),
 
@@ -99,7 +99,7 @@
         },
 
         methods: {
-            ...mapActions('ProductModule', ['ac_addproduct', 'ac_Removeproduct']),
+            ...mapActions('ProductsModule', ['ac_addproduct', 'ac_Removeproduct']),
 
             getAllprdinLocal() {
 

@@ -66,7 +66,7 @@
         },
 
         computed: {
-            ...mapState('ProductModule', {
+            ...mapState('ProductsModule', {
                 productModuleStates: state => state
             }),
 
@@ -80,7 +80,7 @@
         },
 
         methods: {
-            ...mapActions('ProductModule', ['ac_addproduct', 'ac_UpdateProduct']),
+            ...mapActions('ProductsModule', ['ac_addproduct', 'ac_UpdateProduct']),
 
             addproduct(bvModalEvent) {
                 if (this.name !== '' && this.price !== '' && this.quantity !== '' && this.description !== '') {
