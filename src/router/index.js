@@ -12,6 +12,7 @@ import InProgress from '../views/InProgress.vue'
 import LoginUser from '../views/LoginUser.vue'
 import SignUp from '../views/SignUp.vue'
 import AllProducts from '../views/AllProduct.vue'
+import StockProduct from '../views/StockProduct.vue'
 
 
 Vue.use(VueRouter);
@@ -29,6 +30,7 @@ const routes = [
   { path: '/Login', component: LoginUser},
   { path: '/Signup', component: SignUp},
   { path: '/Products', component: AllProducts},
+  { path: '/Stock', component: StockProduct},
 
 ];
 

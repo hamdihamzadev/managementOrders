@@ -107,8 +107,37 @@ let mutations = {
         index,
         number
     }) {
-        let prdAddStock=state[category][index]
-        prdAddStock.quantity =   Number(prdAddStock.quantity ) + Number(number)
+        let prdAddStock = state[category][index]
+        prdAddStock.quantity = Number(prdAddStock.quantity) + Number(number)
+        // console.log(`this is module ${category} and ${index} and number${number}`)
+        switch (category) {
+            case 'smartwatch':
+                localStorage.setItem('SmartWatch', JSON.stringify(state.smartwatch));
+                break;
+            case 'camera':
+                localStorage.setItem('Camera', JSON.stringify(state.camera));
+                break;
+            case 'powerbank':
+                localStorage.setItem('PowerBank', JSON.stringify(state.powerbank));
+                break;
+            case 'airpods':
+                localStorage.setItem('AirPods', JSON.stringify(state.airpods));
+                break;
+            case 'keyboard':
+                localStorage.setItem('KeyBoard', JSON.stringify(state.keyboard));
+                break;
+            default:
+                window.alert('category no found')
+        }
+    },
+    // SUBTRACT FROM STOCK
+    m_SubtractFromStock(state, {
+        category,
+        index,
+        number
+    }) {
+        let prdAddStock = state[category][index]
+        prdAddStock.quantity = Number(prdAddStock.quantity) - Number(number)
         // console.log(`this is module ${category} and ${index} and number${number}`)
         switch (category) {
             case 'smartwatch':
@@ -188,6 +217,21 @@ let actions = {
             category,
             index,
             quantity,
+            number
+        })
+    },
+
+    // SUBTRACT FROM STOCK
+    ac_SubtractFromStock({
+        commit
+    }, {
+        category,
+        index,
+        number
+    }) {
+        commit('m_SubtractFromStock', {
+            category,
+            index,
             number
         })
     }

@@ -11,7 +11,7 @@
             <li>
   
               <a  href="#" @click="chnageicon" v-b-toggle.collapse-3>
-                <i class='bx bxs-shopping-bag-alt'></i>Orders<i class='bx bxs-chevron-up' id="iDrop"></i>
+                <i class='bx bxs-cart-alt'></i>Orders<i class='bx bxs-chevron-up' id="iDrop"></i>
               </a>
   
               <b-collapse id="collapse-3" class="mt-3 mb-3">
@@ -27,7 +27,7 @@
             </li>
   
             <router-link to="/Products" tag="li"><a href=""><i class='bx bxs-shopping-bag-alt'></i>Products</a></router-link>
-            <router-link to="/" tag="li"><a href=""><i class='bx bxs-doughnut-chart'></i>Stock</a></router-link>
+            <router-link to="/Stock" tag="li"><a href=""><i class='bx bxs-doughnut-chart'></i>Stock</a></router-link>
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-dollar-circle'></i>Profitability</a></router-link>
             <router-link to="/" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>Contact</a></router-link>
             <router-link to="/TableBoot" tag="li"><a href=""><i class='bx bxs-message-rounded-dots'></i>table</a></router-link>
