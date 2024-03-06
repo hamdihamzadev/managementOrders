@@ -13,11 +13,13 @@ import LoginUser from '../views/LoginUser.vue'
 import SignUp from '../views/SignUp.vue'
 import AllProducts from '../views/AllProduct.vue'
 import StockProduct from '../views/StockProduct.vue'
-
+import TopStatistics from '../views/TopStatistics.vue'
+import WorstStatistics from '../views/WorstStatistics.vue'
 
 Vue.use(VueRouter);
 
 const routes = [
+  
   { path: '/', component: DashBord },
   { path: '/Orders/NewOrders', component: NewOrders },
   { path: '/Orders/Confirmed', component: ConfirmedOredrs},
@@ -31,6 +33,8 @@ const routes = [
   { path: '/Signup', component: SignUp},
   { path: '/Products', component: AllProducts},
   { path: '/Stock', component: StockProduct},
+  { path: '/Statistics/Top', component: TopStatistics},
+  { path: '/Statistics/Worst', component: WorstStatistics},
 
 ];
 

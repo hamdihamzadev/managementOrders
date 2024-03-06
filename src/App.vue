@@ -72,7 +72,8 @@
       .shipped,
       .delivred,
       .return,
-      .postpond {
+      .postpond,
+      #topStatistics {
         margin: 47px 0px;
 
       }
