@@ -11,6 +11,8 @@
         mapActions
     } from 'vuex'
     import TableGlobal from '@/components/TableGlobal.vue'
+
+
     export default {
 
         name: 'TableDelivred',
@@ -27,32 +29,63 @@
         computed: {
             // GET MODULE STATE DELIVRED
             ...mapState('DelivredOrders', {
-                DelivredOrders: 'DelivredOredrs'
+                StoreOrdersDelivred: state => state
             }),
+
+            DelivredOrders() {
+                let allOrdersDelivred = []
+                Object.values(this.StoreOrdersDelivred).forEach(tableCtg => {
+                    tableCtg.length > 0 ? tableCtg.forEach(order => {
+                        allOrdersDelivred.push(order)
+                    }) : ''
+                })
+
+                return allOrdersDelivred.sort((orderA, orderB) => {return orderA.ref - orderB.ref})
+            },
         },
 
-        mounted(){
+        mounted() {
             // CALL FUNCTION getOrderShipped
-            this.getOrderShipped()
+            this.getOrderDelivred()
+            
         },
 
         methods: {
             ...mapActions('DelivredOrders', ['ac_RemoveOrderDelivred']),
-            ...mapActions('DelivredOrders', ['ac_addDelivred']),
+            ...mapActions('DelivredOrders', ['ac_addOrdersdelivered']),
             //REMOVE ORDER
-            removeorder(index) {
-                this.ac_RemoveOrderDelivred(index) // ===> REMOVE ORDER IN STORE VUEX POSTPOND ACTIONS
-                localStorage.setItem('Delivered', JSON.stringify(this.DelivredOrders)) // UPDATE STOCK POSTPOND
+            removeorder(data) {
+                for (const category in this.StoreOrdersDelivred) {
+                    this.StoreOrdersDelivred[category].forEach(order => {
+                        order.ref === data.ref ? this.ac_RemoveOrderDelivred({category:category,ref:data.ref}) : ''
+                    })
+                }
             },
 
-            // GET ORDERS DELIVRED IN LOCALSTOREAGE
-            getOrderShipped() {
+            getOrderDelivred() {
+                let orderDelivredlocal = JSON.parse(localStorage.getItem('Ordersdelivered'))
+                let numbersOrderLocal = Object.values(orderDelivredlocal).reduce((acc, tableCtg) => {
+                    return acc + tableCtg.length;
+                }, 0);
+                let numbersOrderStore = Object.values(this.StoreOrdersDelivred).reduce((acc, tableCtg) => {
+                    return acc + tableCtg.length;
+                }, 0);
+  
 
-                let OrdersShippedLocal = JSON.parse(localStorage.getItem('Delivered'))
-                OrdersShippedLocal && OrdersShippedLocal.length > this.DelivredOrders.length ?
-                OrdersShippedLocal.forEach(order => { this.ac_addDelivred(order)}) : ''
+                if (orderDelivredlocal && numbersOrderLocal > numbersOrderStore) {
+                    for (const category in orderDelivredlocal) {
+                        orderDelivredlocal[category].forEach(orderConf => {
+                            this.ac_addOrdersdelivered({
+                                category: category,
+                                order: orderConf
+                            })
+                        })
+                    }
+                }
+               
+                  
+                
             },
-
         }
     }
 </script>
