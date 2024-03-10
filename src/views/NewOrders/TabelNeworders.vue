@@ -1,7 +1,7 @@
 <template>
 
     <div class="tabelNeworders mt-4">
-        <TableGlobal :orders="TodayOrders" :options="options" :titletable="titletable" @send-order="SendOrder"
+        <TableGlobal :orders="neworders" :options="options" :titletable="titletable" @send-order="SendOrder"
             sentenceorders="No Orders Today" @save-status="saveStatus" />
     </div>
 
@@ -29,8 +29,19 @@
 
             // STORE NEW ORDERS
             ...mapState('NewOrders', {
-                TodayOrders: 'NewOrders'
+                storeNeworders: state => state
             }),
+
+            neworders() {
+                let allNewOrders = []
+                Object.values(this.storeNeworders).forEach(tableCtg => {
+                    tableCtg.forEach(order => {allNewOrders.push(order)})
+                })
+                allNewOrders.sort((orderA,orderB)=>{
+                    return orderA-orderB
+                })
+                return allNewOrders
+            },
 
             // GET ALL VALUES IN SELECTS
             allValues() {
@@ -44,33 +55,25 @@
             // GET FUNCTION ACTIONS IN VUEX CONFIRMED
             ...mapActions('OrderConfirmed', ['ac_orderConfirmed']),
             // GET FUNCTION ACTIONS IN VUEX CANCELD
-            ...mapActions('OrderCanceld', ['ac_addCanceld']),
+            ...mapActions('OrderCancelled', ['ac_addOrderCancelled']),
 
             // PUSH ORDER CONFIRMED IN ACTION
-            SendOrder(index) {
+            SendOrder(data) {
 
                 this.allValues
-
-                let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
-                    .textContent)
-                let objectOrder = {
-                    Customer: order[0],
-                    Phone: order[1],
-                    city: order[2],
-                    Adress: order[3],
-                    Product: order[4],
-                    Price: order[5],
-                    Delivery: order[6],
-                    Quantity: order[7],
-                    Total: order[8]
+                let orderSelected={}
+                for(const category in this.storeNeworders){
+                    this.storeNeworders[category].forEach(order=>{
+                        // CHECK  VERIFICATION ORDER WITH REF
+                        order.ref===data.ref?( orderSelected.category=category,orderSelected.order=order):''
+                    }) 
                 }
 
                 // GET VALUE SELECTED
-                let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
-
-                // CHECK VALUE 
-                valueselected === 'Confirmed' ? this.ac_orderConfirmed(objectOrder) :
-                valueselected === 'Canceled' ? this.ac_addCanceld(objectOrder) : ''
+                let valueselected = document.querySelector(`#select${data.index}`).value
+                // CHECK VALUE AND PUSH ORDER
+                valueselected === 'Confirmed' ? this.ac_orderConfirmed(orderSelected) :
+                valueselected === 'Canceled' ? this.ac_addOrderCancelled(orderSelected) : ''
 
             },
 
@@ -81,7 +84,6 @@
 
 
         },
-
     }
 </script>
 
