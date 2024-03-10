@@ -1,6 +1,6 @@
 <template>
   <div class="table-confirmed mt-4">
-    <TableGlobal :options="options" :orders="OrderConfirmed" :titletable="titletable" @send-order="SendOrder"
+    <TableGlobal :options="options" :orders="ordersConfirmed" :titletable="titletable" @send-order="SendOrder"
       @remove-order="removeorder" sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
   </div>
 </template>
@@ -11,6 +11,7 @@
     mapActions
   } from 'vuex'
   import TableGlobal from '@/components/TableGlobal.vue'
+
   export default {
     name: 'TableConfirmed',
     components: {
@@ -41,12 +42,22 @@
 
       // GET STORE CONFIRMED
       ...mapState('OrderConfirmed', {
-        OrderConfirmed: 'dataConfrimed'
+        storeConfirmed: state => state
       }),
-      // GET STORE CONFIRMED
-      ...mapState('OrderConfirmed', {
-        Status: 'Status'
-      }),
+
+      ordersConfirmed() {
+        let allOrdersConfirmed = []
+        Object.values(this.storeConfirmed).forEach(tableCtg => {
+          tableCtg.length > 0 ? tableCtg.forEach(order => {
+            allOrdersConfirmed.push(order)
+          }) : ''
+        })
+
+        return allOrdersConfirmed.sort((orderA, orderB) => {
+          return orderA.ref - orderB.ref
+        })
+
+      },
 
       // GET ALL VALUES IN SELECTS
       allValues() {
@@ -58,6 +69,7 @@
 
     mounted() {
       this.getOrdersConfirmed()
+
     },
 
     methods: {
@@ -65,13 +77,29 @@
       // GET FUNCTION ACTIONS IN VUEX CONFIRMED
       ...mapActions('OrderConfirmed', ['ac_orderConfirmed']),
       ...mapActions('OrderConfirmed', ['ac_RemoveOrderConfirmed']),
-      ...mapActions('ShippedOrders', ['ac_addShipped']),
-      ...mapActions('InProgressOrders', ['ac_addProgress']),
+      ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
+      ...mapActions('InProgressOrders', ['ac_addOrderInProgress']),
 
       getOrdersConfirmed() {
         let orderConfirmedlocal = JSON.parse(localStorage.getItem('Confirmed'))
-        orderConfirmedlocal && orderConfirmedlocal.length>this.OrderConfirmed.length? 
-        orderConfirmedlocal.forEach(order => {this.ac_orderConfirmed(order)}) :''
+        let numbersOrderLocal = Object.values(orderConfirmedlocal).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+        let numbersOrderStore = Object.values(this.storeConfirmed).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+
+        if (orderConfirmedlocal && numbersOrderLocal > numbersOrderStore) {
+          for (const category in orderConfirmedlocal) {
+            orderConfirmedlocal[category].forEach(orderConf => {
+              this.ac_orderConfirmed({
+                category: category,
+                order: orderConf
+              })
+            })
+          }
+        }
+
       },
 
       saveStatus() {
@@ -79,59 +107,60 @@
         window.localStorage.setItem('statusConfirmed', JSON.stringify(allValues))
       },
 
-      SendOrder(index) {
+      SendOrder(data) {
 
         this.allValues
-        // ORDER
-        let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
-          .textContent)
-        // PUSH ORDER IN OBJECT
-        let objectOrder = {
-          Customer: order[0],
-          Phone: order[1],
-          city: order[2],
-          Adress: order[3],
-          Product: order[4],
-          Price: order[5],
-          Delivery: order[6],
-          Quantity: order[7],
-          Total: order[8]
+        let orderSelected = {}
+        for (const category in this.storeConfirmed) {
+          this.storeConfirmed[category].forEach(order => {
+            // CHECK  VERIFICATION ORDER WITH REF
+            order.ref === data.ref ? (orderSelected.category = category, orderSelected.order = order) : ''
+          })
         }
         //  VALUE SELECTED
-        let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
+        let valueselected = document.querySelector(`#select${data.index}`).value
         // CHECK VALUE 
-        valueselected === 'Shipped' ? (this.ac_addShipped(objectOrder), this.ac_RemoveOrderConfirmed(index)) :
-        valueselected === 'Progress' ? (this.ac_addProgress(objectOrder), this.ac_RemoveOrderConfirmed(index)) : ''
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),
+        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref})) :
+        valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected),
+        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref})) : ''
 
         // Reset values
-        this.ResetvaluesRemoSend(index)
+        this.ResetvaluesRemoSend(data.index)
       },
 
       //REMOVE ORDER
-      removeorder(index){
-        this.allValues
-        this.ac_RemoveOrderConfirmed(index)
+      removeorder(data) {
 
+        this.allValues
+        for (const category in this.storeConfirmed) {
+          this.storeConfirmed[category].forEach(order => {
+            // CHECK  VERIFICATION ORDER WITH REF
+            order.ref === data.ref ?  this.ac_RemoveOrderConfirmed({category:category,ref:data.ref}) : ''
+          })
+        }
         // Reset values
-        this.ResetvaluesRemoSend(index)
+        this.ResetvaluesRemoSend(data.index)
       },
-         
+
 
       // RESET VALUE AFTER REMOVE OR SEND
-      ResetvaluesRemoSend(index){
-      // get value for any select after remove or send order
-      this.allValues.splice(index, 1)
-      let statuAfter = document.querySelectorAll('select')
-      this.allValues.forEach((value, i) => {statuAfter[i].value = value})
-      window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
-       },
+      ResetvaluesRemoSend(index) {
+        // get value for any select after remove or send order
+        this.allValues.splice(index, 1)
+        let statuAfter = document.querySelectorAll('select')
+        this.allValues.forEach((value, i) => {
+          statuAfter[i].value = value
+        })
+        window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
+      },
 
       // CHANGE BACKGROUND 
 
 
     },
 
-    
+
 
   }
 </script>
