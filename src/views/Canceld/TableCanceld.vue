@@ -3,7 +3,7 @@
     <div class="tabelCanceld mt-4">
         <TableGlobal 
         :titletable="titletable"
-        :orders="OrdersCanceld"
+        :orders="ordersCancled"
         :options="options" 
         @remove-order="removeorder"
         sentenceorders="No order canceld today"
@@ -33,30 +33,51 @@
         },
         computed: {
             // GET DATA CANCELD FROM VUEX 
-            ...mapState('OrderCanceld', {
-                OrdersCanceld: 'ordercanceld'
+            ...mapState('OrderCancelled', {
+                StoreOrdersCanceld: state=>state
             }),
+
+            ordersCancled(){
+                let allOrdersCanceld=[]
+                Object.values(this.StoreOrdersCanceld).forEach(tableCtg=>{
+                    tableCtg.length>0 ? tableCtg.forEach(order=>{allOrdersCanceld.push(order)}) : ''
+                })
+
+              return  allOrdersCanceld.sort((orderA , orderB)=>{ return orderA.ref - orderB.ref })
+            }
         },
 
         mounted(){
-            this.getOrders()
+            this.getOrdersCancled()
         },
 
          methods:{
         // GET ACTION REMOVE ORDER CANCELD IN VUEX
-        ...mapActions('OrderCanceld',['ac_RemoveOrderCanceld']),
-         // GET FUNCTION ACTIONS IN VUEX CANCELD
-         ...mapActions('OrderCanceld', ['ac_addCanceld']),
+        ...mapActions('OrderCancelled',['ac_RemoveOrderCancelled']),
+        // GET FUNCTION ACTIONS IN VUEX CANCELD
+        ...mapActions('OrderCancelled', ['ac_addOrderCancelled']),
 
          // GET ORDERS FROM LOCALSTORAGE AND PUSH IN STORE
-         getOrders(){
-            let orderLocal=JSON.parse(localStorage.getItem('Canceled'))
-            console.log(orderLocal)
-            orderLocal && orderLocal.length > this.OrdersCanceld.length ? orderLocal.forEach(order=>this.ac_addCanceld(order)):''
+         getOrdersCancled(){
+            let orderLocal=JSON.parse(localStorage.getItem('CancelledOrders'))
+            let numbersOrderLocal = Object.values(orderLocal).reduce((acc, tableCtg) => {return acc + tableCtg.length;}, 0);
+            let numbersOrderStore = Object.values(this.StoreOrdersCanceld).reduce((acc, tableCtg) => {return acc + tableCtg.length;}, 0);
+
+            if(orderLocal && numbersOrderLocal>numbersOrderStore){
+                for(const category in orderLocal){
+                    orderLocal[category].forEach(orderConf=>{ this.ac_addOrderCancelled({category:category,order:orderConf})})
+                }
+            }
+            
          },
+
         //REMOVE ORDER CANCELD
-        removeorder(index){
-           this.ac_RemoveOrderCanceld(index)  // ===> REMOVE ORDER IN STORE VUEX CANCELD ACTIONS
+        removeorder(data){
+           for(const category in this.StoreOrdersCanceld){
+            this.StoreOrdersCanceld[category].forEach(order=>{
+                order.ref===data.ref ? this.ac_RemoveOrderCancelled({category:category,ref:data.ref}) : ''
+            })
+           }
         }
          }
     }
