@@ -34,8 +34,21 @@
 
             // GET MODULE STATE SHIPPED
             ...mapState('ShippedOrders', {
-                ShippedOrders: 'ShippedOrders'
+                StoreShippedOrders: state => state
             }),
+
+            ShippedOrders() {
+                let allOrdersShipped = []
+                Object.values(this.StoreShippedOrders).forEach(tableCtg => {
+                    tableCtg.length > 0 ? tableCtg.forEach(order => {
+                        allOrdersShipped.push(order)
+                    }) : ''
+                })
+
+                return allOrdersShipped.sort((orderA, orderB) => {
+                    return orderA.ref - orderB.ref
+                })
+            },
 
             // GET ALL VALUES IN SELECTS
             allValues() {
@@ -54,27 +67,12 @@
 
         methods: {
 
-            // GET MODULE ACTIONS FOR SHIPPED
             ...mapActions('ShippedOrders', ['ac_RemoveOrderShipped']),
-            // GET MODULE ACTIONS FOR ADD ORDER SHIPPED
-            ...mapActions('ShippedOrders', ['ac_addShipped']),
-            // GET MODULE ACTIONS FOR DELIVRED
-            ...mapActions('DelivredOrders', ['ac_addDelivred']),
-            // GET MODULE ACTIONS FOR POSTPOND
-            ...mapActions('PostpondOrders', ['ac_addPostpond']),
-            // GET MODULE ACTIONS FOR RETURN
-            ...mapActions('ReturnOrders', ['ac_addReturn']),
-
-            // GET ORDERS SHIPPED IN LOCAL
-            getOrderShipped() {
-
-                let OrdersShippedLocal = JSON.parse(localStorage.getItem('Shipped'))
-
-                OrdersShippedLocal && OrdersShippedLocal.length > this.ShippedOrders.length ?
-                    OrdersShippedLocal.forEach(order => {
-                        this.ac_addShipped(order)
-                    }) : ''
-            },
+            ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
+            ...mapActions('DelivredOrders', ['ac_addOrdersdelivered']),
+            ...mapActions('PostpondOrders', ['ac_addOrderPostpond']),
+            ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
+            ...mapActions('ProductsModule', ['ac_addproduct']),
 
             // SAVE ALL VALUES STATUS IN LOCAL STORAGE
             saveStatus() {
@@ -83,52 +81,45 @@
             },
 
             // CREATE FUNCTION FOR SEND ORDER IN PAGE SPECIFICE
-            SendOrder(index) {
+            SendOrder(data) {
 
                 // GET ALL VALUES BEFORE SEND
                 this.allValues
-                // GET ORDER CLICKED
-                let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
-                    .textContent)
 
-                // PUSH ORDER IN OBJECT
-                let objectOrder = {
-                    Customer: order[0],
-                    Phone: order[1],
-                    city: order[2],
-                    Adress: order[3],
-                    Product: order[4],
-                    Price: order[5],
-                    Delivery: order[6],
-                    Quantity: order[7],
-                    Total: order[8],
+                let orderSelected = {}
+                for (const category in this.StoreShippedOrders) {
+                    this.StoreShippedOrders[category].forEach(order => {
+                        order.ref === data.ref ? (orderSelected.category = category , orderSelected.order = order) : ''
+                    })
                 }
+              
+                let valueselected = document.querySelector(`#select${data.index}`).value
+                
+                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})):
 
-                // GET VALUE SELECTED
-                let valueselected = document.querySelector(`#select${index}`) // 1
+                valueselected === 'Return' ?  (this.ac_addOrderReturn(orderSelected),
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})):
 
-                // -------------- CHECK VALUE --------------
-
-                valueselected.value === 'Delivered' ? (this.ac_addDelivred(objectOrder), this.ac_RemoveOrderShipped(
-                        index)) :
-                    valueselected.value === 'Return' ? (this.ac_addReturn(objectOrder), this.ac_RemoveOrderShipped(
-                        index)) :
-                    valueselected.value === 'Postponed' && this.valpopup !== '' ?
-                    (objectOrder['Timepost'] = this.popupVal, this.ac_RemoveOrderShipped(index)) : ''
+                valueselected === 'Postponed' && this.popupVal !== '' ? 
+                (orderSelected.order.Timepost = this.popupVal,this.ac_addOrderPostpond(orderSelected),
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})) :''
 
                 // Reset values
-                this.ResetvaluesRemoSend(index)
+                this.ResetvaluesRemoSend(data.index)
 
             },
 
             //REMOVE ORDER
-            removeorder(index) {
+            removeorder(data) {
                 this.allValues
-                this.ac_RemoveOrderShipped(index)
-
+                for (const category in this.StoreShippedOrders) {
+                    this.StoreShippedOrders[category].forEach(order => {
+                        order.ref === data.ref ? this.ac_RemoveOrderShipped({category:category,ref:data.ref}) : ''
+                    })
+                }
                 // Reset values
-                this.ResetvaluesRemoSend(index)
-
+                this.ResetvaluesRemoSend(data.index)
             },
 
             // RESET VALUE AFTER REMOVE OR SEND
@@ -141,7 +132,30 @@
                 })
                 window.localStorage.setItem('statusShipped', JSON.stringify(this.allValues))
             },
+
+            getOrderShipped() {
+                let orderShippedlocal = JSON.parse(localStorage.getItem('ShippedOrders'))
+                let numbersOrderLocal = Object.values(orderShippedlocal).reduce((acc, tableCtg) => {
+                    return acc + tableCtg.length;
+                }, 0);
+                let numbersOrderStore = Object.values(this.StoreShippedOrders).reduce((acc, tableCtg) => {
+                    return acc + tableCtg.length;
+                }, 0);
+
+                if (orderShippedlocal && numbersOrderLocal > numbersOrderStore) {
+                    for (const category in orderShippedlocal) {
+                        orderShippedlocal[category].forEach(orderConf => {
+                            this.ac_addOrderShipped({
+                                category: category,
+                                order: orderConf
+                            })
+                        })
+                    }
+                }
+            },
+
         },
+
 
     }
 </script>
