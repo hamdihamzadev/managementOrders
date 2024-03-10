@@ -1,32 +1,37 @@
 const state={
-    dataConfrimed:[],
-
+    smartwatch: [],
+    camera: [],
+    powerbank: [],
+    airpods: [],
+    keyboard: []
 }
 
 const mutations={
-    addorder(state,order){
-        state.dataConfrimed.push(order)
+    m_addorderConfirmed(state,{category,order}){
+        state[category].push(order)
     },
-    m_RemoveOrderConfirmed(state,index){
-        state.dataConfrimed.splice(index,1)
+    m_RemoveOrderConfirmed(state,{category,ref}){
+         state[category]= state[category].filter(order=>{
+             return order.ref!==ref
+         })
     },
-
 
 }
 
 const actions ={
 
-    ac_orderConfirmed({commit,state},order){
-        commit('addorder',order)
-        localStorage.setItem('Confirmed', JSON.stringify(state.dataConfrimed))
+    ac_orderConfirmed({commit,state},{category,order}){
+        commit('m_addorderConfirmed',{category,order})
+        localStorage.setItem('Confirmed', JSON.stringify(state))
 
     },
 
-    ac_RemoveOrderConfirmed({commit,state},index){
-        commit('m_RemoveOrderConfirmed',index)
-        localStorage.setItem('Confirmed', JSON.stringify(state.dataConfrimed))
+    ac_RemoveOrderConfirmed({commit,state},{category,ref}){
+        commit('m_RemoveOrderConfirmed',{category,ref})
+        localStorage.setItem('Confirmed', JSON.stringify(state))
              
     },
+
 
 }
   
@@ -36,3 +41,4 @@ export default{
     mutations,
     actions
 }
+

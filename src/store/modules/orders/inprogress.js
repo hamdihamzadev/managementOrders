@@ -1,26 +1,32 @@
 const state={
-    ProgressOrders:[]
+    smartwatch: [],
+    camera: [],
+    powerbank: [],
+    airpods: [],
+    keyboard: []
 }
 
 const mutations={
-    m_addProgress(state,order){
-        state.ProgressOrders.push(order)
+    m_addOrderInProgress(state,{category,order}){
+        state[category].push(order)
     },
 
-    m_RemoveOrderProgress(state,index){
-        state.ProgressOrders.splice(index,1)
+    m_RemoveOrderProgress(state,{category,ref}){
+        state[category]=state[category].filter(order=>{
+            return order.ref!==ref
+        })
     }
 }
 
 const actions ={
-    ac_addProgress({commit,state},order){
-        commit('m_addProgress',order)
-        localStorage.setItem('Progress', JSON.stringify(state.ProgressOrders))
+    ac_addOrderInProgress({commit,state},{category,order}){
+        commit('m_addOrderInProgress',{category,order})
+        localStorage.setItem('Progress', JSON.stringify(state))
     },
 
-    ac_RemoveOrderProgress({commit,state},index){
-        commit('m_RemoveOrderProgress',index)
-        localStorage.setItem('Progress', JSON.stringify(state.ProgressOrders))
+    ac_RemoveOrderProgress({commit,state},{category,ref}){
+        commit('m_RemoveOrderProgress',{category,ref})
+        localStorage.setItem('Progress', JSON.stringify(state))
     }
 }
 

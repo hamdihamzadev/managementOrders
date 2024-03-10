@@ -1,26 +1,32 @@
 const state={
-    DelivredOredrs:[]
+    smartwatch: [],
+    camera: [],
+    powerbank: [],
+    airpods: [],
+    keyboard: []
 }
 
 const mutations={
-    m_addDelivred(state,order){
-        state.DelivredOredrs.push(order)
+    m_addOrdersdelivered(state,{category,order}){
+        state[category].push(order)
     },
 
-    m_RemoveOrderDelivred(state,index){
-        state.DelivredOredrs.splice(index,1)
+    m_RemoveOrderDelivred(state,{category,ref}){
+        state[category]= state[category].filter(order=>{
+            return order.ref!==ref
+        })
     }
 }
 
 const actions ={
-    ac_addDelivred({commit,state},order){
-        commit('m_addDelivred',order)
-        localStorage.setItem('Delivered', JSON.stringify(state.DelivredOredrs))
+    ac_addOrdersdelivered({commit,state},{category,order}){
+        commit('m_addOrdersdelivered',{category,order})
+        localStorage.setItem('Ordersdelivered', JSON.stringify(state))
     },
 
-    ac_RemoveOrderDelivred({commit,state},index){
-        commit('m_RemoveOrderDelivred',index)
-        localStorage.setItem('Delivered', JSON.stringify(state.DelivredOredrs))
+    ac_RemoveOrderDelivred({commit,state},{category,ref}){
+        commit('m_RemoveOrderDelivred',{category,ref})
+        localStorage.setItem('Ordersdelivered', JSON.stringify(state))
     }
 }
   
@@ -30,3 +36,6 @@ export default{
     mutations,
     actions
 }
+
+
+

@@ -1,26 +1,32 @@
 const state={
-    ordercanceld:[]
+    smartwatch: [],
+    camera: [],
+    powerbank: [],
+    airpods: [],
+    keyboard: []
 }
 
 const mutations={
-    addorder(state,order){
-        state.ordercanceld.push(order)
+    m_addOrderCancelled(state,{category,order}){
+        state[category].push(order)
     },
 
-    m_RemoveOrderCanceld(state,index){
-        state.ordercanceld.splice(index,1)
+    m_RemoveOrderCancelled(state,{category,ref}){
+        state[category]=state[category].filter(order=>{
+            return order.ref!==ref
+        })
     }
 }
 
 const actions ={
-    ac_addCanceld({commit,state},order){
-        commit('addorder',order)
-        localStorage.setItem('Canceled', JSON.stringify(state.ordercanceld))
+    ac_addOrderCancelled({commit,state},{category,order}){
+        commit('m_addOrderCancelled',{category,order})
+        localStorage.setItem('CancelledOrders',JSON.stringify(state))
     },
 
-    ac_RemoveOrderCanceld({commit,state},index){
-        commit('m_RemoveOrderCanceld',index)
-        localStorage.setItem('Canceled', JSON.stringify(state.ordercanceld))
+    ac_RemoveOrderCancelled({commit,state},{category,ref}){
+        commit('m_RemoveOrderCancelled',{category,ref})
+        localStorage.setItem('CancelledOrders',JSON.stringify(state))
     }
 }
   
