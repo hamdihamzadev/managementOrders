@@ -1,6 +1,6 @@
 <template>
 
-  <TableGlobal :options="options" :orders="ProgressOrders" :titletable="titletable" @send-order="SendOrder"
+  <TableGlobal :options="options" :orders="OrdersInProgress" :titletable="titletable" @send-order="SendOrder"
     @remove-order="removeorder" @save-status="saveStatus" />
 
 </template>
@@ -34,12 +34,16 @@
     computed: {
       //GET STATE INPROGRESS IN VUEX
       ...mapState('InProgressOrders', {
-        ProgressOrders: 'ProgressOrders'
+        StoreOrdersInProgress: state=>state
       }),
-      //GET STATE SHIPPED IN VUEX
-      ...mapState('ShippedOrders', {
-        ShippedOrders: 'ShippedOrders'
-      }),
+
+      OrdersInProgress(){
+        const allOrders=[]
+        Object.values(this.StoreOrdersInProgress).forEach(tablectg=>{
+          tablectg.length>0 ? tablectg.forEach(order=>allOrders.push(order)) : ''
+        })
+        return allOrders.sort((orderA , orderB)=>{ return orderA.ref - orderB.ref })
+      },
 
       // GET ALL VALUES IN SELECTS
       allValues() {
@@ -56,55 +60,64 @@
 
     methods: {
       // GET ACTIONS IN STORE FOR ADD ORDER PROGRESS
-      ...mapActions('InProgressOrders', ['ac_addProgress']),
+      ...mapActions('InProgressOrders', ['ac_addOrderInProgress']),
       // GET ACTIONS IN STORE FOR REMOVE ORDER PROGRESS
       ...mapActions('InProgressOrders', ['ac_RemoveOrderProgress']),
       //GET ACTIONS IN STORE FOR ORDER SHIPPED
-      ...mapActions('ShippedOrders', ['ac_addShipped']),
+      ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
 
 
       // GET ORDERS Progress IN LOCALSTOREAGE
       getOrderProgress() {
         let OrdersProgressLocal = JSON.parse(localStorage.getItem('Progress'))
-        OrdersProgressLocal && OrdersProgressLocal.length > this.ProgressOrders.length ?
-        OrdersProgressLocal.forEach(order => {this.ac_addProgress(order)}) : ''
+        let numbersOrderLocal = Object.values(OrdersProgressLocal).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+        let numbersOrderStore = Object.values(this.StoreOrdersInProgress).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+
+        if (OrdersProgressLocal && numbersOrderLocal > numbersOrderStore) {
+            for (const category in OrdersProgressLocal) {
+              OrdersProgressLocal[category].forEach(orderProg => {
+                    this.ac_addOrderInProgress({
+                        category: category,
+                        order: orderProg
+                    })
+                })
+            }
+        }
       },
 
-      // SEND ORDER IN YOUT PLACE
-      SendOrder(index) {
+      
+
+      SendOrder(data) {
 
         this.allValues
-        // GET TD IN DOM FOR ORDER
-        let order = Array.from(document.querySelector(`#order${index}`).children).slice(0, 9).map(td => td
-          .textContent)
-        // PUSH ORDER IN OBJECT
-        let objectOrder = {
-          Customer: order[0],
-          Phone: order[1],
-          city: order[2],
-          Adress: order[3],
-          Product: order[4],
-          Price: order[5],
-          Delivery: order[6],
-          Quantity: order[7],
-          Total: order[8]
+        let orderSelected = {}
+        for (const category in this.StoreOrdersInProgress) {
+            this.StoreOrdersInProgress[category].forEach(order => {
+              order.ref === data.ref ? (orderSelected.category = category, orderSelected.order = order) : ''
+            })
         }
-        // GET VALUE SELECTED
-        let valueselected = Array.from(document.querySelector(`#order${index}`).children)[9].firstChild.value
-        // CHECK VALUE 
-        valueselected === 'Shipped' ? (this.ac_addShipped(objectOrder), this.ac_RemoveOrderProgress(index)) : ''
+        
+        let valueselected = document.querySelector(`#select${data.index}`).value
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), this.ac_RemoveOrderProgress(data.index)) : ''
 
         // Reset values
-        this.ResetvaluesRemoSend(index)
+        this.ResetvaluesRemoSend(data.index)
 
       },
 
-      //REMOVE ORDER
-      removeorder(index) {
+      // REMOVE ORDER
+      removeorder(data) {
         this.allValues
-        this.ac_RemoveOrderProgress(index)
+        for(const category in this.StoreOrdersInProgress){
+          this.StoreOrdersInProgress[category].forEach(order=>{
+            order.ref===data.ref ? this.ac_RemoveOrderProgress({category:category,ref:data.ref}) : ''
+          })
+        }
       },
-
 
       saveStatus() {
         let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
