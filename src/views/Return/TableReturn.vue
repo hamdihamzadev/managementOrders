@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TableGlobal :titletable="titletable" :orders="ReturnOrders" @remove-order="removeorder"
+    <TableGlobal :titletable="titletable" :orders="OrdersReturn" @remove-order="removeorder"
       sentenceorders="No order return today" />
   </div>
 </template>
@@ -26,8 +26,16 @@
     computed: {
       // GET MODULE STATE RETURN
       ...mapState('ReturnOrders', {
-        ReturnOrders: 'ReturnOrders'
+        StoreOrdersReturn: state=>state
       }),
+
+      OrdersReturn(){
+        let allOrders=[]
+        Object.values(this.StoreOrdersReturn).forEach(tablectg=>{
+          tablectg.length>0 ? tablectg.forEach(order=>{allOrders.push(order)}) : ''
+        })
+        return allOrders.sort((orderA ,orderB)=>{ return orderA.ref - orderB.ref })
+      },
     },
 
     mounted() {
@@ -38,20 +46,42 @@
 
     methods: {
       ...mapActions('ReturnOrders', ['ac_RemoveOrderReturn']),
-      ...mapActions('ReturnOrders', ['ac_addReturn']),
+      ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
 
       //REMOVE ORDER
-      removeorder(index) {
-        this.ac_RemoveOrderReturn(index) // ===> REMOVE ORDER IN STORE VUEX RETURN ACTIONS
-        localStorage.setItem('Return', JSON.stringify(this.ReturnOrders)) // UPDATE STOCK RETURN
+      removeorder(data) {
+       
+        for(const category in this.StoreOrdersReturn){
+          this.StoreOrdersReturn[category].forEach(order=>{
+            order.ref===data.ref ? this.ac_RemoveOrderReturn({category:category,ref:data.ref}) : ''
+          })
+        }
       },
 
       // GET ORDERS DELIVRED IN LOCALSTOREAGE
       getOrderShipped() {
 
-        let OrdersShippedLocal = JSON.parse(localStorage.getItem('Return'))
-        OrdersShippedLocal && OrdersShippedLocal.length > this.ReturnOrders.length ?
-          OrdersShippedLocal.forEach(order => {this.ac_addReturn(order)}) : ''
+        let OrdersReturnLocal = JSON.parse(localStorage.getItem('Return'))
+        let numbersOrderLocal = Object.values(OrdersReturnLocal).reduce((acc, tableCtg) => {
+            return acc + tableCtg.length;
+        }, 0);
+
+        let numbersOrderStore = Object.values(this.StoreOrdersReturn).reduce((acc, tableCtg) => {
+            return acc + tableCtg.length;
+        }, 0);
+
+        if (OrdersReturnLocal && numbersOrderLocal > numbersOrderStore) {
+          for (const category in OrdersReturnLocal) {
+            OrdersReturnLocal[category].forEach(orderConf => {
+                  this.ac_addOrderReturn({
+                      category: category,
+                      order: orderConf
+                  })
+              })
+          }
+        }
+    
+       
       },
     }
   }
