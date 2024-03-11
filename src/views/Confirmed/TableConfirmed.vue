@@ -147,10 +147,22 @@
         // get value for any select after remove or send order
         this.allValues.splice(index, 1)
         let allSelects = document.querySelectorAll('select')
+<<<<<<< HEAD
         this.allValues.forEach((value,index)=>{
           allSelects[index].value=value
         })
         
+=======
+        allSelects.forEach((sle,index)=>{
+          sle.value= this.allValues[index]
+        })
+        
+        // this.allValues.forEach((value, i) => {
+        //   console.log(statuAfter)
+        //   // statuAfter[i].value = value
+        // })
+        
+>>>>>>> f4528c6cccb65a19d9712f5f74a320ed9e282316
         window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
       },
 
