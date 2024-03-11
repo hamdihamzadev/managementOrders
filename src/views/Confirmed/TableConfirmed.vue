@@ -121,12 +121,10 @@
         let valueselected = document.querySelector(`#select${data.index}`).value
         // CHECK VALUE 
         valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),
-        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref})) :
+        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) :
         valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected),
-        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref})) : ''
-
-        // Reset values
-        this.ResetvaluesRemoSend(data.index)
+        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) : ''
+        
       },
 
       //REMOVE ORDER
@@ -148,14 +146,15 @@
       ResetvaluesRemoSend(index) {
         // get value for any select after remove or send order
         this.allValues.splice(index, 1)
-        let statuAfter = document.querySelectorAll('select')
-        this.allValues.forEach((value, i) => {
-          statuAfter[i].value = value
+        let allSelects = document.querySelectorAll('select')
+        this.allValues.forEach((value,index)=>{
+          allSelects[index].value=value
         })
+        
         window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
       },
 
-      // CHANGE BACKGROUND 
+     
 
 
     },
