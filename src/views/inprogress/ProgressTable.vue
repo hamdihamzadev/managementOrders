@@ -102,10 +102,8 @@
         }
         
         let valueselected = document.querySelector(`#select${data.index}`).value
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), this.ac_RemoveOrderProgress(data.index)) : ''
-
-        // Reset values
-        this.ResetvaluesRemoSend(data.index)
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), 
+        this.ac_RemoveOrderProgress(data.index),this.ResetvaluesRemoSend(data.index)) : ''
 
       },
 

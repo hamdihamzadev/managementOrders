@@ -102,11 +102,9 @@
                 let valueselected = document.querySelector(`#select${data.index}`).value
 
                 // -------------- CHECK VALUE --------------
-                valueselected === 'Delivered' ? this.ac_addOrdersdelivered(orderSelected) :
-                valueselected === 'Return' ? this.ac_addOrderReturn(orderSelected) : ''
+                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),this.ResetvaluesRemoSend(data.index)) :
+                valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected),this.ResetvaluesRemoSend(data.index)) : ''
 
-                // Reset values
-                this.ResetvaluesRemoSend(data.index)
 
             },
 

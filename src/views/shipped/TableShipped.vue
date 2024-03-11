@@ -96,17 +96,17 @@
                 let valueselected = document.querySelector(`#select${data.index}`).value
                 
                 valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})):
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)):
 
                 valueselected === 'Return' ?  (this.ac_addOrderReturn(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})):
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)):
 
                 valueselected === 'Postponed' && this.popupVal !== '' ? 
                 (orderSelected.order.Timepost = this.popupVal,this.ac_addOrderPostpond(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref})) :''
+                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)) :''
 
-                // Reset values
-                this.ResetvaluesRemoSend(data.index)
+                
+                
 
             },
 
