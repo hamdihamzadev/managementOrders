@@ -6,21 +6,26 @@
 </template>
 
 <script>
-
-import CardGlobal from '@/components/CardGlobal.vue'
+    import {
+        mapState
+    } from 'vuex';
+    import CardGlobal from '@/components/CardGlobal.vue'
     export default {
 
         name: 'CardNeworders',
         components: {
             CardGlobal
         },
-        data() {
-            return {
-                Allcarts: [{
+       
+
+        computed: {
+            
+            Allcarts(){
+                 let  carts=[{
                         classicon: 'Neworders',
                         icon: 'bx bx-cart-add',
                         title: 'New orders',
-                        number: 139,
+                        number: this.NumbersNewOrders,
                         pourcentage: 4.43
                     },
 
@@ -28,7 +33,7 @@ import CardGlobal from '@/components/CardGlobal.vue'
                         classicon: 'income',
                         icon: 'bx bx-money',
                         title: 'Income',
-                        number: 2404,
+                        number: this.income,
                         dollar: '$',
                         pourcentage: 1.87
                     },
@@ -40,7 +45,32 @@ import CardGlobal from '@/components/CardGlobal.vue'
                         pourcentage: 3.28
                     },
                 ]
+                return carts
+            },
+
+            ...mapState('NewOrders', {
+                StoreNewOrders:state=>state
+            }),
+
+            NumbersNewOrders(){
+                let numbOrders=Object.values(this.StoreNewOrders).reduce((accu,table)=>{
+                    return accu+table.length
+                },0)
+                return numbOrders
+            },
+
+            income(){
+                let incomeOrders=0
+                Object.values(this.StoreNewOrders).forEach(tableCtg=>{
+                    tableCtg.length>0 ? tableCtg.forEach(order=>{ incomeOrders= Math.floor(incomeOrders+ parseFloat(order.total))  }) : ''
+                })
+                return incomeOrders
             }
+
+        },
+
+        mounted(){
+            console.log(this.income)
         }
 
     }
