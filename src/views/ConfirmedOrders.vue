@@ -1,5 +1,6 @@
 <template>
     <b-container fluid class="confirmedorders" >
+        <h1 class="mb-4"> <strong>Orders confirmed</strong> </h1>
         <CardsConfirmed/>
         <TableConfirmed/>
        <!-- chartconfirmation -->

@@ -1,5 +1,6 @@
 <template>
     <b-container fluid class="mt-5">
+        <h1 class="mb-4"> <strong>Orders cancelled</strong> </h1>
         <CartsCanceld/>
         <TableCanceld
         />

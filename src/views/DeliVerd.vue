@@ -1,6 +1,6 @@
 <template>
     <b-container fluid class="delivred">
-        <h1 class="mb-4"> Orders Delivred</h1>
+        <h1 class="mb-4">  <strong>Orders Delivered</strong> </h1>
         <CardsDeliverd/>
         <TableDelivred/>
     </b-container>

@@ -1,6 +1,6 @@
 <template>
     <b-container fluid class="postpond">
-        <h1 class="mb-4"> Orders PostPond</h1>
+        <h1 class="mb-4">  <strong>Orders Postponed</strong> </h1>
         <PostPondTable/>
     </b-container>
 </template>

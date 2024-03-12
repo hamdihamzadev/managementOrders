@@ -1,6 +1,7 @@
 <template>
 
     <b-container fluid>
+        <h1 class="mb-4"> <strong>Orders in progress</strong> </h1>
         <ProgressTable />
     </b-container>
 
