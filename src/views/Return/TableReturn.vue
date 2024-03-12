@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TableGlobal :titletable="titletable" :orders="OrdersReturn" @remove-order="removeorder"
+    <TableGlobal  :orders="OrdersReturn" @remove-order="removeorder"
       sentenceorders="No order return today" />
   </div>
 </template>
@@ -17,11 +17,6 @@
       TableGlobal
     },
 
-    data() {
-      return {
-        titletable: 'Today Return'
-      }
-    },
 
     computed: {
       // GET MODULE STATE RETURN

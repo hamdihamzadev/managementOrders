@@ -1,7 +1,7 @@
 <template>
 
     <div class="tabelNeworders mt-4">
-        <TableGlobal :orders="neworders" :options="options" :titletable="titletable" @send-order="SendOrder"
+        <TableGlobal :orders="neworders" :options="options"  @send-order="SendOrder"
             sentenceorders="No Orders Today" @save-status="saveStatus" />
     </div>
 
@@ -21,7 +21,7 @@
         },
         data() {
             return {
-                titletable: 'Orders Today',
+             
                 options: ['Confirmed', 'Canceled', 'Not treat'],
             }
         },

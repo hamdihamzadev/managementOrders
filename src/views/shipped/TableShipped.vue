@@ -1,6 +1,6 @@
 <template>
     <div class="table-shipped mt-4">
-        <TableGlobal :titletable="titletable" :options="options" :orders="ShippedOrders" @send-order="SendOrder"
+        <TableGlobal  :options="options" :orders="ShippedOrders" @send-order="SendOrder"
             @remove-order="removeorder" sentenceorders="No order shipped today" v-model="popupVal"
             @save-status="saveStatus" />
     </div>
@@ -23,8 +23,6 @@
 
         data() {
             return {
-
-                titletable: 'Orders Shipping',
                 options: ['Delivered', 'Postponed', 'Return', 'Not treat'],
                 popupVal: ''
             }

@@ -6,7 +6,7 @@
     <b-row class="mb-5">
       <!----- TITLE ----->
       <b-col>
-        <h1 class="title">{{ titletable }}</h1>
+        <h1 class="title">Orders</h1>
       </b-col>
       <b-col id="searchInput" v-if="rowsOrders.length!==0">
         <!----- SEARCH INPUT ----->
@@ -19,13 +19,12 @@
     <b-table-simple responsive id="table-Order" hover>
       <b-thead>
         <b-tr>
-          <b-th variant="danger" class="border-top-0">Customer</b-th>
+          <b-th class="border-top-0">Customer</b-th>
           <b-th class="border-top-0">Phone</b-th>
           <b-th class="border-top-0">City</b-th>
           <b-th class="border-top-0">Adress</b-th>
           <b-th class="border-top-0">Product</b-th>
           <b-th class="border-top-0">Price</b-th>
-          <b-th class="border-top-0">Delivery</b-th>
           <b-th class="border-top-0">Quantity</b-th>
           <b-th class="border-top-0">Total</b-th>
           <b-th class="border-top-0" v-show="thTimepost">TimePost</b-th>
@@ -37,10 +36,18 @@
       <!----------------TBODY-------------->
 
       <b-tbody ref="myTable" id="tbody">
-        <b-tr v-for="(order,index) in rowsOrders" :key="order.id" :id="`order${index}`">
+        <b-tr v-for="(order,index) in orders" :key="order.id" :id="`order${index}`">
 
-          <b-td v-for="information in order" :key="information">{{ information }}</b-td>
-
+          <b-td >{{ order.Customer }}</b-td>
+          <b-td >{{ order.phone }}</b-td>
+          <b-td >{{ order.city }}</b-td>
+          <b-td >{{ order.address }}</b-td>
+          <b-td >{{ order.product }}</b-td>
+          <b-td >{{ order.price }}</b-td>
+          <b-td >{{ order.quantity }}</b-td>
+          <b-td >{{ order.total }}</b-td>
+          <b-td v-show="thTimepost" >{{ order.Timepost }}</b-td>
+          
           <!----------------STATUS-------------->
 
           <b-td v-if="showStatu" >
@@ -57,8 +64,8 @@
               <template #button-content>
                 <i class='bx bx-dots-horizontal-rounded'></i>
               </template>
-              <b-dropdown-item href="#" @click="sendorder(index)" v-if="showActionSend">Send</b-dropdown-item>
-              <b-dropdown-item href="#" @click="removeorder(index)">Remove</b-dropdown-item>
+              <b-dropdown-item href="#" @click="sendorder(order.ref,index)" v-if="showActionSend">Send</b-dropdown-item>
+              <b-dropdown-item href="#" @click="removeorder(order.ref,index)">Remove</b-dropdown-item>
             </b-dropdown>
           </b-td>
 
@@ -67,11 +74,11 @@
 
     </b-table-simple>
 
-    <h6 v-if="rowsOrders.length===0" class="text-center">{{ sentenceorders }}</h6>
+    <!-- <h6 v-if="rowsOrders.length===0" class="text-center">{{ sentenceorders }}</h6> -->
 
     <!---------- SHOW POPUP --------------->
 
-    <b-modal id="modalPostpond" ref="modalPostpond" title="Submit Your Name" @ok="handleOk">
+    <b-modal id="modalPostpond" ref="modalPostpond" title="Submit Your Name" @ok="handleOk" :ok-title="'Send'" >
       <form ref="form">
         <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
           <b-form-input id="name-input" ref="inputPopup" :value="valuePopup" @input="onInputpopup"
@@ -81,14 +88,6 @@
       </form>
     </b-modal>
 
-    <!---------- PAGINATION --------------->
-    <div class="pagination" v-show="totalPages>=1">
-      <b-button pill size="sm" variant="outline-primary" @click="previouslist"><i class='bx bx-chevron-left'></i>
-        Previous</b-button>
-      {{ currentPage }} of {{ totalPages }}
-      <b-button pill size="sm" variant="outline-primary" @click="nextlist"> Next <i class='bx bx-chevron-right'></i>
-      </b-button>
-    </div>
 
 
   </b-container>
@@ -100,14 +99,11 @@
   } from 'vuex'
   export default {
     name: "TableGlobal",
-    props: ['titletable', 'orders', 'options', 'thTimepost', 'valuePopup', 'sentenceorders'],
+    props: ['orders', 'options', 'thTimepost', 'valuePopup', 'sentenceorders'],
 
     data() {
       return {
         // FOR METHOdS NEXT AND PREV IN TABLE
-        currentPage: 1,
-        start: 0,
-        end: 10,
         statusValues: [],
         // FOR Popup
         stateInputPopup: null,
@@ -127,6 +123,7 @@
         return this.orders.slice(this.start, this.end)
       },
 
+
       showStatu() {
         return this.$route.path === '/Orders/Return' || this.$route.path === '/Orders/Deliverd' || this.$route.path ===
           '/Orders/Canceld' ? false : true
@@ -140,14 +137,14 @@
 
     methods: {
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
-      sendorder(index) {
-        this.$emit('send-order', index)
+      sendorder(ref,index) {
+        this.$emit('send-order',{ref,index})
 
       },
 
       // EMIT EVENT FOR REMOVE ORDER
-      removeorder(index) {
-        this.$emit('remove-order', index)
+      removeorder(ref,index) {
+        this.$emit('remove-order',{ref,index})
       },
 
       //--------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <template>
     <div class="mt-4" id="tablePostPond">
-        <TableGlobal :orders="ordersPostponed" :options="options" :titletable="titletable" thTimepost="true"
+        <TableGlobal :orders="ordersPostponed" :options="options"  thTimepost="true"
             @send-order="SendOrder" @remove-order="removeorder" sentenceorders="No order postpond today"
             @save-status="saveStatus" />
     </div>
@@ -21,7 +21,6 @@
         data() {
             return {
                 options: ['Delivered', 'Return', 'Not treat'],
-                titletable: 'Today',
             }
         },
         computed: {

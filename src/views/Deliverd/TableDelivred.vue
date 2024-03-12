@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TableGlobal :titletable="titletable" :orders="DelivredOrders" @remove-order="removeorder"
+        <TableGlobal  :orders="DelivredOrders" @remove-order="removeorder"
             sentenceorders="No order delivred today" />
     </div>
 </template>
@@ -18,12 +18,6 @@
         name: 'TableDelivred',
         components: {
             TableGlobal
-        },
-
-        data() {
-            return {
-                titletable: 'Today Deliverd'
-            }
         },
 
         computed: {

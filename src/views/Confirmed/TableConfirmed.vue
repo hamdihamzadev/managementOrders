@@ -1,6 +1,6 @@
 <template>
   <div class="table-confirmed mt-4">
-    <TableGlobal :options="options" :orders="ordersConfirmed" :titletable="titletable" @send-order="SendOrder"
+    <TableGlobal :options="options" :orders="ordersConfirmed"  @send-order="SendOrder"
       @remove-order="removeorder" sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
   </div>
 </template>
@@ -33,7 +33,7 @@
             text: 'Not treat'
           },
         ],
-        titletable: 'Orders Confirmed',
+        
       }
     },
 

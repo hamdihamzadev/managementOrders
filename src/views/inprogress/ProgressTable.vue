@@ -1,6 +1,6 @@
 <template>
 
-  <TableGlobal :options="options" :orders="OrdersInProgress" :titletable="titletable" @send-order="SendOrder"
+  <TableGlobal :options="options" :orders="OrdersInProgress"  @send-order="SendOrder"
     @remove-order="removeorder" @save-status="saveStatus" />
 
 </template>
@@ -18,7 +18,7 @@
     },
     data() {
       return {
-        titletable: 'Orders In Progress',
+      
         options: [{
             value: 'Shipped',
             text: 'Shipped'

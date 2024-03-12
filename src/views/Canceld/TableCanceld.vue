@@ -2,7 +2,6 @@
 
     <div class="tabelCanceld mt-4">
         <TableGlobal 
-        :titletable="titletable"
         :orders="ordersCancled"
         :options="options" 
         @remove-order="removeorder"
@@ -27,7 +26,6 @@
         },
         data() {
             return {
-                titletable: 'Orders Canceld',
                 options: ['Confirmed', 'Canceled'],
             }
         },
