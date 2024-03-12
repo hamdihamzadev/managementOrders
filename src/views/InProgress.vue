@@ -1,6 +1,6 @@
 <template>
 
-    <b-container fluid>
+    <b-container fluid class="inprogress" >
         <h1 class="mb-4"> <strong>Orders in progress</strong> </h1>
         <ProgressTable />
     </b-container>
