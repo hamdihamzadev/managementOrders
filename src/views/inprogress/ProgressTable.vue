@@ -103,7 +103,7 @@
         
         let valueselected = document.querySelector(`#select${data.index}`).value
         valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), 
-        this.ac_RemoveOrderProgress(data.index),this.ResetvaluesRemoSend(data.index)) : ''
+        this.ac_RemoveOrderProgress({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)) : ''
 
       },
 
