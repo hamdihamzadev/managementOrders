@@ -1,8 +1,7 @@
 <template>
     <div class="table-shipped mt-4">
-        <TableGlobal  :options="options" :orders="ShippedOrders" @send-order="SendOrder"
-            @remove-order="removeorder" sentenceorders="No order shipped today" v-model="popupVal"
-            @save-status="saveStatus" />
+        <TableGlobal :options="options" :orders="ShippedOrders" @send-order="SendOrder" @remove-order="removeorder"
+            sentenceorders="No order shipped today" v-model="popupVal" @save-status="saveStatus" />
     </div>
 </template>
 
@@ -71,6 +70,8 @@
             ...mapActions('PostpondOrders', ['ac_addOrderPostpond']),
             ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
             ...mapActions('ProductsModule', ['ac_addproduct']),
+            // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+            ...mapActions('allOrder', ['ac_addInAllOrder']),
 
             // SAVE ALL VALUES STATUS IN LOCAL STORAGE
             saveStatus() {
@@ -87,24 +88,46 @@
                 let orderSelected = {}
                 for (const category in this.StoreShippedOrders) {
                     this.StoreShippedOrders[category].forEach(order => {
-                        order.ref === data.ref ? (orderSelected.category = category , orderSelected.order = order) : ''
+                        order.ref === data.ref ? (orderSelected.category = category, orderSelected.order =
+                            order) : ''
                     })
                 }
-              
+
                 let valueselected = document.querySelector(`#select${data.index}`).value
-                
-                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)):
 
-                valueselected === 'Return' ?  (this.ac_addOrderReturn(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)):
+                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected), this.ac_addInAllOrder({
+                            status: 'Delivered',
+                            order: orderSelected
+                        }),
+                        this.ac_RemoveOrderShipped({
+                            category: orderSelected.category,
+                            ref: data.ref
+                        }), this.ResetvaluesRemoSend(data.index)) :
 
-                valueselected === 'Postponed' && this.popupVal !== '' ? 
-                (orderSelected.order.Timepost = this.popupVal,this.ac_addOrderPostpond(orderSelected),
-                this.ac_RemoveOrderShipped({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)) :''
 
-                
-                
+                    valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected), this.ac_addInAllOrder({
+                            status: 'return',
+                            order: orderSelected
+                        }),
+                        this.ac_RemoveOrderShipped({
+                            category: orderSelected.category,
+                            ref: data.ref
+                        }), this.ResetvaluesRemoSend(data.index)) :
+
+
+                    valueselected === 'Postponed' && this.popupVal !== '' ?
+                    (orderSelected.order.Timepost = this.popupVal, this.ac_addOrderPostpond(orderSelected),
+                        this.ac_addInAllOrder({
+                            status: 'postpond',
+                            order: orderSelected
+                        }),
+                        this.ac_RemoveOrderShipped({
+                            category: orderSelected.category,
+                            ref: data.ref
+                        }), this.ResetvaluesRemoSend(data.index)) : ''
+
+
+
 
             },
 
@@ -113,7 +136,10 @@
                 this.allValues
                 for (const category in this.StoreShippedOrders) {
                     this.StoreShippedOrders[category].forEach(order => {
-                        order.ref === data.ref ? this.ac_RemoveOrderShipped({category:category,ref:data.ref}) : ''
+                        order.ref === data.ref ? this.ac_RemoveOrderShipped({
+                            category: category,
+                            ref: data.ref
+                        }) : ''
                     })
                 }
                 // Reset values

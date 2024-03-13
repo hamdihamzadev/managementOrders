@@ -69,7 +69,7 @@
 
     mounted() {
       this.getOrdersConfirmed()
-
+      this.getAllOrders()
     },
 
     methods: {
@@ -79,6 +79,8 @@
       ...mapActions('OrderConfirmed', ['ac_RemoveOrderConfirmed']),
       ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
       ...mapActions('InProgressOrders', ['ac_addOrderInProgress']),
+      // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+      ...mapActions('allOrder', ['ac_addInAllOrder']),
 
       getOrdersConfirmed() {
         let orderConfirmedlocal = JSON.parse(localStorage.getItem('Confirmed'))
@@ -120,9 +122,10 @@
         //  VALUE SELECTED
         let valueselected = document.querySelector(`#select${data.index}`).value
         // CHECK VALUE 
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),this.ac_addInAllOrder({status:'shipped',order:orderSelected}),
         this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) :
-        valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected),
+
+        valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected),this.ac_addInAllOrder({status:'progress',order:orderSelected}),
         this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) : ''
         
       },

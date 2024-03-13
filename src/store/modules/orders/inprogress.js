@@ -27,6 +27,10 @@ const actions ={
     ac_RemoveOrderProgress({commit,state},{category,ref}){
         commit('m_RemoveOrderProgress',{category,ref})
         localStorage.setItem('Progress', JSON.stringify(state))
+
+        /**
+         * save numbers orders ===> array 
+         */
     }
 }
 

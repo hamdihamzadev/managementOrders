@@ -65,6 +65,8 @@
       ...mapActions('InProgressOrders', ['ac_RemoveOrderProgress']),
       //GET ACTIONS IN STORE FOR ORDER SHIPPED
       ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
+      // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+      ...mapActions('allOrder', ['ac_addInAllOrder']),
 
 
       // GET ORDERS Progress IN LOCALSTOREAGE
@@ -102,7 +104,7 @@
         }
         
         let valueselected = document.querySelector(`#select${data.index}`).value
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), 
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),this.ac_addInAllOrder({status:'shipped',order:orderSelected}), 
         this.ac_RemoveOrderProgress({category:orderSelected.category,ref:data.ref}),this.ResetvaluesRemoSend(data.index)) : ''
 
       },

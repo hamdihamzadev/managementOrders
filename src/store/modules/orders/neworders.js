@@ -8,7 +8,7 @@ const state={
         "product": "Garlic",
         "price": "$27.72",
         "quantity": 1,
-        "total": "$60.59",
+        "total": "60.59",
         "date": "27/03/2023 08:32:43",
         "ref": 1
     },
@@ -20,7 +20,7 @@ const state={
         "product": "Beans",
         "price": "$25.29",
         "quantity": 2,
-        "total": "$46.40",
+        "total": "46.40",
         "date": "24/12/2022 04:50:13",
         "ref": 2
     },
@@ -32,7 +32,7 @@ const state={
         "product": "Lettuce",
         "price": "$20.31",
         "quantity": 3,
-        "total": "$68.17",
+        "total": "68.17",
         "date": "18/03/2022 22:09:05",
         "ref": 3
     },
@@ -44,7 +44,7 @@ const state={
         "product": "Beef",
         "price": "$37.10",
         "quantity": 4,
-        "total": "$65.74",
+        "total": "65.74",
         "date": "04/11/2022 22:12:27",
         "ref": 4
     },
@@ -56,7 +56,7 @@ const state={
         "product": "Fondant",
         "price": "$45.98",
         "quantity": 5,
-        "total": "$53.36",
+        "total": "53.36",
         "date": "21/05/2023 22:05:45",
         "ref": 5
     },
@@ -68,7 +68,7 @@ const state={
         "product": "Pepsi",
         "price": "$26.08",
         "quantity": 6,
-        "total": "$57.69",
+        "total": "57.69",
         "date": "26/08/2021 00:51:18",
         "ref": 6
     },
@@ -80,7 +80,7 @@ const state={
         "product": "Broom",
         "price": "$32.40",
         "quantity": 7,
-        "total": "$53.85",
+        "total": "53.85",
         "date": "05/03/2020 21:57:20",
         "ref": 7
     },
@@ -92,7 +92,7 @@ const state={
         "product": "Wine",
         "price": "$36.86",
         "quantity": 8,
-        "total": "$61.04",
+        "total": "61.04",
         "date": "16/03/2021 19:04:40",
         "ref": 8
     },
@@ -104,7 +104,7 @@ const state={
         "product": "Cake",
         "price": "$41.07",
         "quantity": 9,
-        "total": "$57.85",
+        "total": "57.85",
         "date": "06/02/2024 22:02:27",
         "ref": 9
     },
@@ -116,7 +116,7 @@ const state={
         "product": "Cheedsse",
         "price": "$40.51",
         "quantity": 10,
-        "total": "$53.47",
+        "total": "53.47",
         "date": "03/05/2021 20:29:51",
         "ref": 10
     },],
@@ -128,7 +128,7 @@ const state={
         "product": "Clams",
         "price": "$23.05",
         "quantity": 11,
-        "total": "$57.15",
+        "total": "57.15",
         "date": "16/09/2022 00:27:02",
         "ref": 11
     },
@@ -140,7 +140,7 @@ const state={
         "product": "CheeseEF",
         "price": "$28.49",
         "quantity": 12,
-        "total": "$51.19",
+        "total": "51.19",
         "date": "17/04/2023 15:20:01",
         "ref": 12
     },
@@ -152,7 +152,7 @@ const state={
         "product": "BreadDJ",
         "price": "$34.82",
         "quantity": 13,
-        "total": "$60.24",
+        "total": "60.24",
         "date": "18/10/2023 00:56:42",
         "ref": 13
     },
@@ -164,7 +164,7 @@ const state={
         "product": "Lobster",
         "price": "$25.14",
         "quantity": 14,
-        "total": "$69.79",
+        "total": "69.79",
         "date": "17/07/2020 16:18:44",
         "ref": 14
     },
@@ -176,7 +176,7 @@ const state={
         "product": "Fondant",
         "price": "$25.88",
         "quantity": 15,
-        "total": "$48.28",
+        "total": "48.28",
         "date": "04/08/2023 16:57:09",
         "ref": 15
     },
@@ -188,7 +188,7 @@ const state={
         "product": "Sauce",
         "price": "$32.60",
         "quantity": 16,
-        "total": "$55.60",
+        "total": "55.60",
         "date": "02/09/2021 08:08:50",
         "ref": 16
     },
@@ -200,7 +200,7 @@ const state={
         "product": "Crush",
         "price": "$37.95",
         "quantity": 17,
-        "total": "$49.19",
+        "total": "49.19",
         "date": "02/10/2023 20:10:39",
         "ref": 17
     },
@@ -212,7 +212,7 @@ const state={
         "product": "Pasta",
         "price": "$48.53",
         "quantity": 18,
-        "total": "$49.77",
+        "total": "49.77",
         "date": "19/02/2022 23:12:23",
         "ref": 18
     },
@@ -224,7 +224,7 @@ const state={
         "product": "Veal",
         "price": "$48.49",
         "quantity": 19,
-        "total": "$54.53",
+        "total": "54.53",
         "date": "01/09/2021 05:51:50",
         "ref": 19
     },
@@ -236,7 +236,7 @@ const state={
         "product": "Tea",
         "price": "$38.42",
         "quantity": 20,
-        "total": "$49.85",
+        "total": "49.85",
         "date": "27/11/2021 21:14:21",
         "ref": 20
     },],
@@ -248,7 +248,7 @@ const state={
         "product": "Pepper",
         "price": "$35.86",
         "quantity": 21,
-        "total": "$64.70",
+        "total": "64.70",
         "date": "26/02/2021 01:38:36",
         "ref": 21
     },
@@ -260,7 +260,7 @@ const state={
         "product": "Grapefruit",
         "price": "$46.27",
         "quantity": 22,
-        "total": "$40.16",
+        "total": "40.16",
         "date": "21/06/2020 12:45:05",
         "ref": 22
     },
@@ -272,7 +272,7 @@ const state={
         "product": "Tart",
         "price": "$31.91",
         "quantity": 23,
-        "total": "$63.89",
+        "total": "63.89",
         "date": "12/01/2024 12:47:29",
         "ref": 23
     },
@@ -284,7 +284,7 @@ const state={
         "product": "GarbagBags",
         "price": "$42.98",
         "quantity": 24,
-        "total": "$53.56",
+        "total": "53.56",
         "date": "24/08/2022 06:00:11",
         "ref": 24
     },
@@ -296,7 +296,7 @@ const state={
         "product": "Plastic",
         "price": "$45.24",
         "quantity": 25,
-        "total": "$54.84",
+        "total": "54.84",
         "date": "16/05/2022 23:52:43",
         "ref": 25
     },
@@ -308,7 +308,7 @@ const state={
         "product": "7upDiet",
         "price": "$46.02",
         "quantity": 26,
-        "total": "$57.26",
+        "total": "57.26",
         "date": "11/02/2021 15:48:39",
         "ref": 26
     },
@@ -320,7 +320,7 @@ const state={
         "product": "Pork",
         "price": "$32.11",
         "quantity": 27,
-        "total": "$57.97",
+        "total": "57.97",
         "date": "19/08/2020 17:39:56",
         "ref": 27
     },
@@ -332,7 +332,7 @@ const state={
         "product": "Windme",
         "price": "$34.12",
         "quantity": 28,
-        "total": "$61.66",
+        "total": "61.66",
         "date": "30/03/2020 16:55:08",
         "ref": 28
     },
@@ -344,7 +344,7 @@ const state={
         "product": "kalp",
         "price": "$27.04",
         "quantity": 29,
-        "total": "$60.82",
+        "total": "60.82",
         "date": "20/05/2021 11:58:12",
         "ref": 29
     },
@@ -356,7 +356,7 @@ const state={
         "product": "Yoghurt",
         "price": "$35.43",
         "quantity": 30,
-        "total": "$49.15",
+        "total": "49.15",
         "date": "25/05/2022 22:54:55",
         "ref": 30
     },],
@@ -368,7 +368,7 @@ const state={
         "product": "Barramundi",
         "price": "$34.53",
         "quantity": 31,
-        "total": "$54.80",
+        "total": "54.80",
         "date": "20/07/2020 16:25:08",
         "ref": 31
     },
@@ -380,7 +380,7 @@ const state={
         "product": "Bacardi",
         "price": "$22.31",
         "quantity": 32,
-        "total": "$50.07",
+        "total": "50.07",
         "date": "10/01/2022 18:03:46",
         "ref": 32
     },
@@ -392,7 +392,7 @@ const state={
         "product": "Daves",
         "price": "$33.02",
         "quantity": 33,
-        "total": "$62.59",
+        "total": "62.59",
         "date": "09/08/2021 16:46:53",
         "ref": 33
     },
@@ -404,7 +404,7 @@ const state={
         "product": "Nut",
         "price": "$46.18",
         "quantity": 34,
-        "total": "$46.33",
+        "total": "46.33",
         "date": "19/06/2020 23:01:08",
         "ref": 34
     },
@@ -416,7 +416,7 @@ const state={
         "product": "Breadkar",
         "price": "$24.18",
         "quantity": 35,
-        "total": "$68.60",
+        "total": "68.60",
         "date": "17/04/2020 11:15:49",
         "ref": 35
     },
@@ -428,7 +428,7 @@ const state={
         "product": "Sprouts",
         "price": "$36.76",
         "quantity": 36,
-        "total": "$57.32",
+        "total": "57.32",
         "date": "18/08/2023 04:19:25",
         "ref": 36
     },
@@ -440,7 +440,7 @@ const state={
         "product": "Spring",
         "price": "$30.12",
         "quantity": 37,
-        "total": "$42.65",
+        "total": "42.65",
         "date": "11/07/2020 03:48:10",
         "ref": 37
     },
@@ -452,7 +452,7 @@ const state={
         "product": "Petit",
         "price": "$46.59",
         "quantity": 38,
-        "total": "$69.67",
+        "total": "69.67",
         "date": "04/06/2023 18:41:29",
         "ref": 38
     },
@@ -464,7 +464,7 @@ const state={
         "product": "Bread",
         "price": "$29.59",
         "quantity": 39,
-        "total": "$48.59",
+        "total": "48.59",
         "date": "06/03/2023 03:54:13",
         "ref": 39
     },
@@ -476,7 +476,7 @@ const state={
         "product": "apto",
         "price": "$29.59",
         "quantity": 39,
-        "total": "$48.59",
+        "total": "48.59",
         "date": "06/03/2023 03:54:13",
         "ref": 39
     },
@@ -488,7 +488,7 @@ const state={
         "product": "bolp",
         "price": "$29.59",
         "quantity": 23,
-        "total": "$48.59",
+        "total": "48.59",
         "date": "08/03/2023 03:54:13",
         "ref": 40
     },
@@ -503,7 +503,7 @@ const state={
             "product": "aporo",
             "price": "$34.53",
             "quantity": 31,
-            "total": "$54.80",
+            "total": "54.80",
             "date": "20/09/2020 16:25:08",
             "ref": 41
         },
@@ -515,7 +515,7 @@ const state={
             "product": "semna",
             "price": "$22.31",
             "quantity": 32,
-            "total": "$50.07",
+            "total": "50.07",
             "date": "10/03/2022 18:03:46",
             "ref":42
         },
@@ -527,7 +527,7 @@ const state={
             "product": "Nutio",
             "price": "$33.02",
             "quantity": 33,
-            "total": "$62.59",
+            "total": "62.59",
             "date": "09/10/2021 16:46:53",
             "ref":43
         },
@@ -539,7 +539,7 @@ const state={
             "product": "Davesko",
             "price": "$46.18",
             "quantity": 34,
-            "total": "$46.33",
+            "total": "46.33",
             "date": "19/12/2020 23:01:08",
             "ref":44
         },
@@ -551,7 +551,7 @@ const state={
             "product": "Bacardimod",
             "price": "$24.18",
             "quantity": 35,
-            "total": "$68.60",
+            "total": "68.60",
             "date": "17/09/2020 11:15:49",
             "ref":45
         },
@@ -563,7 +563,7 @@ const state={
             "product": "sepoer ",
             "price": "$36.76",
             "quantity": 36,
-            "total": "$57.32",
+            "total": "57.32",
             "date": "18/08/2023 04:19:25",
             "ref":46
         },
@@ -575,7 +575,7 @@ const state={
             "product": "Spr",
             "price": "$30.12",
             "quantity": 37,
-            "total": "$42.65",
+            "total": "42.65",
             "date": "11/07/2020 03:48:10",
             "ref":47
         },
@@ -587,7 +587,7 @@ const state={
             "product": "Peti",
             "price": "$46.59",
             "quantity": 38,
-            "total": "$69.67",
+            "total": "69.67",
             "date": "04/06/2023 18:41:29",
             "ref":48
         },
@@ -599,7 +599,7 @@ const state={
             "product": "deloo",
             "price": "$29.59",
             "quantity": 39,
-            "total": "$48.59",
+            "total": "48.59",
             "date": "06/03/2023 03:54:13",
             "ref":49
         },
@@ -611,7 +611,7 @@ const state={
             "product": "bople",
             "price": "$29.59",
             "quantity": 39,
-            "total": "$48.59",
+            "total": "48.59",
             "date": "06/03/2023 03:54:13",
             "ref": 50
         }

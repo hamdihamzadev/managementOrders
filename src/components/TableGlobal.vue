@@ -95,7 +95,8 @@
 
 <script>
   import {
-    mapState
+    mapState,
+    mapActions
   } from 'vuex'
   export default {
     name: "TableGlobal",
@@ -114,6 +115,10 @@
     computed: {
       ...mapState('NewOrders', {
         TodayOrders: 'Orders Confirmed'
+      }),
+
+      ...mapState('allOrder',{
+        storeAllOrder:state=>state
       }),
 
       totalPages() {
@@ -210,17 +215,42 @@
 
       onInputpopup(val) {
         this.$emit('input', val)
-      }
+      },
+
+      // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+      ...mapActions('allOrder', ['ac_addInAllOrder']),
+      getAllOrders(){
+        let OrdersLocal=JSON.parse(localStorage.getItem('allOrder'))
+
+        let numbersOrderLocal = Object.values(OrdersLocal).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+
+        let numbersOrderStore = Object.values(this.storeAllOrder).reduce((acc, tableCtg) => {
+          return acc + tableCtg.length;
+        }, 0);
+
+        if (OrdersLocal && numbersOrderLocal > numbersOrderStore){
+          for(const statusOrder in OrdersLocal){
+          OrdersLocal[statusOrder].forEach(order=>{this.ac_addInAllOrder({status:statusOrder,order:order})})
+        }
+        }
+
+      },
 
     },
 
     mounted(){
 
+       // GET ALL STATUS  
       this.$route.path==='/Orders/Confirmed' ? this.statusValues=JSON.parse(localStorage.getItem('statusConfirmed')) || [] :null
       this.$route.path==='/Orders/Shipped' ? this.statusValues=JSON.parse(localStorage.getItem('statusShipped')) || [] :null
       this.$route.path==='/Orders/InProgress' ? this.statusValues=JSON.parse(localStorage.getItem('statusProgress')) || [] :null
       this.$route.path==='/Orders/PostPond' ? this.statusValues=JSON.parse(localStorage.getItem('statusPostponed')) || [] :null
       this.$route.path==='/Orders/NewOrders' ? this.statusValues=JSON.parse(localStorage.getItem('statusNeworders')) || [] :null
+
+      // GET ALL ORDERS 
+      this.getAllOrders()
       
     }
     

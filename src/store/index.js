@@ -12,6 +12,7 @@ import PostpondModule from '@/store/modules/orders/postpond'
 import ReturnModule from '@/store/modules/orders/return'
 import UsersModule from '@/store/modules/users'
 import ProductsModule from '@/store/modules/allproucts'
+import allOrder from '@/store/modules/orders/allOrders'
 
 Vue.use(Vuex);
 
@@ -19,13 +20,14 @@ export default new Vuex.Store({
   modules: {
     NewOrders: NewOrdersModule,
     OrderConfirmed:OrderConfirmedModule,
-    OrderCanceld:CanceldModule,
+    OrderCancelled:CanceldModule,
     ShippedOrders:ShippedModule,
     InProgressOrders:InProgressModule,
     DelivredOrders:DelivredModule,
     PostpondOrders:PostpondModule,
     ReturnOrders:ReturnModule,
     UsersModule : UsersModule,
-    ProductsModule
+    ProductsModule,
+    allOrder,
   }
 });

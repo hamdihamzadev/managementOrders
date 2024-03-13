@@ -3,7 +3,7 @@ const state={
     camera: [],
     powerbank: [],
     airpods: [],
-    keyboard: []
+    keyboard: [],
 }
 
 const mutations={
@@ -15,6 +15,7 @@ const mutations={
              return order.ref!==ref
          })
     },
+
 
 }
 

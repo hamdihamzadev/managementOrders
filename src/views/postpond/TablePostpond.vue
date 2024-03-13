@@ -1,8 +1,7 @@
 <template>
     <div class="mt-4" id="tablePostPond">
-        <TableGlobal :orders="ordersPostponed" :options="options"  thTimepost="true"
-            @send-order="SendOrder" @remove-order="removeorder" sentenceorders="No order postpond today"
-            @save-status="saveStatus" />
+        <TableGlobal :orders="ordersPostponed" :options="options" thTimepost="true" @send-order="SendOrder"
+            @remove-order="removeorder" sentenceorders="No order postpond today" @save-status="saveStatus" />
     </div>
 </template>
 
@@ -26,15 +25,19 @@
         computed: {
             // GET MODULE STATE POSTPOND
             ...mapState('PostpondOrders', {
-                StoreOrdersPostpond: state=>state
+                StoreOrdersPostpond: state => state
             }),
 
-            ordersPostponed(){
-                let allOrders=[]
-                Object.values(this.StoreOrdersPostpond).forEach(tablectg=>{
-                    tablectg.length>0 ? tablectg.forEach(order=>{ allOrders.push(order)}) : ''
+            ordersPostponed() {
+                let allOrders = []
+                Object.values(this.StoreOrdersPostpond).forEach(tablectg => {
+                    tablectg.length > 0 ? tablectg.forEach(order => {
+                        allOrders.push(order)
+                    }) : ''
                 })
-                return allOrders.sort((orderA,orderB)=>{ return orderA.ref - orderB.ref })
+                return allOrders.sort((orderA, orderB) => {
+                    return orderA.ref - orderB.ref
+                })
             },
 
             // GET ALL VALUES IN SELECTS
@@ -58,6 +61,8 @@
             ...mapActions('DelivredOrders', ['ac_addOrdersdelivered']),
             // GET ACTION FOR RETURN
             ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
+            // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+            ...mapActions('allOrder', ['ac_addInAllOrder']),
 
             // GET ALL ORDERS POSTPOND AND SHOW IN TABLE
             getOrdersPostponed() {
@@ -94,17 +99,33 @@
                 let orderSelected = {}
                 for (const category in this.StoreOrdersPostpond) {
                     this.StoreOrdersPostpond[category].forEach(order => {
-                        order.ref === data.ref ? ( delete order.Timepost ,orderSelected.category = category , orderSelected.order = order) : ''
+                        order.ref === data.ref ? (delete order.Timepost, orderSelected.category = category,
+                            orderSelected.order = order) : ''
                     })
                 }
                 // GET VALUE SELECTED
                 let valueselected = document.querySelector(`#select${data.index}`).value
 
                 // -------------- CHECK VALUE --------------
-                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),this.ac_RemoveOrderPostpond({category:orderSelected.category, ref:data.ref})
-                ,this.ResetvaluesRemoSend(data.index)) :
-                valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected),this.ac_RemoveOrderPostpond({category:orderSelected.category, ref:data.ref})
-                ,this.ResetvaluesRemoSend(data.index)) : ''
+                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected), 
+                        this.ac_addInAllOrder({
+                            status: 'Delivered',
+                            order: orderSelected
+                        }),
+                        this.ac_RemoveOrderPostpond({
+                            category: orderSelected.category,
+                            ref: data.ref
+                        }), this.ResetvaluesRemoSend(data.index)) :
+
+                    valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected), 
+                        this.ac_addInAllOrder({
+                            status: 'return',
+                            order: orderSelected
+                        }),
+                        this.ac_RemoveOrderPostpond({
+                        category: orderSelected.category,
+                        ref: data.ref
+                    }), this.ResetvaluesRemoSend(data.index)) : ''
 
 
             },
@@ -112,12 +133,15 @@
             //REMOVE ORDER
             removeorder(data) {
                 this.allValues
-                for(const category in this.StoreOrdersPostpond){
-                    this.StoreOrdersPostpond[category].forEach(order=>{
-                        order.ref===data.ref ? this.ac_RemoveOrderPostpond({category:category, ref:data.ref}) : ''
+                for (const category in this.StoreOrdersPostpond) {
+                    this.StoreOrdersPostpond[category].forEach(order => {
+                        order.ref === data.ref ? this.ac_RemoveOrderPostpond({
+                            category: category,
+                            ref: data.ref
+                        }) : ''
                     })
                 }
-                
+
                 // Reset values
                 this.ResetvaluesRemoSend(data.index)
             },
@@ -127,7 +151,9 @@
                 // get value for any select after remove or send order
                 this.allValues.splice(index, 1)
                 let statuAfter = document.querySelectorAll('select')
-                this.allValues.forEach((value, i) => {statuAfter[i].value = value})
+                this.allValues.forEach((value, i) => {
+                    statuAfter[i].value = value
+                })
                 window.localStorage.setItem('statusPostponed', JSON.stringify(this.allValues))
             }
         }

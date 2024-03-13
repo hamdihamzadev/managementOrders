@@ -14,6 +14,7 @@
     } from 'vuex'
     import TableGlobal from '@/components/TableGlobal.vue'
 
+
     export default {
         name: 'TableNeworders',
         components: {
@@ -31,6 +32,8 @@
             ...mapState('NewOrders', {
                 storeNeworders: state => state
             }),
+
+
 
             neworders() {
                 let allNewOrders = []
@@ -56,6 +59,8 @@
             ...mapActions('OrderConfirmed', ['ac_orderConfirmed']),
             // GET FUNCTION ACTIONS IN VUEX CANCELD
             ...mapActions('OrderCancelled', ['ac_addOrderCancelled']),
+            // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
+            ...mapActions('allOrder', ['ac_addInAllOrder']),
 
             // PUSH ORDER CONFIRMED IN ACTION
             SendOrder(data) {
@@ -72,18 +77,21 @@
                 // GET VALUE SELECTED
                 let valueselected = document.querySelector(`#select${data.index}`).value
                 // CHECK VALUE AND PUSH ORDER
-                valueselected === 'Confirmed' ? this.ac_orderConfirmed(orderSelected) :
-                valueselected === 'Canceled' ? this.ac_addOrderCancelled(orderSelected) : ''
+                valueselected === 'Confirmed' ? (this.ac_orderConfirmed(orderSelected),
+                this.ac_addInAllOrder({status:'confirmed',order:orderSelected})) :
+                valueselected === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
+                this.ac_addInAllOrder({status:'cancelled',order:orderSelected})) : ''
 
+                console.log(this.storeallOrder)
+                
             },
 
             saveStatus() {
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
                 window.localStorage.setItem('statusNeworders', JSON.stringify(allValues))
             },
-
-
         },
+
     }
 </script>
 
