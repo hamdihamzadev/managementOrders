@@ -2,12 +2,12 @@
     <div>
         <!----- add prduct ----->
         <b-button class="w-100 " variant="primary" id="btn-addprd" v-b-modal.modalAddproduct>
-            <b-icon icon="plus" font-scale="2" ></b-icon>Add product
+            <b-icon icon="plus" font-scale="2"></b-icon>Add product
         </b-button>
         <!---------- SHOW POPUP --------------->
 
-        <b-modal id="modalAddproduct" ref="modalPostpond" title="Create your product" :ok-title="okbtn"
-            @ok="addproduct" @hide="onModalHide">
+        <b-modal id="modalAddproduct" ref="modalPostpond" title="Create your product" :ok-title="okbtn" @ok="addproduct"
+            @hide="onModalHide">
             <form ref="form">
                 <div class="row">
                     <b-form-group class="col-6 mb-4" id="input-name" v-model="name" label="Name:" label-for="input-1">
@@ -84,7 +84,8 @@
 
             addproduct(bvModalEvent) {
                 if (this.name !== '' && this.price !== '' && this.quantity !== '' && this.description !== '') {
-                    this.okbtn === 'Send' ? this.addprd() : this.okbtn === 'Edit' ? (this.updatPrd(),this.okbtn = 'Send') : ''
+                    this.okbtn === 'Send' ? this.addprd() : this.okbtn === 'Edit' ? (this.updatPrd(), this.okbtn =
+                        'Send') : ''
                     this.name = this.price = this.quantity = this.description = ''
                     this.okbtn = 'Send'
                 } else {
@@ -95,18 +96,23 @@
 
             addprd() {
 
-                let refproduct=Object.values(this.productModuleStates).reduce((accu,table)=>{
-                    return accu+table.length
-                },0)
-                
+                let newdate = new Date();
+                let year = newdate.getFullYear().toString()
+                let month = (newdate.getMonth() + 1).toString()
+                let day = newdate.getDate()
+                let hour = newdate.getHours().toString()
+                let munite = newdate.getMinutes().toString()
+                let seconde = newdate.getSeconds().toString()
+
+                let date = `${year}-${month}-${day} ${hour}:${munite}:${seconde}`
                 let objnewprd = {
                     name: this.name,
                     price: this.price,
                     quantity: this.quantity,
                     description: this.description,
-                    ref:refproduct+1
+                    date: date
                 }
-                
+
                 this.ac_addproduct({
                     category: this.category,
                     product: objnewprd
@@ -130,8 +136,8 @@
 
             },
 
-            onModalHide(){
-                this.okbtn='Send'
+            onModalHide() {
+                this.okbtn = 'Send'
                 this.name = this.price = this.quantity = this.description = ''
             },
 

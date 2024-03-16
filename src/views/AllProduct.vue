@@ -15,8 +15,9 @@
             </p>
 
             <!----- TABLE PRODUCT ----->
-            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table" :per-page="perPage" :current-page="currentPage">
-                
+            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table"
+                :per-page="perPage" :current-page="currentPage" :sort-by.sync="sortBy"  :sort-desc.sync="sortDesc">
+
                 <template #cell(Checked)="dataSelected">
                     <b-form-checkbox id="checkbox-1" name="checkbox-1" value="accepted" unchecked-value="not_accepted"
                         @change="selectBox($event,dataSelected.item,dataSelected.index)">
@@ -58,7 +59,40 @@
         },
         data() {
             return {
-                fields: ['Checked', 'Name', 'Price', 'Category', 'Quantity', 'Action'],
+                sortBy: 'Date',
+                sortDesc: true,
+                fields: [{
+                        key: 'Checked',
+                        sortable: false
+                    },
+                    {
+                        key: 'Name',
+                        sortable: false
+                    },
+                    {
+                        key: 'Price',
+                        sortable: true
+                    },
+                    {
+                        key: 'Category',
+                        sortable: false
+                    },
+                    
+                    {
+                        key: 'Quantity',
+                        sortable: false
+                    },
+                    
+                    {
+                        key: 'Date',
+                        sortable: true
+                    },
+                    {
+                        key: 'Action',
+                        sortable: false
+                    },
+                    
+                ],
                 Choose: 'Choose...',
                 nameInput: '',
                 perPage: 10,
@@ -83,16 +117,14 @@
                                 Price: product.price,
                                 Category: category,
                                 Quantity: product.quantity,
-                                ref:product.ref
+                                Date: product.date
                             }
                             products.push(ObjectProduct)
                         })
                     }
                 }
-                 return products.sort((prdA, prdB) => {
-                    return prdA.ref - prdB.ref
-                })
-               
+                return products
+
             },
 
             rows() {
@@ -193,7 +225,7 @@
                 let numbersProductsStore = Object.values(this.productModuleStates).reduce((accu, table) => {
                     return accu + table.length
                 }, 0)
-                
+
                 if (productsLocal && numbersProductsLocal > numbersProductsStore) {
                     for (const category in productsLocal) {
                         productsLocal[category].forEach(product => {
@@ -209,7 +241,8 @@
 
         mounted() {
             this.getProductLocal()
-            console.log(this.items)
+          
+
         }
 
 
@@ -238,5 +271,9 @@
 
     .cursor {
         cursor: pointer;
+    }
+
+    thead tr th span{
+        display: none;
     }
 </style>
