@@ -73,6 +73,8 @@
       .delivred,
       .return,
       .postpond,
+      .inprogress,
+      .addOrder,
       #topStatistics {
         margin: 47px 0px;
 

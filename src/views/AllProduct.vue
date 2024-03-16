@@ -61,7 +61,7 @@
                 fields: ['Checked', 'Name', 'Price', 'Category', 'Quantity', 'Action'],
                 Choose: 'Choose...',
                 nameInput: '',
-                perPage: 5,
+                perPage: 10,
                 currentPage: 1,
                 NbrPrdDelete: 0,
                 allPrdDelete: [],
@@ -77,17 +77,19 @@
 
             items() {
                 let items = []
-                for (const key in this.productModuleStates) {
-                    this.productModuleStates[key].forEach(prd => {
+                for (const Namecategory in this.productModuleStates) {
+                    this.productModuleStates[Namecategory].forEach(prd => {
                         let objprd = {
                             Name: prd.name,
                             Price: prd.price,
-                            Category: key,
+                            Category: Namecategory,
                             Quantity: prd.quantity,
+                            ref:prd.ref
                         }
                         items.push(objprd)
                     })
                 }
+                items.sort((prdA,prdB)=>{return prdA.ref-prdB.ref})
                 return items
             },
 
@@ -103,57 +105,21 @@
 
             getAllprdinLocal() {
 
-                // PRODUCTS SMART WATCH
-                let smartwatchSave = JSON.parse(localStorage.getItem('SmartWatch'))
-                let StateSmartWatch = this.productModuleStates.smartwatch
-                smartwatchSave && smartwatchSave.length > StateSmartWatch.length ? smartwatchSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'smartwatch',
-                        newprd: prd
-                    })
-                }) : ''
+                let allProductsLocal = JSON.parse(localStorage.getItem('All Products'))
+                let numbersProductlocal= Object.values(allProductsLocal).reduce((accu,table)=>{
+                    return accu+table.length
+                },0)
+                let numbersProductStore= Object.values(this.productModuleStates).reduce((accu,table)=>{
+                    return accu+table.length
+                },0)
 
-                // // PRODUCTS CAMERA
-                let CameraSave = JSON.parse(localStorage.getItem('Camera'))
-                let StateCamera = this.productModuleStates.camera
-                CameraSave && CameraSave.length > StateCamera.length ? CameraSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'camera',
-                        newprd: prd
-                    })
-                }) : ''
-
-                // // PRODUCTS POWER BANK
-                let PowerbankSave = JSON.parse(localStorage.getItem('PowerBank'))
-                let StatePowerbank = this.productModuleStates.powerbank
-                PowerbankSave && PowerbankSave.length > StatePowerbank.length ? PowerbankSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'powerbank',
-                        newprd: prd
-                    })
-                }) : ''
-
-                // // PRODUCTS AIRPODS
-                let AirPodsSave = JSON.parse(localStorage.getItem('AirPods'))
-                let StateAirPods = this.productModuleStates.airpods
-                AirPodsSave && AirPodsSave.length > StateAirPods.length ? AirPodsSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'airpods',
-                        newprd: prd
-                    })
-                }) : ''
-
-
-                // // PRODUCTS KEYBOARD
-                let KeyBoardSave = JSON.parse(localStorage.getItem('KeyBoard'))
-                let StateKeyBoard = this.productModuleStates.keyboard
-                KeyBoardSave && KeyBoardSave.length > StateKeyBoard.length ? KeyBoardSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'keyboard',
-                        newprd: prd
-                    })
-                }) : ''
-
+                if (allProductsLocal && numbersProductlocal>numbersProductStore){
+                    for(const Namecategory in allProductsLocal){
+                        allProductsLocal[Namecategory].forEach(product=>{
+                            this.ac_addproduct({category:Namecategory,product:product})
+                        })
+                    }
+                }
             },
 
             handleActionChange(event, item) {
@@ -173,7 +139,7 @@
                     this.productModuleStates[item.Category].forEach((prd, index) => {
                         if (prd.name === item.Name && prd.price === item.Price && prd.quantity === item
                             .Quantity) {
-                            this.$refs.componentAddprd.testfunct(prd, item.Category, index)
+                            this.$refs.componentAddprd.editeProduct(prd, item.Category, index)
                             this.Choose = 'Choose...'
 
                         }
@@ -198,12 +164,17 @@
 
             deleteprdselectd() {
                 // array ==> objrct index and category ==> 
-                 let textConirmation= this.NbrPrdDelete === 1 ? 'Are you sure you want to delete this product ?' :'Are you sure you want to delete these products ?'
-                let allprdremove=[]
+                let textConirmation = this.NbrPrdDelete === 1 ? 'Are you sure you want to delete this product ?' :
+                    'Are you sure you want to delete these products ?'
+                let allprdremove = []
                 this.allPrdDelete.forEach(item => {
                     this.productModuleStates[item.Category].forEach((prd, index) => {
-                        if(prd.name === item.Name && prd.price === item.Price && prd.quantity === item.Quantity ){
-                            let prddelete={Category:item.Category,index:index}
+                        if (prd.name === item.Name && prd.price === item.Price && prd.quantity === item
+                            .Quantity) {
+                            let prddelete = {
+                                Category: item.Category,
+                                index: index
+                            }
                             allprdremove.push(prddelete)
                             allprdremove[0].Category
                         }
@@ -211,16 +182,21 @@
                     })
                 })
 
-                if(confirm(textConirmation) === true){
-                    allprdremove.forEach(product=>{
-                     this.ac_Removeproduct({category:product.Category,index:product.index})
+                if (confirm(textConirmation) === true) {
+                    allprdremove.forEach(product => {
+                        this.ac_Removeproduct({
+                            category: product.Category,
+                            index: product.index
+                        })
                     })
                 }
-                
+
 
                 // RESTE ALL CHECKBOX
                 let allSelectBox = Array.from(this.$el.querySelectorAll('#checkbox-1'))
-                allSelectBox.forEach(selc => { selc.checked = false })
+                allSelectBox.forEach(selc => {
+                    selc.checked = false
+                })
                 // RESTE NUMBERS PRDOCUT SELECTED IN 0
                 this.NbrPrdDelete = 0
             }
@@ -228,6 +204,14 @@
 
         mounted() {
             this.getAllprdinLocal()
+            let items=[]
+            Object.values(this.productModuleStates).forEach(table => {
+                table.length > 0 ? table.forEach(product => {
+                    items.push(product)
+                }) : ''
+            })
+
+            console.log(items)
         }
     }
 </script>

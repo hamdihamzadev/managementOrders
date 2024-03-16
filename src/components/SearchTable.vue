@@ -25,6 +25,8 @@
                 if(this.Selected==='Name'){
                     tbody.forEach(tr=>{
                         let name= Array.from(tr.children)[1].textContent.toLowerCase()
+                        console.log(tr)
+                        console.log(name)
                         tr.style.display= name.includes(val.toLowerCase()) ? '':'none'
                     })
                 }else if(this.Selected==='Price'){
