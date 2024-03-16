@@ -15,9 +15,8 @@
             </p>
 
             <!----- TABLE PRODUCT ----->
-            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table"
-                :per-page="perPage" :current-page="currentPage">
-
+            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table">
+                <!-- :per-page="perPage" :current-page="currentPage" -->
                 <template #cell(Checked)="dataSelected">
                     <b-form-checkbox id="checkbox-1" name="checkbox-1" value="accepted" unchecked-value="not_accepted"
                         @change="selectBox($event,dataSelected.item,dataSelected.index)">
@@ -50,6 +49,7 @@
     } from 'vuex'
 
 
+
     export default {
         name: 'AllProducts',
         components: {
@@ -65,9 +65,7 @@
                 currentPage: 1,
                 NbrPrdDelete: 0,
                 allPrdDelete: [],
-
             }
-
         },
 
         computed: {
@@ -76,51 +74,35 @@
             }),
 
             items() {
-                let items = []
-                for (const Namecategory in this.productModuleStates) {
-                    this.productModuleStates[Namecategory].forEach(prd => {
-                        let objprd = {
-                            Name: prd.name,
-                            Price: prd.price,
-                            Category: Namecategory,
-                            Quantity: prd.quantity,
-                            ref:prd.ref
-                        }
-                        items.push(objprd)
-                    })
+                let products = []
+                for (const category in this.productModuleStates) {
+                    if (this.productModuleStates[category].length > 0) {
+                        this.productModuleStates[category].forEach(product => {
+                            let ObjectProduct = {
+                                Name: product.name,
+                                Price: product.price,
+                                Category: category,
+                                Quantity: product.quantity
+                            }
+                            products.push(ObjectProduct)
+                        })
+                    }
                 }
-                items.sort((prdA,prdB)=>{return prdA.ref-prdB.ref})
-                return items
+                return products.sort((prdA, prdB) => {
+                    return prdA - prdB
+                })
             },
 
             rows() {
                 return this.items.length
             }
 
-
         },
 
         methods: {
             ...mapActions('ProductsModule', ['ac_addproduct', 'ac_Removeproduct']),
 
-            getAllprdinLocal() {
 
-                let allProductsLocal = JSON.parse(localStorage.getItem('All Products'))
-                let numbersProductlocal= Object.values(allProductsLocal).reduce((accu,table)=>{
-                    return accu+table.length
-                },0)
-                let numbersProductStore= Object.values(this.productModuleStates).reduce((accu,table)=>{
-                    return accu+table.length
-                },0)
-
-                if (allProductsLocal && numbersProductlocal>numbersProductStore){
-                    for(const Namecategory in allProductsLocal){
-                        allProductsLocal[Namecategory].forEach(product=>{
-                            this.ac_addproduct({category:Namecategory,product:product})
-                        })
-                    }
-                }
-            },
 
             handleActionChange(event, item) {
                 if (event.target.value === 'delete') {
@@ -199,20 +181,35 @@
                 })
                 // RESTE NUMBERS PRDOCUT SELECTED IN 0
                 this.NbrPrdDelete = 0
-            }
+            },
+
+            getProductLocal() {
+                let productsLocal = JSON.parse(localStorage.getItem('All Products'))
+                let numbersProductsLocal = Object.values(productsLocal).reduce((accu, table) => {
+                    return accu + table.length
+                }, 0)
+                let numbersProductsStore = Object.values(this.productModuleStates).reduce((accu, table) => {
+                    return accu + table.length
+                }, 0)
+                
+                if (productsLocal && numbersProductsLocal > numbersProductsStore) {
+                    for (const category in productsLocal) {
+                        productsLocal[category].forEach(product => {
+                            this.ac_addproduct({
+                                category: category,
+                                product: product
+                            })
+                        })
+                    }
+                }
+            },
         },
 
         mounted() {
-            this.getAllprdinLocal()
-            let items=[]
-            Object.values(this.productModuleStates).forEach(table => {
-                table.length > 0 ? table.forEach(product => {
-                    items.push(product)
-                }) : ''
-            })
-
-            console.log(items)
+            this.getProductLocal()
         }
+
+
     }
 </script>
 
