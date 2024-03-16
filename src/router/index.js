@@ -15,6 +15,7 @@ import AllProducts from '../views/AllProduct.vue'
 import StockProduct from '../views/StockProduct.vue'
 import TopStatistics from '../views/TopStatistics.vue'
 import WorstStatistics from '../views/WorstStatistics.vue'
+import AddOrder from '../views/AddOrder.vue'
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,7 @@ const routes = [
   { path: '/Stock', component: StockProduct},
   { path: '/Statistics/Top', component: TopStatistics},
   { path: '/Statistics/Worst', component: WorstStatistics},
+  { path: '/Orders/Addorder', component: AddOrder},
 
 ];
 

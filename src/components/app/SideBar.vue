@@ -16,6 +16,7 @@
             </a>
 
             <b-collapse id="collapse-3" class="mt-3 mb-3">
+              <router-link to="/Orders/Addorder" tag="li"><a href="" class="linkdrop">Add Order</a></router-link>
               <router-link to="/Orders/NewOrders" tag="li"><a href="" class="linkdrop">New Orders</a></router-link>
               <router-link to="/Orders/Confirmed" tag="li"><a href="" class="linkdrop">Confirmed</a></router-link>
               <router-link to="/Orders/Shipped" tag="li"><a href="" class="linkdrop">Shipped</a></router-link>
