@@ -12,30 +12,9 @@ let mutations = {
     // ADD PRODUCT
     m_addproduct(state, {
         category,
-        newprd
+        product
     }) {
-        state[category].push(newprd)
-
-        switch (category) {
-            case 'smartwatch':
-                localStorage.setItem('SmartWatch', JSON.stringify(state.smartwatch));
-                break;
-            case 'camera':
-                localStorage.setItem('Camera', JSON.stringify(state.camera));
-                break;
-            case 'powerbank':
-                localStorage.setItem('PowerBank', JSON.stringify(state.powerbank));
-                break;
-            case 'airpods':
-                localStorage.setItem('AirPods', JSON.stringify(state.airpods));
-                break;
-            case 'keyboard':
-                localStorage.setItem('KeyBoard', JSON.stringify(state.keyboard));
-                break;
-            default:
-                window.alert('category no found')
-        }
-
+        state[category].push(product)
     },
 
 
@@ -46,25 +25,6 @@ let mutations = {
     }) {
         state[category].splice(index, 1)
 
-        switch (category) {
-            case 'smartwatch':
-                localStorage.setItem('SmartWatch', JSON.stringify(state.smartwatch));
-                break;
-            case 'camera':
-                localStorage.setItem('Camera', JSON.stringify(state.camera));
-                break;
-            case 'powerbank':
-                localStorage.setItem('PowerBank', JSON.stringify(state.powerbank));
-                break;
-            case 'airpods':
-                localStorage.setItem('AirPods', JSON.stringify(state.airpods));
-                break;
-            case 'keyboard':
-                localStorage.setItem('KeyBoard', JSON.stringify(state.keyboard));
-                break;
-            default:
-                window.alert('category no found')
-        }
     },
 
     // UPDATE PRODUCT 
@@ -164,15 +124,17 @@ let mutations = {
 let actions = {
     // ADD PRODUCT
     ac_addproduct({
-        commit
+        commit,
+        state
     }, {
         category,
-        newprd
+        product
     }) {
         commit('m_addproduct', {
             category,
-            newprd
+            product
         })
+        localStorage.setItem('All Products',JSON.stringify(state));
 
     },
 
@@ -187,6 +149,7 @@ let actions = {
             category,
             index
         })
+        localStorage.setItem('All Products',JSON.stringify(state));
     },
 
     // UPDATE PRODUCT 
@@ -243,3 +206,24 @@ export default {
     mutations,
     actions
 }
+
+let delivred = [{
+    name: 'aiepods 12',
+    category:'smartwatch'
+}, {
+    name: 'aiepods10'
+}, 
+   { name: 'aiepods16'
+},  
+   { name: 'aiepods19'
+},  
+   { name: 'aiepods98'
+},  
+
+]
+
+let ordersCategorySmartwatch = []
+delivred.forEach(order => {
+   order.category==='smartwatch'? ordersCategorySmartwatch.push(order): ''
+})
+
