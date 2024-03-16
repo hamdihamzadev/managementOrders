@@ -1,8 +1,8 @@
 <template>
     <div>
         <!----- add prduct ----->
-        <b-button class="w-100" variant="primary" id="btn-addprd" v-b-modal.modalAddproduct>
-            <b-icon icon="plus" font-scale="2"></b-icon>Add product
+        <b-button class="w-100 " variant="primary" id="btn-addprd" v-b-modal.modalAddproduct>
+            <b-icon icon="plus" font-scale="2" ></b-icon>Add product
         </b-button>
         <!---------- SHOW POPUP --------------->
 
@@ -61,7 +61,7 @@
                 quantity: '',
                 description: '',
                 okbtn: 'Send',
-                indexPrdUpdate: ''
+                indexPrdUpdate: '',
             }
         },
 
@@ -94,18 +94,25 @@
             },
 
             addprd() {
+
+                let refproduct=Object.values(this.productModuleStates).reduce((accu,table)=>{
+                    return accu+table.length
+                },0)
+                
                 let objnewprd = {
                     name: this.name,
                     price: this.price,
                     quantity: this.quantity,
-                    description: this.description
+                    description: this.description,
+                    ref:refproduct+1
                 }
-
+                
                 this.ac_addproduct({
                     category: this.category,
-                    newprd: objnewprd
+                    product: objnewprd
                 })
 
+                console.log(this.productModuleStates)
             },
             updatPrd() {
                 let objnewprd = {
@@ -128,7 +135,7 @@
                 this.name = this.price = this.quantity = this.description = ''
             },
 
-            testfunct(prd, catg, index) {
+            editeProduct(prd, catg, index) {
 
                 this.indexPrdUpdat = index
                 this.name = prd.name
