@@ -15,8 +15,8 @@
             </p>
 
             <!----- TABLE PRODUCT ----->
-            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table">
-                <!-- :per-page="perPage" :current-page="currentPage" -->
+            <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table" :per-page="perPage" :current-page="currentPage">
+                
                 <template #cell(Checked)="dataSelected">
                     <b-form-checkbox id="checkbox-1" name="checkbox-1" value="accepted" unchecked-value="not_accepted"
                         @change="selectBox($event,dataSelected.item,dataSelected.index)">
@@ -82,15 +82,17 @@
                                 Name: product.name,
                                 Price: product.price,
                                 Category: category,
-                                Quantity: product.quantity
+                                Quantity: product.quantity,
+                                ref:product.ref
                             }
                             products.push(ObjectProduct)
                         })
                     }
                 }
-                return products.sort((prdA, prdB) => {
-                    return prdA - prdB
+                 return products.sort((prdA, prdB) => {
+                    return prdA.ref - prdB.ref
                 })
+               
             },
 
             rows() {
@@ -207,6 +209,7 @@
 
         mounted() {
             this.getProductLocal()
+            console.log(this.items)
         }
 
 
