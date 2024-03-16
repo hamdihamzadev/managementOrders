@@ -21,10 +21,11 @@ let mutations = {
     // REMOVE PRODUCT
     m_Removeproduct(state, {
         category,
-        index
+        date
     }) {
-        state[category].splice(index, 1)
-
+        state[category]=state[category].filter(product=>{
+            return product.date!==date
+        })
     },
 
     // UPDATE PRODUCT 
@@ -143,11 +144,11 @@ let actions = {
         commit
     }, {
         category,
-        index
+        date
     }) {
         commit('m_Removeproduct', {
             category,
-            index
+            date
         })
         localStorage.setItem('All Products',JSON.stringify(state));
     },
