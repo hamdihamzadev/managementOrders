@@ -16,7 +16,7 @@
 
             <!----- TABLE PRODUCT ----->
             <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table"
-                :per-page="perPage" :current-page="currentPage" :sort-by.sync="sortBy"  :sort-desc.sync="sortDesc">
+                :per-page="perPage" :current-page="currentPage" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
 
                 <template #cell(Checked)="dataSelected">
                     <b-form-checkbox id="checkbox-1" name="checkbox-1" value="accepted" unchecked-value="not_accepted"
@@ -25,7 +25,7 @@
                 </template>
                 <template #cell(Action)="data">
                     <select class="form-select" aria-label="Select an action" v-model="Choose"
-                        @change="handleActionChange($event,data.item,data.index)">
+                        @change="handleActionChange($event,data.item)">
                         <option selected>Choose...</option>
                         <option value="edit">Edit</option>
                         <option value="delete">Delete</option>
@@ -77,12 +77,12 @@
                         key: 'Category',
                         sortable: false
                     },
-                    
+
                     {
                         key: 'Quantity',
                         sortable: false
                     },
-                    
+
                     {
                         key: 'Date',
                         sortable: true
@@ -91,7 +91,7 @@
                         key: 'Action',
                         sortable: false
                     },
-                    
+
                 ],
                 Choose: 'Choose...',
                 nameInput: '',
@@ -140,16 +140,13 @@
 
             handleActionChange(event, item) {
                 if (event.target.value === 'delete') {
-                    this.productModuleStates[item.Category].forEach((prd, index) => {
-                        if (prd.name === item.Name && prd.price === item.Price && prd.quantity === item
-                            .Quantity) {
-                            this.ac_Removeproduct({
-                                category: item.Category,
-                                index: index
-                            })
-                            this.Choose = 'Choose...'
-                        }
+
+                    this.ac_Removeproduct({
+                        category: item.Category,
+                        date: item.Date
                     })
+                    this.Choose = 'Choose...'
+
                 } else if (event.target.value === 'edit') {
                     this.$bvModal.show('modalAddproduct')
                     this.productModuleStates[item.Category].forEach((prd, index) => {
@@ -163,50 +160,33 @@
                 }
             },
 
-            selectBox(event, item) {
+            selectBox(event,item) {
 
                 if (event === 'accepted') {
                     this.NbrPrdDelete = this.NbrPrdDelete + 1
                     this.allPrdDelete.push(item)
                 } else if (event === 'not_accepted') {
                     this.NbrPrdDelete = this.NbrPrdDelete - 1
-                    this.allPrdDelete.forEach((prd, index) => {
-                        prd.Name === item.Name && prd.Price === item.Price && prd.Quantity === item.Quantity ?
-                            this.allPrdDelete.splice(index, 1) : ''
+                    this.allPrdDelete = this.allPrdDelete.filter(product => {
+                        return product.Date !== item.Date
                     })
                 }
-
+                console.log(this.allPrdDelete)
             },
 
             deleteprdselectd() {
                 // array ==> objrct index and category ==> 
                 let textConirmation = this.NbrPrdDelete === 1 ? 'Are you sure you want to delete this product ?' :
                     'Are you sure you want to delete these products ?'
-                let allprdremove = []
-                this.allPrdDelete.forEach(item => {
-                    this.productModuleStates[item.Category].forEach((prd, index) => {
-                        if (prd.name === item.Name && prd.price === item.Price && prd.quantity === item
-                            .Quantity) {
-                            let prddelete = {
-                                Category: item.Category,
-                                index: index
-                            }
-                            allprdremove.push(prddelete)
-                            allprdremove[0].Category
-                        }
-
-                    })
-                })
-
+    
                 if (confirm(textConirmation) === true) {
-                    allprdremove.forEach(product => {
+                    this.allPrdDelete.forEach(item => {
                         this.ac_Removeproduct({
-                            category: product.Category,
-                            index: product.index
+                            category: item.Category,
+                            date: item.Date
                         })
                     })
                 }
-
 
                 // RESTE ALL CHECKBOX
                 let allSelectBox = Array.from(this.$el.querySelectorAll('#checkbox-1'))
@@ -241,7 +221,7 @@
 
         mounted() {
             this.getProductLocal()
-          
+
 
         }
 
@@ -273,7 +253,7 @@
         cursor: pointer;
     }
 
-    thead tr th span{
+    thead tr th span {
         display: none;
     }
 </style>
