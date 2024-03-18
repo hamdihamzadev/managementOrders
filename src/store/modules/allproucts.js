@@ -74,31 +74,13 @@ let mutations = {
     // SUBTRACT FROM STOCK
     m_SubtractFromStock(state, {
         category,
-        index,
+        date,
         number
+
     }) {
-        let prdAddStock = state[category][index]
-        prdAddStock.quantity = Number(prdAddStock.quantity) - Number(number)
-        // console.log(`this is module ${category} and ${index} and number${number}`)
-        switch (category) {
-            case 'smartwatch':
-                localStorage.setItem('SmartWatch', JSON.stringify(state.smartwatch));
-                break;
-            case 'camera':
-                localStorage.setItem('Camera', JSON.stringify(state.camera));
-                break;
-            case 'powerbank':
-                localStorage.setItem('PowerBank', JSON.stringify(state.powerbank));
-                break;
-            case 'airpods':
-                localStorage.setItem('AirPods', JSON.stringify(state.airpods));
-                break;
-            case 'keyboard':
-                localStorage.setItem('KeyBoard', JSON.stringify(state.keyboard));
-                break;
-            default:
-                window.alert('category no found')
-        }
+        let product=state[category].find(order=>order.date===date)
+        product.quantity=Number(product.quantity) - Number(number)
+        
     }
 }
 
@@ -170,17 +152,21 @@ let actions = {
 
     // SUBTRACT FROM STOCK
     ac_SubtractFromStock({
-        commit
+        commit,
+        state
     }, {
         category,
-        index,
+        date,
         number
+        
     }) {
         commit('m_SubtractFromStock', {
             category,
-            index,
+            date,
             number
+            
         })
+        localStorage.setItem('All Products',JSON.stringify(state));
     }
 }
 

@@ -29,13 +29,14 @@
                     </b-form-group>
 
                     <b-form-group class="col-12 mb-4" id="select-product" label="Product:" label-for="selectCategory">
-                        <b-form-select v-model="Product" class="w-100" id="select-product" :options="options" required>
+                        <b-form-select v-model="ProductSelected" class="w-100" id="select-product" :options="options"
+                            required>
                         </b-form-select>
                     </b-form-group>
 
                     <b-form-group class="col-6 mb-4 mt-4" id="input-price" label="Price:" label-for="input-1">
                         <b-form-input v-model="Price" id="input-1" type="number" placeholder="Enter price product"
-                            required>
+                            disabled required>
                         </b-form-input>
                     </b-form-group>
 
@@ -74,13 +75,12 @@
         name: 'AddOrder',
         data() {
             return {
-                Customer:'',
-                Phone:'',
-                City:'',
-                Adress:'',
-                Price:'',
-                Quantity:'',
-                Product:''
+                Customer: '',
+                Phone: '',
+                City: '',
+                Adress: '',
+                Quantity: '',
+                ProductSelected: ''
             };
         },
 
@@ -89,23 +89,42 @@
                 productModuleStates: state => state
             }),
 
-            options(){
-                let products=[]
-                for(const category in this.productModuleStates){
-                    this.productModuleStates[category].forEach(product=>{
-                        let option={value:{category:category,order:'',nameProduct:product.name}, text:`${product.name} - ${product.price}$` }
+            options() {
+                let products = [{
+                    value: '',
+                    text: 'Select Product...'
+                }]
+                for (const category in this.productModuleStates) {
+                    this.productModuleStates[category].forEach(product => {
+                        let option = {
+                            value: {
+                                category: category,
+                                order: '',
+                                name: product.name,
+                                price: product.price,
+                                date: product.date
+
+                            },
+                            text: `${product.name} - ${product.price}$ - (${product.quantity})`
+                        }
                         products.push(option)
                     })
                 }
+
                 return products
             },
 
-            Total(){
-                let calctotal=this.Price * this.Quantity
+            Price() {
+                let priceProduct = this.ProductSelected.price
+                return priceProduct
+            },
+
+            Total() {
+                let calctotal = this.Price * this.Quantity
                 return calctotal
             },
 
-            date(){
+            date() {
 
                 let newdate = new Date();
                 let year = newdate.getFullYear().toString()
@@ -120,35 +139,59 @@
             },
 
 
-            
+
         },
 
         methods: {
-            ...mapActions('NewOrders', ['m_addNewOrder']),
-            ...mapActions('ProductsModule', ['ac_addproduct']),
-            addOrder() {
-                let newOrder = {
+            ...mapActions('NewOrders', ['ac_addNewOrder']),
+            ...mapActions('ProductsModule', ['ac_SubtractFromStock']),
 
+            addOrder() {
+
+                if (this.Customer !== '' && this.Phone !== '' && this.City !== '' && this.Adress !== '' && this
+                    .Price !== '' && this.Quantity !== '' && this.Total !== '' && this.ProductSelected !== '') {
+                        let Neworder = {
                     Customer: this.Customer,
                     phone: this.Phone,
                     city: this.City,
                     address: this.Adress,
-                    product: this.Product.nameProduct,
+                    product: this.ProductSelected.name,
                     price: this.Price,
-                    quantity:this.Quantity,
+                    quantity: this.Quantity,
                     total: this.Total,
                     date: this.date,
-
                 }
 
-                this.Product.order=newOrder
-                this.ac_orderConfirmed(this.Product)
+                this.ProductSelected.order = Neworder
+
+                 this.ac_addNewOrder({
+                    category: this.ProductSelected.category,
+                    order: this.ProductSelected.order
+                })
+
+                this.ac_SubtractFromStock({
+                    category: this.ProductSelected.category,
+                    date: this.ProductSelected.date,
+                    number: this.Quantity
+                })
+
+                // RESET VALUES
+                this.reset()
+
+                }
+               
             },
-        },
+
+            reset() {
+                this.Customer = this.Phone = this.City = this.Adress = this.Price = this.Quantity = this.Total = this
+                    .ProductSelected = ''
+            },
+
+
+        }
+
 
     }
-
-
 </script>
 
 <style scoped>
