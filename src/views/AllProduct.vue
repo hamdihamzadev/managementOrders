@@ -10,9 +10,14 @@
                 <!----- add prduct ----->
                 <AddProduct ref="componentAddprd" />
             </div>
+           <div class="d-flex gap-4 mb-2" >
             <p class="mb-0 mt-5 cursor" @click="deleteprdselectd">
                 <b-icon icon="trash"></b-icon> Delete ({{NbrPrdDelete}})
             </p>
+            <p class="mb-0 mt-5 " >
+                <b-icon icon="basket"></b-icon> Total products ({{rows}})
+            </p>
+           </div>
 
             <!----- TABLE PRODUCT ----->
             <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table"
