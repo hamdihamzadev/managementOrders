@@ -1,9 +1,9 @@
 let state = {
-    smartwatch: [],
-    camera: [],
-    powerbank: [],
-    airpods: [],
-    keyboard: []
+    smartwatch:JSON.parse(localStorage.getItem('All Products')).smartwatch,
+    camera: JSON.parse(localStorage.getItem('All Products')).camera,
+    powerbank: JSON.parse(localStorage.getItem('All Products')).powerbank,
+    airpods: JSON.parse(localStorage.getItem('All Products')).airpods,
+    keyboard: JSON.parse(localStorage.getItem('All Products')).keyboard
 }
 
 
