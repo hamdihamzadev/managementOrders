@@ -110,10 +110,9 @@
             items() {
                 let products = []
                 for (const category in this.productModuleStates) {
-                    if (this.productModuleStates[category].length > 0) {
                         this.productModuleStates[category].forEach(product => {
                             let ObjectProduct = {
-                                Name: product.name,
+                                Name:product.name,
                                 Price: product.price,
                                 Category: category,
                                 Quantity: product.quantity,
@@ -121,7 +120,6 @@
                             }
                             products.push(ObjectProduct)
                         })
-                    }
                 }
                 return products
 
@@ -196,34 +194,7 @@
                 // RESTE NUMBERS PRDOCUT SELECTED IN 0
                 this.NbrPrdDelete = 0
             },
-
-            getProductLocal() {
-                let productsLocal = JSON.parse(localStorage.getItem('All Products'))
-                let numbersProductsLocal = Object.values(productsLocal).reduce((accu, table) => {
-                    return accu + table.length
-                }, 0)
-                let numbersProductsStore = Object.values(this.productModuleStates).reduce((accu, table) => {
-                    return accu + table.length
-                }, 0)
-
-                if (productsLocal && numbersProductsLocal > numbersProductsStore) {
-                    for (const category in productsLocal) {
-                        productsLocal[category].forEach(product => {
-                            this.ac_addproduct({
-                                category: category,
-                                product: product
-                            })
-                        })
-                    }
-                }
-            },
         },
-
-        mounted() {
-            this.getProductLocal()
-
-
-        }
 
 
     }
