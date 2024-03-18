@@ -10,14 +10,14 @@
                 <!----- add prduct ----->
                 <AddProduct ref="componentAddprd" />
             </div>
-           <div class="d-flex gap-4 mb-2" >
-            <p class="mb-0 mt-5 cursor" @click="deleteprdselectd">
-                <b-icon icon="trash"></b-icon> Delete ({{NbrPrdDelete}})
-            </p>
-            <p class="mb-0 mt-5 " >
-                <b-icon icon="basket"></b-icon> Total products ({{rows}})
-            </p>
-           </div>
+            <div class="d-flex gap-4 mb-2">
+                <p class="mb-0 mt-5 cursor" @click="deleteprdselectd">
+                    <b-icon icon="trash"></b-icon> Delete ({{NbrPrdDelete}})
+                </p>
+                <p class="mb-0 mt-5 ">
+                    <b-icon icon="basket"></b-icon> Total products ({{rows}})
+                </p>
+            </div>
 
             <!----- TABLE PRODUCT ----->
             <b-table striped hover :items="items" :fields="fields" class="mt-2" sort-icon-left id="my-table"
@@ -53,8 +53,6 @@
         mapState,
         mapActions
     } from 'vuex'
-
-
 
     export default {
         name: 'AllProducts',
@@ -115,16 +113,16 @@
             items() {
                 let products = []
                 for (const category in this.productModuleStates) {
-                        this.productModuleStates[category].forEach(product => {
-                            let ObjectProduct = {
-                                Name:product.name,
-                                Price: product.price,
-                                Category: category,
-                                Quantity: product.quantity,
-                                Date: product.date
-                            }
-                            products.push(ObjectProduct)
-                        })
+                    this.productModuleStates[category].forEach(product => {
+                        let ObjectProduct = {
+                            Name: product.name,
+                            Price: product.price,
+                            Category: category,
+                            Quantity: product.quantity,
+                            Date: product.date
+                        }
+                        products.push(ObjectProduct)
+                    })
                 }
                 return products
 
@@ -142,12 +140,16 @@
 
 
             handleActionChange(event, item) {
-                if (event.target.value === 'delete') {
 
-                    this.ac_Removeproduct({
-                        category: item.Category,
-                        date: item.Date
-                    })
+                if (event.target.value === 'delete') {
+                    let textConirmation = 'Are you sure you want to delete this product ?'
+                    if (confirm(textConirmation) === true) {
+                        this.ac_Removeproduct({
+                            category: item.Category,
+                            date: item.Date
+                        })
+                        
+                    }
                     this.Choose = 'Choose...'
 
                 } else if (event.target.value === 'edit') {
@@ -163,7 +165,7 @@
                 }
             },
 
-            selectBox(event,item) {
+            selectBox(event, item) {
 
                 if (event === 'accepted') {
                     this.NbrPrdDelete = this.NbrPrdDelete + 1
@@ -181,7 +183,7 @@
                 // array ==> objrct index and category ==> 
                 let textConirmation = this.NbrPrdDelete === 1 ? 'Are you sure you want to delete this product ?' :
                     'Are you sure you want to delete these products ?'
-    
+
                 if (confirm(textConirmation) === true) {
                     this.allPrdDelete.forEach(item => {
                         this.ac_Removeproduct({
