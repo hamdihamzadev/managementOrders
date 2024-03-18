@@ -61,7 +61,7 @@
                 quantity: '',
                 description: '',
                 okbtn: 'Send',
-                indexPrdUpdate: '',
+                indexEditedProduct: '',
             }
         },
 
@@ -80,11 +80,11 @@
         },
 
         methods: {
-            ...mapActions('ProductsModule', ['ac_addproduct', 'ac_UpdateProduct']),
+            ...mapActions('ProductsModule', ['ac_addproduct', 'ac_EditProduct']),
 
             addproduct(bvModalEvent) {
                 if (this.name !== '' && this.price !== '' && this.quantity !== '' && this.description !== '') {
-                    this.okbtn === 'Send' ? this.addprd() : this.okbtn === 'Edit' ? (this.updatPrd(), this.okbtn =
+                    this.okbtn === 'Send' ? this.addprd() : this.okbtn === 'Edit' ? (this.EditPrd(), this.okbtn =
                         'Send') : ''
                     this.name = this.price = this.quantity = this.description = ''
                     this.okbtn = 'Send'
@@ -118,20 +118,19 @@
                     product: objnewprd
                 })
 
-                console.log(this.productModuleStates)
             },
-            updatPrd() {
-                let objnewprd = {
+            EditPrd() {
+                let product = {
                     name: this.name,
                     price: this.price,
                     quantity: this.quantity,
                     description: this.description
                 }
 
-                this.ac_UpdateProduct({
+                this.ac_EditProduct({
                     category: this.category,
-                    index: this.indexPrdUpdat,
-                    prdUpdate: objnewprd
+                    index: this.indexEditedProduct,
+                    EditedProduct: product
                 })
 
             },
@@ -143,7 +142,7 @@
 
             editeProduct(prd, catg, index) {
 
-                this.indexPrdUpdat = index
+                this.indexEditedProduct = index
                 this.name = prd.name
                 this.price = prd.price
                 this.quantity = prd.quantity

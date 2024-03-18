@@ -155,11 +155,9 @@
                 } else if (event.target.value === 'edit') {
                     this.$bvModal.show('modalAddproduct')
                     this.productModuleStates[item.Category].forEach((prd, index) => {
-                        if (prd.name === item.Name && prd.price === item.Price && prd.quantity === item
-                            .Quantity) {
-                            this.$refs.componentAddprd.editeProduct(prd, item.Category, index)
+                        if (item.Date===prd.date) {
+                            this.$refs.componentAddprd.editeProduct(prd,item.Category,index)
                             this.Choose = 'Choose...'
-
                         }
                     })
                 }
