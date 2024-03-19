@@ -32,7 +32,9 @@
                         <b-form-select v-model="ProductSelected" class="w-100" id="select-product" :options="options"
                             required>
                         </b-form-select>
+                        
                     </b-form-group>
+                    <p class="text-danger" v-show="stockout" >This product is out of stock</p>
 
                     <b-form-group class="col-6 mb-4 mt-4" id="input-price" label="Price:" label-for="input-1">
                         <b-form-input v-model="Price" id="input-1" type="number" placeholder="Enter price product"
@@ -52,7 +54,8 @@
                     </b-form-group>
 
                     <div>
-                        <b-button class="w-100 mt-4 " variant="primary" id="btn-addprd" @click="addOrder">
+                        <b-button class="w-100 mt-4 " variant="primary" id="btn-addprd" @click="addOrder"
+                            :disabled="stockout">
                             <b-icon icon="plus" font-scale="2"></b-icon>Add Order
                         </b-button>
                     </div>
@@ -80,7 +83,7 @@
                 City: '',
                 Adress: '',
                 Quantity: '',
-                ProductSelected: ''
+                ProductSelected: '',
             };
         },
 
@@ -102,7 +105,8 @@
                                 order: '',
                                 name: product.name,
                                 price: product.price,
-                                date: product.date
+                                date: product.date,
+                                quantity: product.quantity
 
                             },
                             text: `${product.name} - ${product.price}$ - (${product.quantity})`
@@ -139,6 +143,14 @@
             },
 
 
+            stockout(){
+                if (this.ProductSelected.quantity === 0) {
+                    return true
+                } else {
+                    
+                    return false
+                }
+            }
 
         },
 
@@ -150,36 +162,36 @@
 
                 if (this.Customer !== '' && this.Phone !== '' && this.City !== '' && this.Adress !== '' && this
                     .Price !== '' && this.Quantity !== '' && this.Total !== '' && this.ProductSelected !== '') {
-                        let Neworder = {
-                    Customer: this.Customer,
-                    phone: this.Phone,
-                    city: this.City,
-                    address: this.Adress,
-                    product: this.ProductSelected.name,
-                    price: this.Price,
-                    quantity: this.Quantity,
-                    total: this.Total,
-                    date: this.date,
+                    let Neworder = {
+                        Customer: this.Customer,
+                        phone: this.Phone,
+                        city: this.City,
+                        address: this.Adress,
+                        product: this.ProductSelected.name,
+                        price: this.Price,
+                        quantity: this.Quantity,
+                        total: this.Total,
+                        date: this.date,
+                    }
+
+                    this.ProductSelected.order = Neworder
+
+                    this.ac_addNewOrder({
+                        category: this.ProductSelected.category,
+                        order: this.ProductSelected.order
+                    })
+
+                    this.ac_SubtractFromStock({
+                        category: this.ProductSelected.category,
+                        date: this.ProductSelected.date,
+                        number: this.Quantity
+                    })
+
+                    // RESET VALUES
+                    this.reset()
+
                 }
 
-                this.ProductSelected.order = Neworder
-
-                 this.ac_addNewOrder({
-                    category: this.ProductSelected.category,
-                    order: this.ProductSelected.order
-                })
-
-                this.ac_SubtractFromStock({
-                    category: this.ProductSelected.category,
-                    date: this.ProductSelected.date,
-                    number: this.Quantity
-                })
-
-                // RESET VALUES
-                this.reset()
-
-                }
-               
             },
 
             reset() {
@@ -187,9 +199,7 @@
                     .ProductSelected = ''
             },
 
-
         }
-
 
     }
 </script>
