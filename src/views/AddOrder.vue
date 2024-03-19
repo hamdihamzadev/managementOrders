@@ -157,7 +157,7 @@
         methods: {
             ...mapActions('NewOrders', ['ac_addNewOrder']),
             ...mapActions('ProductsModule', ['ac_SubtractFromStock']),
-
+            ...mapActions('allOrder', ['ac_addInAllOrder']),
             addOrder() {
 
                 if (this.Customer !== '' && this.Phone !== '' && this.City !== '' && this.Adress !== '' && this
@@ -178,6 +178,11 @@
 
                     this.ac_addNewOrder({
                         category: this.ProductSelected.category,
+                        order: this.ProductSelected.order
+                    })
+
+                    this.ac_addInAllOrder({
+                        status: 'new',
                         order: this.ProductSelected.order
                     })
 

@@ -1,12 +1,12 @@
 const state={
-    new:[],
-    confirmed:[],
-    shipped:[],
-    Delivered:[],
-    cancelled:[],
-    postpond:[],
-    progress:[],
-    return:[],
+    new:JSON.parse(localStorage.getItem('allOrder')).new,
+    confirmed:JSON.parse(localStorage.getItem('allOrder')).confirmed,
+    shipped:JSON.parse(localStorage.getItem('allOrder')).shipped,
+    Delivered:JSON.parse(localStorage.getItem('allOrder')).Delivered,
+    cancelled:JSON.parse(localStorage.getItem('allOrder')).cancelled,
+    postpond:JSON.parse(localStorage.getItem('allOrder')).postpond,
+    progress:JSON.parse(localStorage.getItem('allOrder')).progress,
+    return:JSON.parse(localStorage.getItem('allOrder')).return,
 }
 
 const mutations={
