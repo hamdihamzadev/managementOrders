@@ -41,12 +41,10 @@
                             disabled required>
                         </b-form-input>
                     </b-form-group>
-
-                    <b-form-group class="col-6 mb-4 mt-4" id="input-price" label="Quantity:" label-for="input-1">
-                        <b-form-input v-model="Quantity" id="input-1" type="number" placeholder="Enter Quantity product"
-                            required>
-                        </b-form-input>
+                    <b-form-group class="col-6 mb-4 mt-4"  label="Quantity:" label-for="input-1">
+                        <b-form-spinbutton  id="sb-quantity" v-model="Quantity" min="1" :max="ProductSelected.quantity"  style="height: 37px;"></b-form-spinbutton>
                     </b-form-group>
+                   
 
                     <b-form-group class="col-12 mb-4" id="input-price" label="Total:" label-for="input-1">
                         <b-form-input v-model="Total" id="input-1" type="number" placeholder="Total order" required>
@@ -82,7 +80,7 @@
                 Phone: '',
                 City: '',
                 Adress: '',
-                Quantity: '',
+                Quantity: 1,
                 ProductSelected: '',
             };
         },
@@ -107,7 +105,6 @@
                                 price: product.price,
                                 date: product.date,
                                 quantity: product.quantity
-
                             },
                             text: `${product.name} - ${product.price}$ - (${product.quantity})`
                         }
@@ -144,10 +141,19 @@
 
 
             stockout(){
-                if (this.ProductSelected.quantity === 0) {
+                if (this.ProductSelected.quantity === 0  ) {
                     return true
                 } else {
                     
+                    return false
+                }
+            },
+
+            disabledQuantity(){
+
+                if( this.Quantity>=this.ProductSelected.quantity){
+                    return true
+                }else{
                     return false
                 }
             }
@@ -156,7 +162,7 @@
 
         methods: {
             ...mapActions('NewOrders', ['ac_addNewOrder']),
-            ...mapActions('ProductsModule', ['ac_SubtractFromStock']),
+            ...mapActions('ProductsModule', ['ac_SubtractQuantity']),
             ...mapActions('allOrder', ['ac_addInAllOrder']),
             addOrder() {
 
@@ -186,7 +192,7 @@
                         order: this.ProductSelected.order
                     })
 
-                    this.ac_SubtractFromStock({
+                    this.ac_SubtractQuantity({
                         category: this.ProductSelected.category,
                         date: this.ProductSelected.date,
                         number: this.Quantity
@@ -200,11 +206,13 @@
             },
 
             reset() {
-                this.Customer = this.Phone = this.City = this.Adress = this.Price = this.Quantity = this.Total = this
+                this.Customer = this.Phone = this.City = this.Adress = this.Price  = this.Total = this
                     .ProductSelected = ''
+                     this.Quantity=1
             },
 
-        }
+        },
+
 
     }
 </script>
@@ -215,6 +223,11 @@
     }
 
     #select-product {
+        height: 37px;
+        border-radius: 0.375rem;
+    }
+
+    #sb-quantity{
         height: 37px;
         border-radius: 0.375rem;
     }
