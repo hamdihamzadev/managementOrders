@@ -50,29 +50,9 @@ let mutations = {
     }) {
         let prdAddStock = state[category][index]
         prdAddStock.quantity = Number(prdAddStock.quantity) + Number(number)
-        // console.log(`this is module ${category} and ${index} and number${number}`)
-        switch (category) {
-            case 'smartwatch':
-                localStorage.setItem('SmartWatch', JSON.stringify(state.smartwatch));
-                break;
-            case 'camera':
-                localStorage.setItem('Camera', JSON.stringify(state.camera));
-                break;
-            case 'powerbank':
-                localStorage.setItem('PowerBank', JSON.stringify(state.powerbank));
-                break;
-            case 'airpods':
-                localStorage.setItem('AirPods', JSON.stringify(state.airpods));
-                break;
-            case 'keyboard':
-                localStorage.setItem('KeyBoard', JSON.stringify(state.keyboard));
-                break;
-            default:
-                window.alert('category no found')
-        }
     },
-    // SUBTRACT FROM STOCK
-    m_SubtractFromStock(state, {
+    // SUBTRACT FROM NEWORDER
+    m_SubtractQuantity(state, {
         category,
         date,
         number
@@ -80,6 +60,17 @@ let mutations = {
     }) {
         let product=state[category].find(order=>order.date===date)
         product.quantity=Number(product.quantity) - Number(number)
+        
+    },
+    // SUBTRACT FROM STOCK
+    m_SubtractFromStock(state, {
+        category,
+        index,
+        number
+
+    }) {
+        let prdAddStock = state[category][index]
+        prdAddStock.quantity = Number(prdAddStock.quantity) - Number(number)
         
     }
 }
@@ -135,7 +126,8 @@ let actions = {
 
     // ADD STOCK
     ac_addStock({
-        commit
+        commit,
+        state
     }, {
         category,
         index,
@@ -148,10 +140,12 @@ let actions = {
             quantity,
             number
         })
+
+        localStorage.setItem('All Products',JSON.stringify(state));
     },
 
     // SUBTRACT FROM STOCK
-    ac_SubtractFromStock({
+    ac_SubtractQuantity({
         commit,
         state
     }, {
@@ -160,12 +154,17 @@ let actions = {
         number
         
     }) {
-        commit('m_SubtractFromStock', {
+        commit('m_SubtractQuantity', {
             category,
             date,
             number
             
         })
+        localStorage.setItem('All Products',JSON.stringify(state));
+    },
+
+    ac_SubtractFromStock({commit,state},{category,index,number}){
+        commit('m_SubtractFromStock',{category,index,number})
         localStorage.setItem('All Products',JSON.stringify(state));
     }
 }

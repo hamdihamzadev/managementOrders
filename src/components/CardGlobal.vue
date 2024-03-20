@@ -8,10 +8,6 @@
                 <div class="product">
                     <h2 class="title">{{item.title}}</h2>
                     <p class="numbers">{{ item.number }} {{ item.dollar }}</p>
-                    <p class="pourcentage">
-                        <i class='bx bx-up-arrow-alt'></i>
-                        {{ item.pourcentage }} % <span>( {{item.duration}} )</span>
-                    </p>
                 </div>
 
             </b-col>

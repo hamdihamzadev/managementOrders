@@ -32,8 +32,8 @@
                     {
                         classicon: 'income',
                         icon: 'bx bx-money',
-                        title: 'Income',
-                        number: this.income,
+                        title: 'Sales',
+                        number: this.sales,
                         dollar: '$',
                         pourcentage: 1.87
                     },
@@ -59,7 +59,7 @@
                 return numbOrders
             },
 
-            income(){
+            sales(){
                 let incomeOrders=0
                 Object.values(this.StoreNewOrders).forEach(tableCtg=>{
                     tableCtg.length>0 ? tableCtg.forEach(order=>{ incomeOrders= Math.floor(incomeOrders+ parseFloat(order.total))  }) : ''
@@ -69,9 +69,7 @@
 
         },
 
-        mounted(){
-            console.log(this.income)
-        }
+
 
     }
 </script>

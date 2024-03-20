@@ -17,10 +17,10 @@
                     <div id="productStock" class="row d-flex align-items-center">
                         <div id="title" class="col-2">
                             <h6 class="mb-1"> {{ prd.name }} </h6>
-                            <p> <strong>{{ prd.currentQuantity }}</strong> available</p>
+                            <p> <strong> {{ prd.quantity }}</strong></p>
                         </div>
                         <div id="title" class="col-9">
-                            <b-progress :value="prd.QuantityInPercentage" :max="max" show-progress class="mb-3"
+                            <b-progress :value="prd.quantity" :max="max" show-progress class="mb-3"
                                 :variant=prd.variant  >
                             </b-progress>
                         </div>
@@ -107,8 +107,12 @@
         },
 
         computed: {
+
             ...mapState('ProductsModule', {
                 productModuleStates: state => state
+            }),
+            ...mapState('allOrder', {
+                storeAllNewOrders: state => state.new
             }),
 
             getProductStock() {
@@ -118,50 +122,48 @@
                     this.productModuleStates[key].forEach((product, index) => {
 
                         // CALC PROGRSSE STOCK
-                        let currentQuantity = product.quantity - 40
-                        let QuantityInPercentage = currentQuantity / product.quantity * 100 
                         let productObject = {
                             name: product.name,
-                            currentQuantity,
-                            QuantityInPercentage,
+                            quantity: product.quantity,
                             index: index,
                             category: key,
-                            quantity: product.quantity,
-                            variant: this.getProgressVariant(QuantityInPercentage)
+                            variant: this.getProgressVariant(product.quantity)
                         }
 
                         allProducts.push(productObject)
                     })
                 }
                 return allProducts
+           
             },
+
 
             ShowProductStock() {
                 let result
                 switch (this.selected) {
                     case 'Suffisant':
                         result = this.getProductStock.filter(product => {
-                            return Math.round(product.QuantityInPercentage) >= 75
+                            return Math.round(product.quantity) >= 75
                         })
                         break;
 
                     case 'Acceptable':
                         result = this.getProductStock.filter(product => {
-                            return Math.round(product.QuantityInPercentage) >= 45 && Math.round(product
-                                .QuantityInPercentage) < 75
+                            return Math.round(product.quantity) >= 45 && Math.round(product
+                                .quantity) < 75
                         })
                         break;
 
                     case 'Faible':
                         result = this.getProductStock.filter(product => {
-                            return Math.round(product.QuantityInPercentage) >= 10 && Math.round(product
-                                .QuantityInPercentage) < 45
+                            return Math.round(product.quantity) >= 10 && Math.round(product
+                                .quantity) < 45
                         })
                         break;
 
                     case 'Épuisé':
                         result = this.getProductStock.filter(product => {
-                            return Math.round(product.QuantityInPercentage) < 10
+                            return Math.round(product.quantity) < 10
                         })
                         break;
                     default:
@@ -182,65 +184,7 @@
 
         methods: {
             ...mapActions('ProductsModule', ['ac_addproduct', 'ac_addStock', 'ac_SubtractFromStock']),
-            testarray() {
-                console.log(this.stockProduct)
-            },
-
-            getAllprdinLocal() {
-
-                // PRODUCTS SMART WATCH
-                let smartwatchSave = JSON.parse(localStorage.getItem('SmartWatch'))
-                let StateSmartWatch = this.productModuleStates.smartwatch
-                smartwatchSave && smartwatchSave.length > StateSmartWatch.length ? smartwatchSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'smartwatch',
-                        newprd: prd
-                    })
-                }) : ''
-
-                // // PRODUCTS CAMERA
-                let CameraSave = JSON.parse(localStorage.getItem('Camera'))
-                let StateCamera = this.productModuleStates.camera
-                CameraSave && CameraSave.length > StateCamera.length ? CameraSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'camera',
-                        newprd: prd
-                    })
-                }) : ''
-
-                // // PRODUCTS POWER BANK
-                let PowerbankSave = JSON.parse(localStorage.getItem('PowerBank'))
-                let StatePowerbank = this.productModuleStates.powerbank
-                PowerbankSave && PowerbankSave.length > StatePowerbank.length ? PowerbankSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'powerbank',
-                        newprd: prd
-                    })
-                }) : ''
-
-                // // PRODUCTS AIRPODS
-                let AirPodsSave = JSON.parse(localStorage.getItem('AirPods'))
-                let StateAirPods = this.productModuleStates.airpods
-                AirPodsSave && AirPodsSave.length > StateAirPods.length ? AirPodsSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'airpods',
-                        newprd: prd
-                    })
-                }) : ''
-
-
-                // // PRODUCTS KEYBOARD
-                let KeyBoardSave = JSON.parse(localStorage.getItem('KeyBoard'))
-                let StateKeyBoard = this.productModuleStates.keyboard
-                KeyBoardSave && KeyBoardSave.length > StateKeyBoard.length ? KeyBoardSave.forEach(prd => {
-                    this.ac_addproduct({
-                        category: 'keyboard',
-                        newprd: prd
-                    })
-                }) : ''
-
-            },
-
+    
             showModalStock(action, category, index) {
                 this.$bvModal.show('modal-addStock')
                 this.categoryPrdStock = category
@@ -304,10 +248,9 @@
             }
         },
 
-        mounted() {
-            this.getAllprdinLocal()
+      
 
-        }
+
     }
 </script>
 

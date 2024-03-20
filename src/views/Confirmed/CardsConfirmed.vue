@@ -1,44 +1,59 @@
 <template>
     <div class="carts-confirmed">
-        <CardGlobal :carts="carts" />
+        <CardGlobal :carts="cards" />
     </div>
 </template>
 
 <script>
     import CardGlobal from '@/components/CardGlobal.vue'
+    import { mapState } from 'vuex'
     export default {
         name: 'CardsConfirmed',
         components: {
             CardGlobal,
         },
-        data() {
-            return {
-                
-                carts: [
+
+        computed: {
+            cards() {
+                let allCrads = [
 
                     {
-                    classicon: 'Order-Confirmed',
-                    icon: 'bx bx-package',
-                    title: 'Order Confirmed',
-                    number: "120 / 234",
-                    pourcentage: 3.20,
-                    duration:'Today'
-                   
-                },
+                        classicon: 'Order-Confirmed',
+                        icon: 'bx bx-package',
+                        title: 'Order Confirmed',
+                        number: "120 / 234",
+                        pourcentage: 3.20,
+                        duration: 'Today'
+
+                    },
                     {
 
-                    classicon: 'confirmation-rate',
-                    icon: 'bx bx-chart',
-                    title: 'Confirmation Rate',
-                    number: '57%',
-                    pourcentage: 3.20,
-                    duration:'Today'
-                }
-            ]
+                        classicon: 'confirmation-rate',
+                        icon: 'bx bx-chart',
+                        title: 'Confirmation Rate',
+                        number: '57%',
+                        pourcentage: 3.20,
+                        duration: 'Today'
+                    }
+                ]
+                return allCrads
+            },
 
-            }
+            ...mapState('allOrder',{
+                storeAllOrders:state=>state
+            }),
+
+            // numbereOrdersConirmed(){
+            //    let Orders=this.storeAllOrders.confirmed.length
+            //    return Orders
+            // },
+
+
+        },
+
+        mounted(){
+            console.log(this.storeAllOrders.confirmed)
         }
 
     }
 </script>
-
