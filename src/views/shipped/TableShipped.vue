@@ -22,7 +22,23 @@
 
         data() {
             return {
-                options: ['Delivered', 'Postponed', 'Return', 'Not treat'],
+                options: [{
+                        value: 'Delivered',
+                        text: 'Delivered'
+                    },
+                    {
+                        value: 'Postponed',
+                        text: 'Postponed'
+                    },
+                    {
+                        value: 'Return',
+                        text: 'Return'
+                    },
+                    {
+                        value: 'Not treat',
+                        text: 'Not treat'
+                    },
+                ],
                 popupVal: ''
             }
         },

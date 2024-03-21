@@ -12,6 +12,8 @@
         <!----- SEARCH INPUT ----->
         <b-form-input id="filter-input" type="search" placeholder="Search product or ..." @input="searchprd">
         </b-form-input>
+     
+
       </b-col>
     </b-row>
 
@@ -38,23 +40,23 @@
       <b-tbody ref="myTable" id="tbody">
         <b-tr v-for="(order,index) in orders" :key="order.id" :id="`order${index}`">
 
-          <b-td >{{ order.Customer }}</b-td>
-          <b-td >{{ order.phone }}</b-td>
-          <b-td >{{ order.city }}</b-td>
-          <b-td >{{ order.address }}</b-td>
-          <b-td >{{ order.product }}</b-td>
-          <b-td >{{ order.price }}</b-td>
-          <b-td >{{ order.quantity }}</b-td>
-          <b-td >{{ order.total }}</b-td>
-          <b-td v-show="thTimepost" >{{ order.Timepost }}</b-td>
-          
+          <b-td>{{ order.Customer }}</b-td>
+          <b-td>{{ order.phone }}</b-td>
+          <b-td>{{ order.city }}</b-td>
+          <b-td>{{ order.address }}</b-td>
+          <b-td>{{ order.product }}</b-td>
+          <b-td>{{ order.price }}</b-td>
+          <b-td>{{ order.quantity }}</b-td>
+          <b-td>{{ order.total }}</b-td>
+          <b-td v-show="thTimepost">{{ order.Timepost }}</b-td>
+
           <!----------------STATUS-------------->
 
-          <b-td v-if="showStatu" >
+          <b-td v-if="showStatu">
             <b-form-select @change="changeBackSelect(index)" ref="select" :id="`select${index}`" :options="options"
-              class="mb-3 <selectstatus>" size="sm" v-model="statusValues[index]" 
-                 >
+              size="sm" v-model="statusValues[index]" :class="bgstatus(index)">
             </b-form-select>
+
           </b-td>
 
           <!----------------ACTION-------------->
@@ -78,7 +80,7 @@
 
     <!---------- SHOW POPUP --------------->
 
-    <b-modal id="modalPostpond" ref="modalPostpond" title="Submit Your Name" @ok="handleOk" :ok-title="'Send'" >
+    <b-modal id="modalPostpond" ref="modalPostpond" title="Submit Your Name" @ok="handleOk" :ok-title="'Send'">
       <form ref="form">
         <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
           <b-form-input id="name-input" ref="inputPopup" :value="valuePopup" @input="onInputpopup"
@@ -108,17 +110,17 @@
         statusValues: [],
         // FOR Popup
         stateInputPopup: null,
-    
+
       }
     },
- 
+
     computed: {
       ...mapState('NewOrders', {
         TodayOrders: 'Orders Confirmed'
       }),
 
-      ...mapState('allOrder',{
-        storeAllOrder:state=>state
+      ...mapState('allOrder', {
+        storeAllOrder: state => state
       }),
 
       totalPages() {
@@ -136,20 +138,40 @@
       showActionSend() {
         return this.$route.path === '/Orders/Return' || this.$route.path === '/Orders/Deliverd' || this.$route.path ===
           '/Orders/Canceld' ? false : true
-      }
+      },
+
+
     },
 
-
     methods: {
+
+      bgstatus(index) {
+        let value = this.statusValues[index]
+        switch (value) {
+          case 'Confirmed':
+          case 'Delivered':
+          case 'Shipped':
+            return 'bg-green';
+          default:
+            return 'white'
+        }
+
+      },
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
-      sendorder(ref,index) {
-        this.$emit('send-order',{ref,index})
+      sendorder(ref, index) {
+        this.$emit('send-order', {
+          ref,
+          index
+        })
 
       },
 
       // EMIT EVENT FOR REMOVE ORDER
-      removeorder(ref,index) {
-        this.$emit('remove-order',{ref,index})
+      removeorder(ref, index) {
+        this.$emit('remove-order', {
+          ref,
+          index
+        })
       },
 
       //--------------------------------------------------------------------------------
@@ -189,18 +211,9 @@
       changeBackSelect(index) {
 
         this.$emit('save-status')
-
         let elem = this.$refs.select[index].$el
         // SHOW AND HIDE POPUP
         elem.value === 'Postponed' ? this.$root.$bvModal.show('modalPostpond') : ''
-        // CHANGE BACKGROUND / COLOR / BORDER FOR OPTIONS   
-        elem.style.cssText = elem.value === 'Confirmed' || elem.value === 'Delivered' || elem.value === 'Shipped' ?
-          'background: #2196531a; color: #219653; border-color: #219653;' :
-          elem.value === 'Canceled' || elem.value === 'Return' ?
-          'background: #ff63471a; color: #FF6347; border-color: #FF6347;' :
-          elem.value === 'Postponed' || elem.value === 'Progress' ?
-          'background: #0b4ab71a; color: #0b4ab6; border-color: #0b4ab6;' : ''
-          elem.value ==='' ? 'background: #6c757d;  border-color: #0b4ab6;' : ''
       },
 
 
@@ -219,8 +232,8 @@
 
       // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
       ...mapActions('allOrder', ['ac_addInAllOrder']),
-      getAllOrders(){
-        let OrdersLocal=JSON.parse(localStorage.getItem('allOrder'))
+      getAllOrders() {
+        let OrdersLocal = JSON.parse(localStorage.getItem('allOrder'))
 
         let numbersOrderLocal = Object.values(OrdersLocal).reduce((acc, tableCtg) => {
           return acc + tableCtg.length;
@@ -230,30 +243,40 @@
           return acc + tableCtg.length;
         }, 0);
 
-        if (OrdersLocal && numbersOrderLocal > numbersOrderStore){
-          for(const statusOrder in OrdersLocal){
-          OrdersLocal[statusOrder].forEach(order=>{this.ac_addInAllOrder({status:statusOrder,order:order})})
-        }
+        if (OrdersLocal && numbersOrderLocal > numbersOrderStore) {
+          for (const statusOrder in OrdersLocal) {
+            OrdersLocal[statusOrder].forEach(order => {
+              this.ac_addInAllOrder({
+                status: statusOrder,
+                order: order
+              })
+            })
+          }
         }
 
       },
 
     },
 
-    mounted(){
+    mounted() {
 
-       // GET ALL STATUS  
-      this.$route.path==='/Orders/Confirmed' ? this.statusValues=JSON.parse(localStorage.getItem('statusConfirmed')) || [] :null
-      this.$route.path==='/Orders/Shipped' ? this.statusValues=JSON.parse(localStorage.getItem('statusShipped')) || [] :null
-      this.$route.path==='/Orders/InProgress' ? this.statusValues=JSON.parse(localStorage.getItem('statusProgress')) || [] :null
-      this.$route.path==='/Orders/PostPond' ? this.statusValues=JSON.parse(localStorage.getItem('statusPostponed')) || [] :null
-      this.$route.path==='/Orders/NewOrders' ? this.statusValues=JSON.parse(localStorage.getItem('statusNeworders')) || [] :null
+      // GET ALL STATUS  
+      this.$route.path === '/Orders/Confirmed' ? this.statusValues = JSON.parse(localStorage.getItem(
+        'statusConfirmed')) || [] : null
+      this.$route.path === '/Orders/Shipped' ? this.statusValues = JSON.parse(localStorage.getItem('statusShipped')) ||
+        [] : null
+      this.$route.path === '/Orders/InProgress' ? this.statusValues = JSON.parse(localStorage.getItem(
+        'statusProgress')) || [] : null
+      this.$route.path === '/Orders/PostPond' ? this.statusValues = JSON.parse(localStorage.getItem(
+        'statusPostponed')) || [] : null
+      this.$route.path === '/Orders/NewOrders' ? this.statusValues = JSON.parse(localStorage.getItem(
+        'statusNeworders')) || [] : null
 
       // GET ALL ORDERS 
       this.getAllOrders()
-      
+
     }
-    
+
   }
 </script>
 
@@ -288,6 +311,10 @@
     color: var(--couleur-primaire-3);
   }
 
+  #select-sts .valuopton :hover {
+    background-color: #cb0303
+  }
+
 
   .selectstatus {
     border-radius: 13.25rem;
@@ -300,25 +327,11 @@
   }
 
 
-  select option[value='Confirmed'],
-  option[value='Delivered'],
-  option[value='Shipped'] {
-    background-color: #90EE90;
-    font-size: 13px;
-
-  }
-
-  select option[value='Canceled'],
-  option[value='Return'] {
-    background-color: #FF6347;
+  .select {
     font-size: 13px;
   }
 
-  select option[value='Postponed'],
-  option[value='Progress'] {
-    background-color: #0b4ab6;
-    font-size: 13px;
-  }
+
 
   #modal-1___BV_modal_backdrop_ {
     background-color: #00000026;
@@ -337,4 +350,25 @@
   #modal-footer-sm___BV_modal_footer_ :last-child {
     background-color: #04a820;
   }
+
+
+  .bg-green {
+    background: rgba(33, 150, 83, 0.1);
+    color: #219653;
+    font-size: 13px;
+  }
+
+  .Canceled {
+    background-color: #FF6347;
+    font-size: 13px;
+  }
+
+  .white {
+    background-color: white;
+    font-size: 13px;
+  }
 </style>
+
+
+<b-form-select :options="options">
+</b-form-select>

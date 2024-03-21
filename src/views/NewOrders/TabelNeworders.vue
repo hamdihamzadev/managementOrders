@@ -1,8 +1,8 @@
 <template>
 
     <div class="tabelNeworders mt-4">
-        <TableGlobal :orders="neworders" :options="options"  @send-order="SendOrder"
-            sentenceorders="No Orders Today" @save-status="saveStatus" />
+        <TableGlobal :orders="neworders" :options="options" @send-order="SendOrder" sentenceorders="No Orders Today"
+            @save-status="saveStatus" />
     </div>
 
 </template>
@@ -22,8 +22,21 @@
         },
         data() {
             return {
-             
-                options: ['Confirmed', 'Canceled', 'Not treat'],
+
+                options: [{
+                        value: 'Confirmed',
+                        text: 'Confirmed'
+                    },
+                    {
+                        value: 'Canceled',
+                        text: 'Canceled'
+                    },
+                    {
+                        value: 'Not treat',
+                        text: 'Not treat'
+                    },
+                ],
+
             }
         },
         computed: {
@@ -38,10 +51,12 @@
             neworders() {
                 let allNewOrders = []
                 Object.values(this.storeNeworders).forEach(tableCtg => {
-                    tableCtg.forEach(order => {allNewOrders.push(order)})
+                    tableCtg.forEach(order => {
+                        allNewOrders.push(order)
+                    })
                 })
-                allNewOrders.sort((orderA,orderB)=>{
-                    return orderA-orderB
+                allNewOrders.sort((orderA, orderB) => {
+                    return orderA - orderB
                 })
                 return allNewOrders
             },
@@ -66,24 +81,31 @@
             SendOrder(data) {
 
                 this.allValues
-                let orderSelected={}
-                for(const category in this.storeNeworders){
-                    this.storeNeworders[category].forEach(order=>{
+                let orderSelected = {}
+                for (const category in this.storeNeworders) {
+                    this.storeNeworders[category].forEach(order => {
                         // CHECK  VERIFICATION ORDER WITH REF
-                        order.ref===data.ref?( orderSelected.category=category,orderSelected.order=order):''
-                    }) 
+                        order.ref === data.ref ? (orderSelected.category = category, orderSelected.order =
+                            order) : ''
+                    })
                 }
 
                 // GET VALUE SELECTED
                 let valueselected = document.querySelector(`#select${data.index}`).value
                 // CHECK VALUE AND PUSH ORDER
                 valueselected === 'Confirmed' ? (this.ac_orderConfirmed(orderSelected),
-                this.ac_addInAllOrder({status:'confirmed',order:orderSelected})) :
-                valueselected === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
-                this.ac_addInAllOrder({status:'cancelled',order:orderSelected})) : ''
+                        this.ac_addInAllOrder({
+                            status: 'confirmed',
+                            order: orderSelected
+                        })) :
+                    valueselected === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
+                        this.ac_addInAllOrder({
+                            status: 'cancelled',
+                            order: orderSelected
+                        })) : ''
 
                 console.log(this.storeallOrder)
-                
+
             },
 
             saveStatus() {

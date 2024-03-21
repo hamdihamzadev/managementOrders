@@ -19,7 +19,19 @@
         },
         data() {
             return {
-                options: ['Delivered', 'Return', 'Not treat'],
+                options: [{
+                        value: 'Delivered',
+                        text: 'Delivered'
+                    },
+                    {
+                        value: 'Return',
+                        text: 'Return'
+                    },
+                    {
+                        value: 'Not treat',
+                        text: 'Not treat'
+                    },
+                ],
             }
         },
         computed: {
