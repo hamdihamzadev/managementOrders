@@ -48,26 +48,29 @@
                 return carts
             },
 
-            ...mapState('NewOrders', {
-                StoreNewOrders:state=>state
+            ...mapState('allOrder', {
+                AllNewOrders:state=>state.new
             }),
 
             NumbersNewOrders(){
-                let numbOrders=Object.values(this.StoreNewOrders).reduce((accu,table)=>{
-                    return accu+table.length
-                },0)
+                let numbOrders=this.AllNewOrders.length
                 return numbOrders
             },
 
             sales(){
-                let incomeOrders=0
-                Object.values(this.StoreNewOrders).forEach(tableCtg=>{
-                    tableCtg.length>0 ? tableCtg.forEach(order=>{ incomeOrders= Math.floor(incomeOrders+ parseFloat(order.total))  }) : ''
-                })
-                return incomeOrders
+                let Allsales=this.AllNewOrders.reduce((accu,order)=>{
+                    return accu+order.total
+                },0)
+                return Allsales
             }
 
         },
+
+        mounted(){
+            this.AllNewOrders.forEach(order=>{
+                console.log(order.total)
+            })
+        }
 
 
 

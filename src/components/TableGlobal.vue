@@ -99,6 +99,7 @@
     mapState,
   
   } from 'vuex'
+ 
   export default {
     name: "TableGlobal",
     props: ['orders', 'options', 'thTimepost', 'valuePopup', 'sentenceorders'],
@@ -227,8 +228,6 @@
         elem.value === 'Postponed' ? this.$root.$bvModal.show('modalPostpond') : ''
       },
 
-
-
       // SEND OK popup
       handleOk(bvModalEvent) {
 
@@ -241,10 +240,11 @@
         this.$emit('input', val)
       },
 
+  
     },
 
     mounted() {
-
+    
       // GET ALL STATUS  
       this.$route.path === '/Orders/Confirmed' ? this.statusValues = JSON.parse(localStorage.getItem(
         'statusConfirmed')) || [] : null
