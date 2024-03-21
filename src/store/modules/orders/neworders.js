@@ -12,7 +12,8 @@ const mutations={
 
     m_addNewOrder(state,{category,order}){
         state[category].push(order)
-    }
+    },
+
 }
 
 const actions ={

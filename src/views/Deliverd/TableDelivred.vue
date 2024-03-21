@@ -56,30 +56,7 @@
                 }
             },
 
-            getOrderDelivred() {
-                let orderDelivredlocal = JSON.parse(localStorage.getItem('Ordersdelivered'))
-                let numbersOrderLocal = Object.values(orderDelivredlocal).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-                let numbersOrderStore = Object.values(this.StoreOrdersDelivred).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-  
-
-                if (orderDelivredlocal && numbersOrderLocal > numbersOrderStore) {
-                    for (const category in orderDelivredlocal) {
-                        orderDelivredlocal[category].forEach(orderConf => {
-                            this.ac_addOrdersdelivered({
-                                category: category,
-                                order: orderConf
-                            })
-                        })
-                    }
-                }
-               
-                  
-                
-            },
+    
         }
     }
 </script>

@@ -33,12 +33,6 @@
       },
     },
 
-    mounted() {
-      // CALL FUNCTION getOrderShipped
-      this.getOrderShipped()
-    },
-
-
     methods: {
       ...mapActions('ReturnOrders', ['ac_RemoveOrderReturn']),
       ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
@@ -53,31 +47,6 @@
         }
       },
 
-      // GET ORDERS DELIVRED IN LOCALSTOREAGE
-      getOrderShipped() {
-
-        let OrdersReturnLocal = JSON.parse(localStorage.getItem('Return'))
-        let numbersOrderLocal = Object.values(OrdersReturnLocal).reduce((acc, tableCtg) => {
-            return acc + tableCtg.length;
-        }, 0);
-
-        let numbersOrderStore = Object.values(this.StoreOrdersReturn).reduce((acc, tableCtg) => {
-            return acc + tableCtg.length;
-        }, 0);
-
-        if (OrdersReturnLocal && numbersOrderLocal > numbersOrderStore) {
-          for (const category in OrdersReturnLocal) {
-            OrdersReturnLocal[category].forEach(orderConf => {
-                  this.ac_addOrderReturn({
-                      category: category,
-                      order: orderConf
-                  })
-              })
-          }
-        }
-    
-       
-      },
     }
   }
 </script>

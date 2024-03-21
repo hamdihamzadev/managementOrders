@@ -141,10 +141,6 @@
                             category: orderSelected.category,
                             ref: data.ref
                         }), this.ResetvaluesRemoSend(data.index)) : ''
-
-
-
-
             },
 
             //REMOVE ORDER
@@ -172,28 +168,6 @@
                 })
                 window.localStorage.setItem('statusShipped', JSON.stringify(this.allValues))
             },
-
-            getOrderShipped() {
-                let orderShippedlocal = JSON.parse(localStorage.getItem('ShippedOrders'))
-                let numbersOrderLocal = Object.values(orderShippedlocal).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-                let numbersOrderStore = Object.values(this.StoreShippedOrders).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-
-                if (orderShippedlocal && numbersOrderLocal > numbersOrderStore) {
-                    for (const category in orderShippedlocal) {
-                        orderShippedlocal[category].forEach(orderConf => {
-                            this.ac_addOrderShipped({
-                                category: category,
-                                order: orderConf
-                            })
-                        })
-                    }
-                }
-            },
-
         },
 
 

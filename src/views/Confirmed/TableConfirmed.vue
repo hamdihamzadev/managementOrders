@@ -82,27 +82,6 @@
       // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
       ...mapActions('allOrder', ['ac_addInAllOrder']),
 
-      getOrdersConfirmed() {
-        let orderConfirmedlocal = JSON.parse(localStorage.getItem('Confirmed'))
-        let numbersOrderLocal = Object.values(orderConfirmedlocal).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-        let numbersOrderStore = Object.values(this.storeConfirmed).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-
-        if (orderConfirmedlocal && numbersOrderLocal > numbersOrderStore) {
-          for (const category in orderConfirmedlocal) {
-            orderConfirmedlocal[category].forEach(orderConf => {
-              this.ac_orderConfirmed({
-                category: category,
-                order: orderConf
-              })
-            })
-          }
-        }
-
-      },
 
       saveStatus() {
         let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)

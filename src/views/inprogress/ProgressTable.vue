@@ -53,10 +53,6 @@
 
     },
 
-    mounted() {
-      // CALL FUNCTION GET ORDERS
-      this.getOrderProgress()
-    },
 
     methods: {
       // GET ACTIONS IN STORE FOR ADD ORDER PROGRESS
@@ -67,30 +63,6 @@
       ...mapActions('ShippedOrders', ['ac_addOrderShipped']),
       // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
       ...mapActions('allOrder', ['ac_addInAllOrder']),
-
-
-      // GET ORDERS Progress IN LOCALSTOREAGE
-      getOrderProgress() {
-        let OrdersProgressLocal = JSON.parse(localStorage.getItem('Progress'))
-        let numbersOrderLocal = Object.values(OrdersProgressLocal).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-        let numbersOrderStore = Object.values(this.StoreOrdersInProgress).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-
-        if (OrdersProgressLocal && numbersOrderLocal > numbersOrderStore) {
-            for (const category in OrdersProgressLocal) {
-              OrdersProgressLocal[category].forEach(orderProg => {
-                    this.ac_addOrderInProgress({
-                        category: category,
-                        order: orderProg
-                    })
-                })
-            }
-        }
-      },
-
       
 
       SendOrder(data) {

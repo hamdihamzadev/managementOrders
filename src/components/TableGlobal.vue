@@ -97,7 +97,7 @@
 <script>
   import {
     mapState,
-    mapActions
+  
   } from 'vuex'
   export default {
     name: "TableGlobal",
@@ -221,7 +221,6 @@
 
       // STYLING SELECT IN CHANGE 
       changeBackSelect(index) {
-
         this.$emit('save-status')
         let elem = this.$refs.select[index].$el
         // SHOW AND HIDE POPUP
@@ -242,32 +241,6 @@
         this.$emit('input', val)
       },
 
-      // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
-      ...mapActions('allOrder', ['ac_addInAllOrder']),
-      getAllOrders() {
-        let OrdersLocal = JSON.parse(localStorage.getItem('allOrder'))
-
-        let numbersOrderLocal = Object.values(OrdersLocal).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-
-        let numbersOrderStore = Object.values(this.storeAllOrder).reduce((acc, tableCtg) => {
-          return acc + tableCtg.length;
-        }, 0);
-
-        if (OrdersLocal && numbersOrderLocal > numbersOrderStore) {
-          for (const statusOrder in OrdersLocal) {
-            OrdersLocal[statusOrder].forEach(order => {
-              this.ac_addInAllOrder({
-                status: statusOrder,
-                order: order
-              })
-            })
-          }
-        }
-
-      },
-
     },
 
     mounted() {
@@ -283,9 +256,6 @@
         'statusPostponed')) || [] : null
       this.$route.path === '/Orders/NewOrders' ? this.statusValues = JSON.parse(localStorage.getItem(
         'statusNeworders')) || [] : null
-
-      // GET ALL ORDERS 
-      this.getAllOrders()
 
     }
 

@@ -45,29 +45,13 @@
             }
         },
 
-        mounted(){
-            this.getOrdersCancled()
-        },
+    
 
          methods:{
         // GET ACTION REMOVE ORDER CANCELD IN VUEX
         ...mapActions('OrderCancelled',['ac_RemoveOrderCancelled']),
         // GET FUNCTION ACTIONS IN VUEX CANCELD
         ...mapActions('OrderCancelled', ['ac_addOrderCancelled']),
-
-         // GET ORDERS FROM LOCALSTORAGE AND PUSH IN STORE
-         getOrdersCancled(){
-            let orderLocal=JSON.parse(localStorage.getItem('CancelledOrders'))
-            let numbersOrderLocal = Object.values(orderLocal).reduce((acc, tableCtg) => {return acc + tableCtg.length;}, 0);
-            let numbersOrderStore = Object.values(this.StoreOrdersCanceld).reduce((acc, tableCtg) => {return acc + tableCtg.length;}, 0);
-
-            if(orderLocal && numbersOrderLocal>numbersOrderStore){
-                for(const category in orderLocal){
-                    orderLocal[category].forEach(orderConf=>{ this.ac_addOrderCancelled({category:category,order:orderConf})})
-                }
-            }
-            
-         },
 
         //REMOVE ORDER CANCELD
         removeorder(data){

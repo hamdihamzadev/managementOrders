@@ -1,9 +1,9 @@
 const state={
-    smartwatch: [],
-    camera: [],
-    powerbank: [],
-    airpods: [],
-    keyboard: []
+    smartwatch:JSON.parse(localStorage.getItem('CancelledOrders')).smartwatch,
+    camera: JSON.parse(localStorage.getItem('CancelledOrders')).camera,
+    powerbank: JSON.parse(localStorage.getItem('CancelledOrders')).powerbank,
+    airpods: JSON.parse(localStorage.getItem('CancelledOrders')).airpods,
+    keyboard: JSON.parse(localStorage.getItem('CancelledOrders')).keyboard
 }
 
 const mutations={
