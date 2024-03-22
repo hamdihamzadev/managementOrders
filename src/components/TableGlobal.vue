@@ -54,8 +54,8 @@
           <!----------------STATUS-------------->
 
           <b-td v-if="showStatu">
-            <select @change="changeBackSelect(index)" :id="`select${index}`" v-model="storevaluesStatus[index]"
-              ref="select" >
+            <select @change="changeBackSelect(index)" :id="`select${index}`" v-model="valuesSelectes[index]"
+              ref="select">
               <!-- :style="bgStatus(index)" -->
               <option style="background-color: white; color:black" class="bg-white" v-for="(option , index) in options"
                 :key="index" :value="option.value">{{option.text}}</option>
@@ -69,7 +69,8 @@
               <template #button-content>
                 <i class='bx bx-dots-horizontal-rounded'></i>
               </template>
-              <b-dropdown-item href="#" @click="sendorder(order,storevaluesStatus[index],index)" v-if="showActionSend">Send
+              <b-dropdown-item href="#" @click="sendorder(order,valuesSelectes[index],index)" v-if="showActionSend">
+                Send
               </b-dropdown-item>
               <b-dropdown-item href="#" @click="removeorder(order.date,index)">Remove</b-dropdown-item>
             </b-dropdown>
@@ -127,8 +128,18 @@
       }),
 
       ...mapState('valuesStatus', {
-        storevaluesStatus: state => state.new
+        storevaluesStatus: state => state
       }),
+
+      valuesSelectes() {
+        let values=null
+        this.$route.path === '/Orders/NewOrders' ? values = this.storevaluesStatus.new || [] : null
+        this.$route.path === '/Orders/Confirmed' ? values = this.storevaluesStatus.confirmed || [] : null
+        this.$route.path === '/Orders/Shipped' ? values = this.storevaluesStatus.shipped || [] : null
+        this.$route.path === '/Orders/InProgress' ? values = this.storevaluesStatus.progress || [] : null
+        this.$route.path === '/Orders/PostPond' ? values = this.storevaluesStatus.npostpondew || [] : null
+        return values
+      },
 
       totalPages() {
         return this.orders.length / 10
@@ -146,9 +157,6 @@
         return this.$route.path === '/Orders/Return' || this.$route.path === '/Orders/Deliverd' || this.$route.path ===
           '/Orders/Canceld' ? false : true
       },
-
-
-
 
     },
 
@@ -177,12 +185,12 @@
       // },
 
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
-      sendorder(order,value,index) {
+      sendorder(order, value, index) {
         this.$emit('send-order', {
           order,
           value,
           index
-          
+
         })
 
       },
@@ -251,21 +259,7 @@
 
     },
 
-    mounted() {
 
-      // GET ALL STATUS  
-      this.$route.path === '/Orders/Confirmed' ? this.statusValues = JSON.parse(localStorage.getItem(
-        'statusConfirmed')) || [] : null
-      this.$route.path === '/Orders/Shipped' ? this.statusValues = JSON.parse(localStorage.getItem('statusShipped')) ||
-        [] : null
-      this.$route.path === '/Orders/InProgress' ? this.statusValues = JSON.parse(localStorage.getItem(
-        'statusProgress')) || [] : null
-      this.$route.path === '/Orders/PostPond' ? this.statusValues = JSON.parse(localStorage.getItem(
-        'statusPostponed')) || [] : null
-      this.$route.path === '/Orders/NewOrders' ? this.statusValues = JSON.parse(localStorage.getItem(
-        'statusNeworders')) || [] : null
-
-    }
 
   }
 </script>

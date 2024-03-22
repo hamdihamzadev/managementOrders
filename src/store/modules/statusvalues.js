@@ -1,12 +1,9 @@
 let state={
     new:JSON.parse(localStorage.getItem('valuesStatus')).new,
-    confirmed:[],
-    shipped:[],
-    Delivered:[],
-    cancelled:[],
-    postpond:[],
-    progress:[],
-    return:[],
+    confirmed:JSON.parse(localStorage.getItem('valuesStatus')).confirmed,
+    shipped:JSON.parse(localStorage.getItem('valuesStatus')).shipped,
+    postpond:JSON.parse(localStorage.getItem('valuesStatus')).postpond,
+    progress:JSON.parse(localStorage.getItem('valuesStatus')).progress,
 }
 
 let mutations={
