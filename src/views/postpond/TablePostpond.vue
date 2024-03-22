@@ -75,6 +75,16 @@
             ...mapActions('ReturnOrders', ['ac_addOrderReturn']),
             // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
             ...mapActions('allOrder', ['ac_addInAllOrder']),
+            // GET FUNCTION ACTIONS IN VUEX VALUES STATUS
+            ...mapActions('valuesStatus', ['ac_addNewValue', 'ac_removeValue']),
+
+            saveStatus() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                this.ac_addNewValue({
+                    status: 'postpond',
+                    values: allValues
+                })
+            },
 
             // GET ALL ORDERS POSTPOND AND SHOW IN TABLE
             getOrdersPostponed() {
@@ -98,11 +108,7 @@
                 }
             },
 
-            // SEND ORDER IN YOUR PLACE
-            saveStatus() {
-                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                window.localStorage.setItem('statusPostponed', JSON.stringify(allValues))
-            },
+
 
             // SEND ORDER IN YOUR PLACE
             SendOrder(data) {
@@ -119,7 +125,7 @@
                 let valueselected = document.querySelector(`#select${data.index}`).value
 
                 // -------------- CHECK VALUE --------------
-                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected), 
+                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'Delivered',
                             order: orderSelected
@@ -129,15 +135,15 @@
                             ref: data.ref
                         }), this.ResetvaluesRemoSend(data.index)) :
 
-                    valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected), 
+                    valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'return',
                             order: orderSelected
                         }),
                         this.ac_RemoveOrderPostpond({
-                        category: orderSelected.category,
-                        ref: data.ref
-                    }), this.ResetvaluesRemoSend(data.index)) : ''
+                            category: orderSelected.category,
+                            ref: data.ref
+                        }), this.ResetvaluesRemoSend(data.index)) : ''
 
 
             },

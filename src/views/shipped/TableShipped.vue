@@ -63,17 +63,6 @@
                 })
             },
 
-            // GET ALL VALUES IN SELECTS
-            allValues() {
-                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                return allValues
-            }
-
-        },
-
-        mounted() {
-            // GET ALL ORDERS SHIPPED IN LOCALSTORAGE
-            this.getOrderShipped()
 
         },
 
@@ -88,11 +77,16 @@
             ...mapActions('ProductsModule', ['ac_addproduct']),
             // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
             ...mapActions('allOrder', ['ac_addInAllOrder']),
+            // GET FUNCTION ACTIONS IN VUEX VALUES STATUS
+            ...mapActions('valuesStatus', ['ac_addNewValue', 'ac_removeValue']),
 
             // SAVE ALL VALUES STATUS IN LOCAL STORAGE
             saveStatus() {
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                window.localStorage.setItem('statusShipped', JSON.stringify(allValues))
+                this.ac_addNewValue({
+                    status: 'shipped',
+                    values: allValues
+                })
             },
 
             // CREATE FUNCTION FOR SEND ORDER IN PAGE SPECIFICE
