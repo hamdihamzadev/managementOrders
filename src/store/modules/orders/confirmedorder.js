@@ -7,14 +7,16 @@ const state={
 }
 
 const mutations={
+    
     m_addorderConfirmed(state,{category,order}){
         state[category].push(order)
     },
-    m_RemoveOrderConfirmed(state,{category,ref}){
-         state[category]= state[category].filter(order=>{
-             return order.ref!==ref
-         })
-    },
+
+    m_RemoveOrderConfirmed(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
+        })
+   },
 
 
 }
@@ -27,8 +29,8 @@ const actions ={
 
     },
 
-    ac_RemoveOrderConfirmed({commit,state},{category,ref}){
-        commit('m_RemoveOrderConfirmed',{category,ref})
+    ac_RemoveOrderConfirmed({commit,state},{category,date}){
+        commit('m_RemoveOrderConfirmed',{category,date})
         localStorage.setItem('Confirmed', JSON.stringify(state))
              
     },

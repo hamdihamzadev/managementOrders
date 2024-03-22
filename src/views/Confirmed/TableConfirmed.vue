@@ -2,7 +2,7 @@
   <div class="table-confirmed mt-4">
     <TableGlobal :options="options" :orders="ordersConfirmed" @send-order="SendOrder" @remove-order="removeorder"
       sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
-      <p>values{{ storevaluesStatus }}</p>
+    <p>values{{ storevaluesStatus }}</p>
   </div>
 </template>
 
@@ -92,34 +92,34 @@
 
       SendOrder(data) {
 
-        this.allValues
-        let orderSelected = {}
-        for (const category in this.storeConfirmed) {
-          this.storeConfirmed[category].forEach(order => {
-            // CHECK  VERIFICATION ORDER WITH REF
-            order.ref === data.ref ? (orderSelected.category = category, orderSelected.order = order) : ''
+        let orderSelected = {
+          category: null,
+          order: data.order
+        }
+
+        for (const categoryKey in this.storeConfirmed) {
+          this.storeConfirmed[categoryKey].forEach(order => {
+            order.date === data.order.date ? orderSelected.category = categoryKey : null
           })
         }
-        //  VALUE SELECTED
-        let valueselected = document.querySelector(`#select${data.index}`).value
-        // CHECK VALUE 
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), this.ac_addInAllOrder({
-              status: 'shipped',
-              order: orderSelected
-            }),
-            this.ac_RemoveOrderConfirmed({
-              category: orderSelected.category,
-              ref: data.ref
-            }), this.ResetvaluesRemoSend(data.index)) :
 
-          valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected), this.ac_addInAllOrder({
-              status: 'progress',
-              order: orderSelected
-            }),
-            this.ac_RemoveOrderConfirmed({
-              category: orderSelected.category,
-              ref: data.ref
-            }), this.ResetvaluesRemoSend(data.index)) : ''
+        // CHECK VALUE 
+        if(data.value === 'Shipped'){
+          
+          this.ac_addOrderShipped(orderSelected),
+          this.ac_addInAllOrder({ status: 'shipped', order: data.order}),
+          this.ac_RemoveOrderConfirmed({ category: orderSelected.category , date: data.order.date }),
+          this.ac_removeValue({ status: 'confirmed', index: data.index })
+
+        }
+        else if(data.value === 'Progress'){
+
+          this.ac_addOrderInProgress(orderSelected),
+          this.ac_addInAllOrder({ status: 'progress', order: data.order }),
+          this.ac_RemoveOrderConfirmed({ category: orderSelected.category , date: data.order.date }),
+          this.ac_removeValue({ status: 'confirmed', index: data.index })
+        }
+   
 
       },
 
