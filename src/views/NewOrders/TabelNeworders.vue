@@ -2,8 +2,8 @@
 
     <div class="tabelNeworders mt-4">
         <TableGlobal :orders="neworders" :options="options" @send-order="SendOrder" sentenceorders="No Orders Today"
-            @save-status="saveStatus" @remove-order="removeorder"/>
-            <p>values{{ storevaluesStatus }}</p>
+            @save-status="saveStatus" @remove-order="removeorder" />
+        <p>values{{ storevaluesStatus }}</p>
     </div>
 
 </template>
@@ -37,7 +37,7 @@
                         text: 'Not treat'
                     },
                 ],
-               
+
 
             }
         },
@@ -73,12 +73,15 @@
             // GET FUNCTION ACTIONS IN VUEX NEW ORDERS
             ...mapActions('NewOrders', ['ac_RemoveNewOrder']),
             // GET FUNCTION ACTIONS IN VUEX VALUES STATUS
-            ...mapActions('valuesStatus', ['ac_addNewValue','ac_removeValue']),
+            ...mapActions('valuesStatus', ['ac_addNewValue', 'ac_removeValue']),
 
-           
+
             SendOrder(data) {
 
-                this.allValues
+                console.log(data.value)
+                console.log(data.order)
+                console.log(data.index)
+
                 let orderSelected = {
                     category: null,
                     order: data.order
@@ -98,13 +101,27 @@
                         }), this.ac_RemoveNewOrder({
                             category: orderSelected.category,
                             date: data.order.date
+                        }),
+                        this.ac_removeValue({
+                            status: 'new',
+                            index: data.index
                         })) :
 
-                    data.value === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
+                    data.value === 'Canceled' ? (
+                        this.ac_addOrderCancelled(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'cancelled',
                             order: data.order
-                        }), this.ac_RemoveNewOrder(orderSelected)) : ''
+                        }),
+                        this.ac_RemoveNewOrder({
+                            category: orderSelected.category,
+                            date: data.order.date
+                        }),
+                        console.log('is work'),
+                        this.ac_removeValue({
+                            status: 'new',
+                            index: data.index
+                        })) : ''
             },
 
             removeorder(data) {
@@ -120,13 +137,19 @@
                     })
                 }
 
-                this.ac_removeValue({status:'new',index:data.index})
+                this.ac_removeValue({
+                    status: 'new',
+                    index: data.index
+                })
 
             },
 
             saveStatus() {
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                this.ac_addNewValue({status:'new',values:allValues})
+                this.ac_addNewValue({
+                    status: 'new',
+                    values: allValues
+                })
             },
 
         },
