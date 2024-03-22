@@ -104,40 +104,61 @@
         }
 
         // CHECK VALUE 
-        if(data.value === 'Shipped'){
-          
-          this.ac_addOrderShipped(orderSelected),
-          this.ac_addInAllOrder({ status: 'shipped', order: data.order}),
-          this.ac_RemoveOrderConfirmed({ category: orderSelected.category , date: data.order.date }),
-          this.ac_removeValue({ status: 'confirmed', index: data.index })
+        if (data.value === 'Shipped') {
 
-        }
-        else if(data.value === 'Progress'){
+          this.ac_addOrderShipped(orderSelected),
+            this.ac_addInAllOrder({
+              status: 'shipped',
+              order: data.order
+            }),
+            this.ac_RemoveOrderConfirmed({
+              category: orderSelected.category,
+              date: data.order.date
+            }),
+            this.ac_removeValue({
+              status: 'confirmed',
+              index: data.index
+            })
+
+        } else if (data.value === 'Progress') {
 
           this.ac_addOrderInProgress(orderSelected),
-          this.ac_addInAllOrder({ status: 'progress', order: data.order }),
-          this.ac_RemoveOrderConfirmed({ category: orderSelected.category , date: data.order.date }),
-          this.ac_removeValue({ status: 'confirmed', index: data.index })
+            this.ac_addInAllOrder({
+              status: 'progress',
+              order: data.order
+            }),
+            this.ac_RemoveOrderConfirmed({
+              category: orderSelected.category,
+              date: data.order.date
+            }),
+            this.ac_removeValue({
+              status: 'confirmed',
+              index: data.index
+            })
         }
-   
+
 
       },
 
       //REMOVE ORDER
       removeorder(data) {
 
-        this.allValues
-        for (const category in this.storeConfirmed) {
-          this.storeConfirmed[category].forEach(order => {
-            // CHECK  VERIFICATION ORDER WITH REF
-            order.ref === data.ref ? this.ac_RemoveOrderConfirmed({
-              category: category,
-              ref: data.ref
+        // this.allValues
+        for (const categoryKey in this.storeConfirmed) {
+          this.storeConfirmed[categoryKey].forEach(order => {
+            // CHECK VERIFICATION ORDER WITH DATE
+            order.date === data.date ? this.ac_RemoveOrderConfirmed({
+              category: categoryKey,
+              date: data.date
             }) : ''
           })
         }
-        // Reset values
-        this.ResetvaluesRemoSend(data.index)
+
+        this.ac_removeValue({
+          status: 'confirmed',
+          index: data.index
+        })
+
       },
 
 
