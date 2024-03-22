@@ -142,7 +142,6 @@
                     sle.value = this.allValues[index]
                 })
 
-
                 window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
             },
         },
