@@ -1,7 +1,8 @@
 <template>
   <div class="table-confirmed mt-4">
-    <TableGlobal :options="options" :orders="ordersConfirmed"  @send-order="SendOrder"
-      @remove-order="removeorder" sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
+    <TableGlobal :options="options" :orders="ordersConfirmed" @send-order="SendOrder" @remove-order="removeorder"
+      sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
+      <p>values{{ storevaluesStatus }}</p>
   </div>
 </template>
 
@@ -33,7 +34,7 @@
             text: 'Not treat'
           },
         ],
-        
+
       }
     },
 
@@ -43,6 +44,10 @@
       // GET STORE CONFIRMED
       ...mapState('OrderConfirmed', {
         storeConfirmed: state => state
+      }),
+
+      ...mapState('valuesStatus', {
+        storevaluesStatus: state => state.confirmed
       }),
 
       ordersConfirmed() {
@@ -59,11 +64,6 @@
 
       },
 
-      // GET ALL VALUES IN SELECTS
-      allValues() {
-        let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-        return allValues
-      }
 
     },
 
@@ -78,11 +78,16 @@
       ...mapActions('InProgressOrders', ['ac_addOrderInProgress']),
       // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
       ...mapActions('allOrder', ['ac_addInAllOrder']),
+      // GET FUNCTION ACTIONS IN VUEX VALUES STATUS
+      ...mapActions('valuesStatus', ['ac_addNewValue', 'ac_removeValue']),
 
 
       saveStatus() {
         let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-        window.localStorage.setItem('statusConfirmed', JSON.stringify(allValues))
+        this.ac_addNewValue({
+          status: 'confirmed',
+          values: allValues
+        })
       },
 
       SendOrder(data) {
@@ -98,12 +103,24 @@
         //  VALUE SELECTED
         let valueselected = document.querySelector(`#select${data.index}`).value
         // CHECK VALUE 
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected),this.ac_addInAllOrder({status:'shipped',order:orderSelected}),
-        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) :
+        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), this.ac_addInAllOrder({
+              status: 'shipped',
+              order: orderSelected
+            }),
+            this.ac_RemoveOrderConfirmed({
+              category: orderSelected.category,
+              ref: data.ref
+            }), this.ResetvaluesRemoSend(data.index)) :
 
-        valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected),this.ac_addInAllOrder({status:'progress',order:orderSelected}),
-        this.ac_RemoveOrderConfirmed({category:orderSelected.category,ref:data.ref}), this.ResetvaluesRemoSend(data.index)) : ''
-        
+          valueselected === 'Progress' ? (this.ac_addOrderInProgress(orderSelected), this.ac_addInAllOrder({
+              status: 'progress',
+              order: orderSelected
+            }),
+            this.ac_RemoveOrderConfirmed({
+              category: orderSelected.category,
+              ref: data.ref
+            }), this.ResetvaluesRemoSend(data.index)) : ''
+
       },
 
       //REMOVE ORDER
@@ -113,7 +130,10 @@
         for (const category in this.storeConfirmed) {
           this.storeConfirmed[category].forEach(order => {
             // CHECK  VERIFICATION ORDER WITH REF
-            order.ref === data.ref ?  this.ac_RemoveOrderConfirmed({category:category,ref:data.ref}) : ''
+            order.ref === data.ref ? this.ac_RemoveOrderConfirmed({
+              category: category,
+              ref: data.ref
+            }) : ''
           })
         }
         // Reset values
@@ -127,19 +147,19 @@
         this.allValues.splice(index, 1)
         let allSelects = document.querySelectorAll('select')
 
-        this.allValues.forEach((value,index)=>{
-          allSelects[index].value=value
+        this.allValues.forEach((value, index) => {
+          allSelects[index].value = value
         })
 
-        allSelects.forEach((sle,index)=>{
-          sle.value= this.allValues[index]
+        allSelects.forEach((sle, index) => {
+          sle.value = this.allValues[index]
         })
-        
+
 
         window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
       },
 
-     
+
 
     },
 

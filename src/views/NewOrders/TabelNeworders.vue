@@ -3,7 +3,6 @@
     <div class="tabelNeworders mt-4">
         <TableGlobal :orders="neworders" :options="options" @send-order="SendOrder" sentenceorders="No Orders Today"
             @save-status="saveStatus" @remove-order="removeorder" />
-        <p>values{{ storevaluesStatus }}</p>
     </div>
 
 </template>
@@ -77,10 +76,6 @@
 
 
             SendOrder(data) {
-
-                console.log(data.value)
-                console.log(data.order)
-                console.log(data.index)
 
                 let orderSelected = {
                     category: null,
