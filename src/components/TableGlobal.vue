@@ -66,7 +66,7 @@
                 <i class='bx bx-dots-horizontal-rounded'></i>
               </template>
               <b-dropdown-item href="#" @click="sendorder(order.ref,index)" v-if="showActionSend" >Send</b-dropdown-item>
-              <b-dropdown-item href="#" @click="removeorder(order.ref,index)">Remove</b-dropdown-item>
+              <b-dropdown-item href="#" @click="removeorder(order.date,index)">Remove</b-dropdown-item>
             </b-dropdown>
           </b-td>
 
@@ -180,9 +180,9 @@
       },
 
       // EMIT EVENT FOR REMOVE ORDER
-      removeorder(ref, index) {
+      removeorder(date, index) {
         this.$emit('remove-order', {
-          ref,
+          date,
           index
         })
       },

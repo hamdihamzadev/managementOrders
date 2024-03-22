@@ -67,10 +67,7 @@
 
     },
 
-    mounted() {
-      this.getOrdersConfirmed()
-      this.getAllOrders()
-    },
+
 
     methods: {
 

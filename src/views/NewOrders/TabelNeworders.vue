@@ -2,7 +2,7 @@
 
     <div class="tabelNeworders mt-4">
         <TableGlobal :orders="neworders" :options="options" @send-order="SendOrder" sentenceorders="No Orders Today"
-            @save-status="saveStatus" />
+            @save-status="saveStatus" @remove-order="removeorder" />
     </div>
 
 </template>
@@ -46,7 +46,11 @@
                 storeNeworders: state => state
             }),
 
-
+            // GET ALL VALUES IN SELECTS
+            allValues() {
+                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
+                return allValues
+            },
 
             neworders() {
                 let allNewOrders = []
@@ -61,11 +65,7 @@
                 return allNewOrders
             },
 
-            // GET ALL VALUES IN SELECTS
-            allValues() {
-                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                return allValues
-            }
+
 
         },
 
@@ -76,6 +76,8 @@
             ...mapActions('OrderCancelled', ['ac_addOrderCancelled']),
             // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
             ...mapActions('allOrder', ['ac_addInAllOrder']),
+            // GET FUNCTION ACTIONS IN VUEX NEW ORDERS
+            ...mapActions('NewOrders', ['ac_RemoveNewOrder']),
 
             // PUSH ORDER CONFIRMED IN ACTION
             SendOrder(data) {
@@ -103,14 +105,47 @@
                             status: 'cancelled',
                             order: orderSelected
                         })) : ''
+            },
 
-                console.log(this.storeallOrder)
+            removeorder(data) {
 
+                this.allValues
+
+                for (const category in this.storeNeworders) {
+                    this.storeNeworders[category].forEach(order => {
+                        // CHECK  VERIFICATION ORDER WITH DATE
+                        order.date === data.date ? this.ac_RemoveNewOrder({
+                            category: category,
+                            date: data.date
+                        }) : ''
+                    })
+                }
+
+                // Reset values
+                this.ResetvaluesRemoSend(data.index)
             },
 
             saveStatus() {
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
                 window.localStorage.setItem('statusNeworders', JSON.stringify(allValues))
+            },
+
+            // RESET VALUE AFTER REMOVE OR SEND
+            ResetvaluesRemoSend(index) {
+                // get value for any select after remove or send order
+                this.allValues.splice(index, 1)
+                let allSelects = document.querySelectorAll('select')
+
+                this.allValues.forEach((value, index) => {
+                    allSelects[index].value = value
+                })
+
+                allSelects.forEach((sle, index) => {
+                    sle.value = this.allValues[index]
+                })
+
+
+                window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
             },
         },
 

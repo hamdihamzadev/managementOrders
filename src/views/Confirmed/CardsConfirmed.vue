@@ -21,7 +21,7 @@
                         classicon: 'Order-Confirmed',
                         icon: 'bx bx-package',
                         title: 'Order Confirmed',
-                        number: "120 / 234",
+                        number: `${this.NumbersOrdersConirmed} / ${this.NumbersNewOrders}`,
                         pourcentage: 3.20,
                         duration: 'Today'
 
@@ -39,14 +39,30 @@
                 return allCrads
             },
 
-            ...mapState('allOrder',{
-                storeAllOrders:state=>state
+            ...mapState('allOrder', {
+                AllOrdersConirmed:state=>state.confirmed
             }),
 
-            // numbereOrdersConirmed(){
-            //    let Orders=this.storeAllOrders.confirmed.length
-            //    return Orders
-            // },
+            ...mapState('allOrder', {
+                AllNewOrders:state=>state.new
+            }),
+
+            NumbersNewOrders(){
+                let numbOrders=this.AllNewOrders.length
+                return numbOrders
+            },
+
+            NumbersOrdersConirmed(){
+                let numbOrders=this.AllOrdersConirmed.length
+                return numbOrders
+            },
+
+            confirmationRate(){
+                let Allsales=this.AllOrdersConirmed.reduce((accu,order)=>{
+                    return accu+order.total
+                },0)
+                return Allsales
+            }
 
 
         },

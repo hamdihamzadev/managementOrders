@@ -14,11 +14,22 @@ const mutations={
         state[category].push(order)
     },
 
+    m_RemoveNewOrder(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
+        })
+   },
+
 }
 
 const actions ={
-    ac_addNewOrder({commit},{category,order}){
+    ac_addNewOrder({commit,state},{category,order}){
         commit('m_addNewOrder',{category,order})
+        localStorage.setItem('New orders', JSON.stringify(state))
+    },
+
+    ac_RemoveNewOrder({commit,state},{category,date}){
+        commit('m_RemoveNewOrder' , {category,date})
         localStorage.setItem('New orders', JSON.stringify(state))
     }
 }
