@@ -125,19 +125,7 @@
                 return calctotal
             },
 
-            date() {
-
-                let newdate = new Date();
-                let year = newdate.getFullYear().toString()
-                let month = (newdate.getMonth() + 1).toString()
-                let day = newdate.getDate()
-                let hour = newdate.getHours().toString()
-                let munite = newdate.getMinutes().toString()
-                let seconde = newdate.getSeconds().toString()
-
-                let date = `${year}-${month}-${day} ${hour}:${munite}:${seconde}`
-                return date
-            },
+     
 
 
             stockout(){
@@ -164,7 +152,18 @@
             ...mapActions('NewOrders', ['ac_addNewOrder']),
             ...mapActions('ProductsModule', ['ac_SubtractQuantity']),
             ...mapActions('allOrder', ['ac_addInAllOrder']),
+            
             addOrder() {
+
+                let newdate = new Date();
+                let year = newdate.getFullYear().toString()
+                let month = (newdate.getMonth() + 1).toString()
+                let day = newdate.getDate()
+                let hour = newdate.getHours().toString()
+                let munite = newdate.getMinutes().toString()
+                let seconde = newdate.getSeconds().toString()
+
+                let date = `${year}-${month}-${day} ${hour}:${munite}:${seconde}`
 
                 if (this.Customer !== '' && this.Phone !== '' && this.City !== '' && this.Adress !== '' && this
                     .Price !== '' && this.Quantity !== '' && this.Total !== '' && this.ProductSelected !== '') {
@@ -177,7 +176,7 @@
                         price: this.Price,
                         quantity: this.Quantity,
                         total: this.Total,
-                        date: this.date,
+                        date: date,
                     }
 
                     this.ProductSelected.order = Neworder
@@ -238,3 +237,4 @@
         border-radius: 12px;
     }
 </style>
+

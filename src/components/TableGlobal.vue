@@ -28,6 +28,7 @@
           <b-th class="border-top-0">Price</b-th>
           <b-th class="border-top-0">Quantity</b-th>
           <b-th class="border-top-0">Total</b-th>
+          <b-th class="border-top-0">date</b-th>
           <b-th class="border-top-0" v-show="thTimepost">TimePost</b-th>
           <b-th class="border-top-0" v-if="showStatu">Status</b-th>
           <b-th class="border-top-0">Action</b-th>
@@ -47,6 +48,7 @@
           <b-td>{{ order.price }}</b-td>
           <b-td>{{ order.quantity }}</b-td>
           <b-td>{{ order.total }}</b-td>
+          <b-td>{{ order.date }}</b-td>
           <b-td v-show="thTimepost">{{ order.Timepost }}</b-td>
 
           <!----------------STATUS-------------->
