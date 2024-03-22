@@ -83,39 +83,37 @@
             SendOrder(data) {
 
                 this.allValues
-                let orderSelected = {}
-                for (const category in this.storeNeworders) {
-                    this.storeNeworders[category].forEach(order => {
-                        // CHECK  VERIFICATION ORDER WITH REF
-                        order.ref === data.ref ? (orderSelected.category = category, orderSelected.order =
-                            order) : ''
+                let orderSelected={category:null,order:data.order}
+
+                for (const categoryKey in this.storeNeworders) {
+                    this.storeNeworders[categoryKey].forEach(order=>{
+                    order.date===data.order.date ? orderSelected.category = categoryKey : null
                     })
                 }
 
-                // GET VALUE SELECTED
-                let valueselected = document.querySelector(`#select${data.index}`).value
                 // CHECK VALUE AND PUSH ORDER
-                valueselected === 'Confirmed' ? (this.ac_orderConfirmed(orderSelected),
+                data.value === 'Confirmed' ? (this.ac_orderConfirmed(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'confirmed',
-                            order: orderSelected
-                        })) :
-                    valueselected === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
+                            order: data.order
+                        }), this.ac_RemoveNewOrder ({category:orderSelected.category,date:data.order.date}))  :
+
+                data.value === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'cancelled',
-                            order: orderSelected
-                        })) : ''
+                            order: data.order
+                        }), this.ac_RemoveNewOrder (orderSelected)) : ''
             },
 
             removeorder(data) {
 
                 this.allValues
 
-                for (const category in this.storeNeworders) {
-                    this.storeNeworders[category].forEach(order => {
+                for (const categoryKey in this.storeNeworders) {
+                    this.storeNeworders[categoryKey].forEach(order => {
                         // CHECK  VERIFICATION ORDER WITH DATE
                         order.date === data.date ? this.ac_RemoveNewOrder({
-                            category: category,
+                            category: categoryKey,
                             date: data.date
                         }) : ''
                     })

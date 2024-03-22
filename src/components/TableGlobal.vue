@@ -65,7 +65,7 @@
               <template #button-content >
                 <i class='bx bx-dots-horizontal-rounded'></i>
               </template>
-              <b-dropdown-item href="#" @click="sendorder(order.ref,index)" v-if="showActionSend" >Send</b-dropdown-item>
+              <b-dropdown-item href="#" @click="sendorder(order,statusValues[index])" v-if="showActionSend" >Send</b-dropdown-item>
               <b-dropdown-item href="#" @click="removeorder(order.date,index)">Remove</b-dropdown-item>
             </b-dropdown>
           </b-td>
@@ -171,20 +171,17 @@
       },
 
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
-      sendorder(ref, index) {
+      sendorder(order, value) {
         this.$emit('send-order', {
-          ref,
-          index
+          order,
+          value
         })
 
       },
 
       // EMIT EVENT FOR REMOVE ORDER
-      removeorder(date, index) {
-        this.$emit('remove-order', {
-          date,
-          index
-        })
+      removeorder(date,index) {
+        this.$emit('remove-order',{date,index})
       },
 
       //--------------------------------------------------------------------------------
