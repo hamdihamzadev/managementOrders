@@ -1,4 +1,5 @@
 const state={
+
     new:JSON.parse(localStorage.getItem('allOrder')).new,
     confirmed:JSON.parse(localStorage.getItem('allOrder')).confirmed,
     shipped:JSON.parse(localStorage.getItem('allOrder')).shipped,
@@ -7,6 +8,7 @@ const state={
     postpond:JSON.parse(localStorage.getItem('allOrder')).postpond,
     progress:JSON.parse(localStorage.getItem('allOrder')).progress,
     return:JSON.parse(localStorage.getItem('allOrder')).return,
+   
 }
 
 const mutations={

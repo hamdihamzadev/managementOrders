@@ -6,9 +6,7 @@
 </template>
 
 <script>
-    import {
-        mapState
-    } from 'vuex';
+    import { mapState } from 'vuex'
     import CardGlobal from '@/components/CardGlobal.vue'
     export default {
 
@@ -25,7 +23,7 @@
                         classicon: 'Neworders',
                         icon: 'bx bx-cart-add',
                         title: 'New orders',
-                        number: this.NumbersNewOrders,
+                        number: this.newOrder,
                         pourcentage: 4.43
                     },
 
@@ -49,28 +47,25 @@
             },
 
             ...mapState('allOrder', {
-                AllNewOrders:state=>state.new
+                productModuleStates: state => state.new
             }),
 
-            NumbersNewOrders(){
-                let numbOrders=this.AllNewOrders.length
-                return numbOrders
+            newOrder(){
+                let numbersOrders=this.productModuleStates.length
+                return numbersOrders
             },
 
             sales(){
-                let Allsales=this.AllNewOrders.reduce((accu,order)=>{
-                    return accu+order.total
+                let totalSales=this.productModuleStates.reduce((accu,order)=>{
+                    return accu + order.total
                 },0)
-                return Allsales
+                return totalSales
             }
+
 
         },
 
-        mounted(){
-            this.AllNewOrders.forEach(order=>{
-                console.log(order.total)
-            })
-        }
+    
 
 
 

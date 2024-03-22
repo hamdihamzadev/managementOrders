@@ -186,6 +186,7 @@
                         category: this.ProductSelected.category,
                         order: this.ProductSelected.order
                     })
+                    console.log(this.ProductSelected.order)
 
                     this.ac_addInAllOrder({
                         status: 'new',
