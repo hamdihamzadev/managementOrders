@@ -2,7 +2,8 @@
 
     <div class="tabelNeworders mt-4">
         <TableGlobal :orders="neworders" :options="options" @send-order="SendOrder" sentenceorders="No Orders Today"
-            @save-status="saveStatus" @remove-order="removeorder" />
+            @save-status="saveStatus" @remove-order="removeorder"/>
+            <p>values{{ storevaluesStatus }}</p>
     </div>
 
 </template>
@@ -36,6 +37,7 @@
                         text: 'Not treat'
                     },
                 ],
+               
 
             }
         },
@@ -45,12 +47,9 @@
             ...mapState('NewOrders', {
                 storeNeworders: state => state
             }),
-
-            // GET ALL VALUES IN SELECTS
-            allValues() {
-                let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                return allValues
-            },
+            ...mapState('valuesStatus', {
+                storevaluesStatus: state => state.new
+            }),
 
             neworders() {
                 let allNewOrders = []
@@ -59,13 +58,8 @@
                         allNewOrders.push(order)
                     })
                 })
-                allNewOrders.sort((orderA, orderB) => {
-                    return orderA - orderB
-                })
                 return allNewOrders
             },
-
-
 
         },
 
@@ -78,16 +72,21 @@
             ...mapActions('allOrder', ['ac_addInAllOrder']),
             // GET FUNCTION ACTIONS IN VUEX NEW ORDERS
             ...mapActions('NewOrders', ['ac_RemoveNewOrder']),
+            // GET FUNCTION ACTIONS IN VUEX VALUES STATUS
+            ...mapActions('valuesStatus', ['ac_addNewValue','ac_removeValue']),
 
-            // PUSH ORDER CONFIRMED IN ACTION
+           
             SendOrder(data) {
 
                 this.allValues
-                let orderSelected={category:null,order:data.order}
+                let orderSelected = {
+                    category: null,
+                    order: data.order
+                }
 
                 for (const categoryKey in this.storeNeworders) {
-                    this.storeNeworders[categoryKey].forEach(order=>{
-                    order.date===data.order.date ? orderSelected.category = categoryKey : null
+                    this.storeNeworders[categoryKey].forEach(order => {
+                        order.date === data.order.date ? orderSelected.category = categoryKey : null
                     })
                 }
 
@@ -96,19 +95,21 @@
                         this.ac_addInAllOrder({
                             status: 'confirmed',
                             order: data.order
-                        }), this.ac_RemoveNewOrder ({category:orderSelected.category,date:data.order.date}))  :
+                        }), this.ac_RemoveNewOrder({
+                            category: orderSelected.category,
+                            date: data.order.date
+                        })) :
 
-                data.value === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
+                    data.value === 'Canceled' ? (this.ac_addOrderCancelled(orderSelected),
                         this.ac_addInAllOrder({
                             status: 'cancelled',
                             order: data.order
-                        }), this.ac_RemoveNewOrder (orderSelected)) : ''
+                        }), this.ac_RemoveNewOrder(orderSelected)) : ''
             },
 
             removeorder(data) {
 
-                this.allValues
-
+                // this.allValues
                 for (const categoryKey in this.storeNeworders) {
                     this.storeNeworders[categoryKey].forEach(order => {
                         // CHECK  VERIFICATION ORDER WITH DATE
@@ -119,31 +120,15 @@
                     })
                 }
 
-                // Reset values
-                this.ResetvaluesRemoSend(data.index)
+                this.ac_removeValue({status:'new',index:data.index})
+
             },
 
             saveStatus() {
                 let allValues = Array.from(document.querySelectorAll('select')).map(select => select.value)
-                window.localStorage.setItem('statusNeworders', JSON.stringify(allValues))
+                this.ac_addNewValue({status:'new',values:allValues})
             },
 
-            // RESET VALUE AFTER REMOVE OR SEND
-            ResetvaluesRemoSend(index) {
-                // get value for any select after remove or send order
-                this.allValues.splice(index, 1)
-                let allSelects = document.querySelectorAll('select')
-
-                this.allValues.forEach((value, index) => {
-                    allSelects[index].value = value
-                })
-
-                allSelects.forEach((sle, index) => {
-                    sle.value = this.allValues[index]
-                })
-
-                window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
-            },
         },
 
     }

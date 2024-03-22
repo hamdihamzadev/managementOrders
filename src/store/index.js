@@ -13,6 +13,7 @@ import ReturnModule from '@/store/modules/orders/return'
 import UsersModule from '@/store/modules/users'
 import ProductsModule from '@/store/modules/allproucts'
 import allOrder from '@/store/modules/orders/allOrders'
+import valuesStatus from '@/store/modules/statusvalues'
 
 Vue.use(Vuex);
 
@@ -29,5 +30,7 @@ export default new Vuex.Store({
     UsersModule : UsersModule,
     ProductsModule,
     allOrder,
+    valuesStatus,
+    
   }
 });

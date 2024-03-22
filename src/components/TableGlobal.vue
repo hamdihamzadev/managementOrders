@@ -54,9 +54,11 @@
           <!----------------STATUS-------------->
 
           <b-td v-if="showStatu">
-            <select @change="changeBackSelect(index)" :id="`select${index}`" v-model="statusValues[index]" ref="select"
-              :style="bgStatus(index)">
-              <option style="background-color: white; color:black"  class="bg-white" v-for="(option , index) in options" :key="index" :value="option.value">{{option.text}}</option>
+            <select @change="changeBackSelect(index)" :id="`select${index}`" v-model="storevaluesStatus[index]"
+              ref="select" >
+              <!-- :style="bgStatus(index)" -->
+              <option style="background-color: white; color:black" class="bg-white" v-for="(option , index) in options"
+                :key="index" :value="option.value">{{option.text}}</option>
             </select>
           </b-td>
 
@@ -64,10 +66,11 @@
 
           <b-td>
             <b-dropdown size="lg" variant="link" toggle-class="text-decoration-none" no-caret>
-              <template #button-content >
+              <template #button-content>
                 <i class='bx bx-dots-horizontal-rounded'></i>
               </template>
-              <b-dropdown-item href="#" @click="sendorder(order,statusValues[index])" v-if="showActionSend" >Send</b-dropdown-item>
+              <b-dropdown-item href="#" @click="sendorder(order,statusValues[index])" v-if="showActionSend">Send
+              </b-dropdown-item>
               <b-dropdown-item href="#" @click="removeorder(order.date,index)">Remove</b-dropdown-item>
             </b-dropdown>
           </b-td>
@@ -99,18 +102,16 @@
 <script>
   import {
     mapState,
-  
+
   } from 'vuex'
- 
+
   export default {
     name: "TableGlobal",
     props: ['orders', 'options', 'thTimepost', 'valuePopup', 'sentenceorders'],
 
     data() {
       return {
-        // FOR METHOdS NEXT AND PREV IN TABLE
-        statusValues: [],
-        // FOR Popup
+
         stateInputPopup: null,
 
       }
@@ -123,6 +124,10 @@
 
       ...mapState('allOrder', {
         storeAllOrder: state => state
+      }),
+
+      ...mapState('valuesStatus', {
+        storevaluesStatus: state => state.new
       }),
 
       totalPages() {
@@ -149,28 +154,27 @@
 
     methods: {
 
-      bgStatus(index) {
-       let val= this.statusValues[index]
-       switch (val){
-        case 'Confirmed' :
-        case 'Delivered' :
-        case 'Shipped' :
-          return 'background: rgba(33, 150, 83, 0.1); color: #219653 ; border-color: #219653;';
-        case 'Canceled':
-        case 'Return':
-          return 'background: rgb(192 20 47 / 15%); color: #c0142f; border-color: #c0142f;';
-        case 'Progress' :  
-          return 'background: rgba(242, 153, 74, 0.1); color: #f2994a; border-color: #f2994a;';
-        case 'Not treat' :  
-          return 'background: rgba(155, 81, 224, 0.1); color: #9b51e0; border-color: #9b51e0;';
-        case 'Postponed' :  
-          return 'background: rgba(54, 92, 245, 0.1); color: #365CF5;border-color: #365CF5;';
-           
-       }
-       
+      // bgStatus(index) {
+      //  let val= this.statusValues[index]
+      //  switch (val){
+      //   case 'Confirmed' :
+      //   case 'Delivered' :
+      //   case 'Shipped' :
+      //     return 'background: rgba(33, 150, 83, 0.1); color: #219653 ; border-color: #219653;';
+      //   case 'Canceled':
+      //   case 'Return':
+      //     return 'background: rgb(192 20 47 / 15%); color: #c0142f; border-color: #c0142f;';
+      //   case 'Progress' :  
+      //     return 'background: rgba(242, 153, 74, 0.1); color: #f2994a; border-color: #f2994a;';
+      //   case 'Not treat' :  
+      //     return 'background: rgba(155, 81, 224, 0.1); color: #9b51e0; border-color: #9b51e0;';
+      //   case 'Postponed' :  
+      //     return 'background: rgba(54, 92, 245, 0.1); color: #365CF5;border-color: #365CF5;';
 
-        
-      },
+      //  }
+
+
+      // },
 
       // EMITE EVENY CLICK IN SEND FOR PUSH ORDER
       sendorder(order, value) {
@@ -182,8 +186,11 @@
       },
 
       // EMIT EVENT FOR REMOVE ORDER
-      removeorder(date,index) {
-        this.$emit('remove-order',{date,index})
+      removeorder(date, index) {
+        this.$emit('remove-order', {
+          date,
+          index
+        })
       },
 
       //--------------------------------------------------------------------------------
@@ -239,11 +246,11 @@
         this.$emit('input', val)
       },
 
-  
+
     },
 
     mounted() {
-    
+
       // GET ALL STATUS  
       this.$route.path === '/Orders/Confirmed' ? this.statusValues = JSON.parse(localStorage.getItem(
         'statusConfirmed')) || [] : null
