@@ -112,17 +112,6 @@
       },
 
 
-      // RESET VALUE AFTER REMOVE OR SEND
-      ResetvaluesRemoSend(index) {
-        // get value for any select after remove or send order
-        this.allValues.splice(index, 1)
-        let statuAfter = document.querySelectorAll('select')
-        this.allValues.forEach((value, i) => {
-          statuAfter[i].value = value
-        })
-        window.localStorage.setItem('statusProgress', JSON.stringify(this.allValues))
-      },
-
     }
 
   }
