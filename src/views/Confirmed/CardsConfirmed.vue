@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
     import CardGlobal from '@/components/CardGlobal.vue'
     export default {
         name: 'CardsConfirmed',
@@ -20,7 +21,7 @@
                         classicon: 'Order-Confirmed',
                         icon: 'bx bx-package',
                         title: 'Order Confirmed',
-                        number: 66,
+                        number: `${this.orderConfirmed} / ${this.newOrder}`,
                         pourcentage: 3.20,
                         duration: 'Today'
 
@@ -37,6 +38,25 @@
                 ]
                 return allCrads
             },
+
+            ...mapState('allOrder', {
+                AllNewOrders: state => state.new
+            }),
+            ...mapState('allOrder', {
+                AllOrdersConfirmed: state => state.confirmed
+            }),
+
+            newOrder(){
+                let numbersOrders=this.AllNewOrders.length
+                return numbersOrders
+            },
+
+            orderConfirmed(){
+                let numbersOrders=this.AllOrdersConfirmed.length
+                return numbersOrders
+            },
+
+
 
            
         },
