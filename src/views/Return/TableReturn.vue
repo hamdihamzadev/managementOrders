@@ -40,9 +40,9 @@
       //REMOVE ORDER
       removeorder(data) {
        
-        for(const category in this.StoreOrdersReturn){
-          this.StoreOrdersReturn[category].forEach(order=>{
-            order.ref===data.ref ? this.ac_RemoveOrderReturn({category:category,ref:data.ref}) : ''
+        for(const categoryKey in this.StoreOrdersReturn){
+          this.StoreOrdersReturn[categoryKey].forEach(order=>{
+            order.date === data.date ? this.ac_RemoveOrderReturn({ category: categoryKey,date: data.date }) : ''
           })
         }
       },

@@ -7,15 +7,16 @@ const state={
 }
 
 const mutations={
+
     m_addOrderReturn(state,{category,order}){
         state[category].push(order)
     },
 
-    m_RemoveOrderReturn(state,{category,ref}){
-        state[category]=state[category].filter(order=>{
-            return order.ref!==ref
+    m_RemoveOrderReturn(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
         })
-    }
+   },
 }
 
 const actions ={
@@ -24,8 +25,8 @@ const actions ={
         localStorage.setItem('Return', JSON.stringify(state))
     },
 
-    ac_RemoveOrderReturn({commit,state},{category,ref}){
-        commit('m_RemoveOrderReturn',{category,ref})
+    ac_RemoveOrderReturn({commit,state},{category,date}){
+        commit('m_RemoveOrderReturn',{category,date})
         localStorage.setItem('Return', JSON.stringify(state))
     }
 }
