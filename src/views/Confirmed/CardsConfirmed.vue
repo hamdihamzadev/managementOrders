@@ -31,7 +31,7 @@ import { mapState } from 'vuex'
                         classicon: 'confirmation-rate',
                         icon: 'bx bx-chart',
                         title: 'Confirmation Rate',
-                        number: '57%',
+                        number: `${this.confirmationRate} %`,
                         pourcentage: 3.20,
                         duration: 'Today'
                     }
@@ -55,6 +55,11 @@ import { mapState } from 'vuex'
                 let numbersOrders=this.AllOrdersConfirmed.length
                 return numbersOrders
             },
+
+            confirmationRate(){
+                let confirmation= Math.floor((this.orderConfirmed / this.newOrder)*100)
+                return confirmation
+            }
 
 
 
