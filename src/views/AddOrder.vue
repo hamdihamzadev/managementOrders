@@ -163,7 +163,7 @@
                 let munite = newdate.getMinutes().toString()
                 let seconde = newdate.getSeconds().toString()
 
-                let date = `${year}-${month}-${day} ${hour}:${munite}:${seconde}`
+                let date = `${year}/${month}/${day} ${hour}:${munite}:${seconde}`
 
                 if (this.Customer !== '' && this.Phone !== '' && this.City !== '' && this.Adress !== '' && this
                     .Price !== '' && this.Quantity !== '' && this.Total !== '' && this.ProductSelected !== '') {
