@@ -47,16 +47,16 @@
             },
 
             ...mapState('allOrder', {
-                productModuleStates: state => state.new
+                AllNewOrders: state => state.new
             }),
 
             newOrder(){
-                let numbersOrders=this.productModuleStates.length
+                let numbersOrders=this.AllNewOrders.length
                 return numbersOrders
             },
 
             sales(){
-                let totalSales=this.productModuleStates.reduce((accu,order)=>{
+                let totalSales=this.AllNewOrders.reduce((accu,order)=>{
                     return accu + order.total
                 },0)
                 return totalSales
