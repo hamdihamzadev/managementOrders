@@ -11,11 +11,11 @@ const mutations={
         state[category].push(order)
     },
 
-    m_RemoveOrderCancelled(state,{category,ref}){
-        state[category]=state[category].filter(order=>{
-            return order.ref!==ref
+    m_RemoveOrderCancelled(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
         })
-    }
+   },
 }
 
 const actions ={
@@ -24,8 +24,8 @@ const actions ={
         localStorage.setItem('CancelledOrders',JSON.stringify(state))
     },
 
-    ac_RemoveOrderCancelled({commit,state},{category,ref}){
-        commit('m_RemoveOrderCancelled',{category,ref})
+    ac_RemoveOrderCancelled({commit,state},{category,date}){
+        commit('m_RemoveOrderCancelled',{category,date})
         localStorage.setItem('CancelledOrders',JSON.stringify(state))
     }
 }

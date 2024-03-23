@@ -55,9 +55,9 @@
 
         //REMOVE ORDER CANCELD
         removeorder(data){
-           for(const category in this.StoreOrdersCanceld){
-            this.StoreOrdersCanceld[category].forEach(order=>{
-                order.ref===data.ref ? this.ac_RemoveOrderCancelled({category:category,ref:data.ref}) : ''
+           for(const categoryKey in this.StoreOrdersCanceld){
+            this.StoreOrdersCanceld[categoryKey].forEach(order=>{
+                order.date === data.date ? this.ac_RemoveOrderCancelled({ category: categoryKey,date: data.date }) : ''
             })
            }
         }
