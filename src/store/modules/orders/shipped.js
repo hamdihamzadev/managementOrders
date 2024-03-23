@@ -11,11 +11,11 @@ const mutations={
         state[category].push(order)
     },
 
-    m_RemoveOrderShipped(state,{category,ref}){
-        state[category]=state[category].filter(order=>{
-            return order.ref!==ref
+    m_RemoveOrderShipped(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
         })
-    }
+   },
 }
 
 const actions ={
@@ -24,8 +24,8 @@ const actions ={
         localStorage.setItem('ShippedOrders', JSON.stringify(state))
     },
 
-    ac_RemoveOrderShipped({commit,state},{category,ref}){
-        commit('m_RemoveOrderShipped',{category,ref})
+    ac_RemoveOrderShipped({commit,state},{category,date}){
+        commit('m_RemoveOrderShipped',{category,date})
         localStorage.setItem('ShippedOrders', JSON.stringify(state))
     }
 }

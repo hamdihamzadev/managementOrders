@@ -2,7 +2,6 @@
   <div class="table-confirmed mt-4">
     <TableGlobal :options="options" :orders="ordersConfirmed" @send-order="SendOrder" @remove-order="removeorder"
       sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
-    <p>values{{ storevaluesStatus }}</p>
   </div>
 </template>
 
@@ -161,30 +160,7 @@
 
       },
 
-
-      // RESET VALUE AFTER REMOVE OR SEND
-      ResetvaluesRemoSend(index) {
-        // get value for any select after remove or send order
-        this.allValues.splice(index, 1)
-        let allSelects = document.querySelectorAll('select')
-
-        this.allValues.forEach((value, index) => {
-          allSelects[index].value = value
-        })
-
-        allSelects.forEach((sle, index) => {
-          sle.value = this.allValues[index]
-        })
-
-
-        window.localStorage.setItem('statusConfirmed', JSON.stringify(this.allValues))
-      },
-
-
-
     },
-
-
 
   }
 </script>

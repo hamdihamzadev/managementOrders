@@ -2,6 +2,7 @@
     <div class="table-shipped mt-4">
         <TableGlobal :options="options" :orders="ShippedOrders" @send-order="SendOrder" @remove-order="removeorder"
             sentenceorders="No order shipped today" v-model="popupVal" @save-status="saveStatus" />
+            
     </div>
 </template>
 
@@ -92,49 +93,44 @@
             // CREATE FUNCTION FOR SEND ORDER IN PAGE SPECIFICE
             SendOrder(data) {
 
-                // GET ALL VALUES BEFORE SEND
-                this.allValues
+                let orderSelected = {
+                    category: null,
+                    order: data.order
+                }
 
-                let orderSelected = {}
-                for (const category in this.StoreShippedOrders) {
-                    this.StoreShippedOrders[category].forEach(order => {
-                        order.ref === data.ref ? (orderSelected.category = category, orderSelected.order =
-                            order) : ''
+                for (const categoryKey in this.StoreShippedOrders) {
+                    this.StoreShippedOrders[categoryKey].forEach(order => {
+                        order.date === data.order.date ? orderSelected.category = categoryKey : null
                     })
                 }
 
-                let valueselected = document.querySelector(`#select${data.index}`).value
+                if(data.value=== 'Delivered' ){
 
-                valueselected === 'Delivered' ? (this.ac_addOrdersdelivered(orderSelected), this.ac_addInAllOrder({
-                            status: 'Delivered',
-                            order: orderSelected
-                        }),
-                        this.ac_RemoveOrderShipped({
-                            category: orderSelected.category,
-                            ref: data.ref
-                        }), this.ResetvaluesRemoSend(data.index)) :
+                    this.ac_addOrdersdelivered(orderSelected)
+                    this.ac_addInAllOrder({status:'Delivered',order: data.order})
+                    this.ac_RemoveOrderShipped({category: orderSelected.category , date: data.order.date})
+                    this.ac_removeValue({status: 'shipped', index: data.index })
 
+                }
+                else if(data.value === 'Return'){
 
-                    valueselected === 'Return' ? (this.ac_addOrderReturn(orderSelected), this.ac_addInAllOrder({
-                            status: 'return',
-                            order: orderSelected
-                        }),
-                        this.ac_RemoveOrderShipped({
-                            category: orderSelected.category,
-                            ref: data.ref
-                        }), this.ResetvaluesRemoSend(data.index)) :
+                    this.ac_addOrderReturn(orderSelected)
+                    this.ac_addInAllOrder({status: 'return',order: data.order})
+                    this.ac_RemoveOrderShipped({category: orderSelected.category , date: data.order.date})
+                    this.ac_removeValue({status: 'shipped', index: data.index })
 
+                }
+                else if(data.value === 'Postponed' && this.popupVal !== ''){
 
-                    valueselected === 'Postponed' && this.popupVal !== '' ?
-                    (orderSelected.order.Timepost = this.popupVal, this.ac_addOrderPostpond(orderSelected),
-                        this.ac_addInAllOrder({
-                            status: 'postpond',
-                            order: orderSelected
-                        }),
-                        this.ac_RemoveOrderShipped({
-                            category: orderSelected.category,
-                            ref: data.ref
-                        }), this.ResetvaluesRemoSend(data.index)) : ''
+                    orderSelected.order.Timepost = this.popupVal
+                    this.ac_addOrderPostpond(orderSelected)
+                    this.ac_addInAllOrder({status: 'postpond',order: data.order})
+                    this.ac_RemoveOrderShipped({category: orderSelected.category , date: data.order.date})
+                    this.ac_removeValue({status: 'shipped', index: data.index })
+
+                }
+                 
+
             },
 
             //REMOVE ORDER
