@@ -135,29 +135,20 @@
 
             //REMOVE ORDER
             removeorder(data) {
-                this.allValues
-                for (const category in this.StoreShippedOrders) {
-                    this.StoreShippedOrders[category].forEach(order => {
-                        order.ref === data.ref ? this.ac_RemoveOrderShipped({
-                            category: category,
-                            ref: data.ref
-                        }) : ''
-                    })
+
+                for (const categoryKey in this.StoreShippedOrders) {
+                 this.StoreShippedOrders[categoryKey].forEach(order => {
+                    // CHECK VERIFICATION ORDER WITH DATE
+                    order.date === data.date ? this.ac_RemoveOrderShipped({category: categoryKey,date: data.date }) : ''
+                 })
                 }
-                // Reset values
-                this.ResetvaluesRemoSend(data.index)
+
+                this.ac_removeValue({
+                  status: 'shipped',
+                  index: data.index
+                })
             },
 
-            // RESET VALUE AFTER REMOVE OR SEND
-            ResetvaluesRemoSend(index) {
-                // get value for any select after remove or send order
-                this.allValues.splice(index, 1)
-                let statuAfter = document.querySelectorAll('select')
-                this.allValues.forEach((value, i) => {
-                    statuAfter[i].value = value
-                })
-                window.localStorage.setItem('statusShipped', JSON.stringify(this.allValues))
-            },
         },
 
 
