@@ -14,12 +14,6 @@
         },
    
         computed:{
-            ...mapState('ShippedOrders', {
-                StoreShippedOrders: state => state
-            }),
-            ...mapState('OrderConfirmed', {
-                storeConfirmed: state => state
-            }),
 
             allCards(){
                 let  Cards= [
@@ -27,7 +21,7 @@
                         classicon: 'Shipped',
                         icon: 'bx bx-trip',
                         title: 'Order Shipped',
-                        number: `${this.NumbersOrdersShipped}/${this.NumbersOrdersConfirmed}`,
+                        number: `${this.NumberOrdersShipped}/${this.NumberOrdersConfirmed}`,
                   
                     },
 
@@ -44,25 +38,26 @@
                 return Cards
             },
 
-            NumbersOrdersConfirmed() {
-                let numbOrders = Object.values(this.storeConfirmed).reduce((accu, table) => {
-                    return accu + table.length
-                }, 0)
-                return numbOrders
+            ...mapState('allOrder', {
+                AllOrdersShipped: state => state.shipped
+            }),
+
+            ...mapState('allOrder', {
+                AllOrdersConfirmed: state => state.confirmed
+            }),
+
+            NumberOrdersShipped(){
+                let numbers=this.AllOrdersShipped.length
+                return numbers
             },
 
-            NumbersOrdersShipped(){
-                let numbOrders = Object.values(this.StoreShippedOrders).reduce((accu, table) => {
-                    return accu + table.length
-                }, 0)
-                return numbOrders
-            }
+            NumberOrdersConfirmed(){
+                let numbers=this.AllOrdersConfirmed.length
+                return numbers
+            },
 
         }
 
 
-        /**
-         * on send ==> remove order ==> save order with and date ==> 
-         */
     }
 </script>
