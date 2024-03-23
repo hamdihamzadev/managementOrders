@@ -103,14 +103,13 @@
 
       // REMOVE ORDER
       removeorder(data) {
-        this.allValues
-        for (const category in this.StoreOrdersInProgress) {
-          this.StoreOrdersInProgress[category].forEach(order => {
-            order.ref === data.ref ? this.ac_RemoveOrderProgress({
-              category: category,
-              ref: data.ref
-            }) : ''
+
+        for (const categoryKey in this.StoreOrdersInProgress) {
+          this.StoreOrdersInProgress[categoryKey].forEach(order => {
+            order.date === data.date ? this.ac_RemoveOrderProgress({category: categoryKey,date: data.date }) : ''
           })
+          
+          this.ac_removeValue({ status: 'progress',index: data.index })
         }
       },
 

@@ -2,6 +2,7 @@
   <div class="table-confirmed mt-4">
     <TableGlobal :options="options" :orders="ordersConfirmed" @send-order="SendOrder" @remove-order="removeorder"
       sentenceorders="No Confirmed Orders Today" @save-status="saveStatus" />
+      <p>{{ serveur }}</p>
   </div>
 </template>
 
@@ -46,7 +47,7 @@
       }),
 
       ...mapState('valuesStatus', {
-        storevaluesStatus: state => state.confirmed
+        storevaluesStatus: state => state.confirmed,
       }),
 
       ordersConfirmed() {
