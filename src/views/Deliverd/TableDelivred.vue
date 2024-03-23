@@ -49,9 +49,9 @@
             ...mapActions('DelivredOrders', ['ac_addOrdersdelivered']),
             //REMOVE ORDER
             removeorder(data) {
-                for (const category in this.StoreOrdersDelivred) {
-                    this.StoreOrdersDelivred[category].forEach(order => {
-                        order.ref === data.ref ? this.ac_RemoveOrderDelivred({category:category,ref:data.ref}) : ''
+                for (const categoryKey in this.StoreOrdersDelivred) {
+                    this.StoreOrdersDelivred[categoryKey].forEach(order => {
+                        order.date === data.date ? this.ac_RemoveOrderDelivred({ category: categoryKey,date: data.date }) : ''
                     })
                 }
             },
