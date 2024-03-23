@@ -11,11 +11,11 @@ const mutations={
         state[category].push(order)
     },
 
-    m_RemoveOrderProgress(state,{category,ref}){
-        state[category]=state[category].filter(order=>{
-            return order.ref!==ref
+    m_RemoveOrderProgress(state,{category,date}){
+        state[category]= state[category].filter(order=>{
+            return order.date!==date
         })
-    }
+   },
 }
 
 const actions ={
@@ -24,8 +24,8 @@ const actions ={
         localStorage.setItem('Progress', JSON.stringify(state))
     },
 
-    ac_RemoveOrderProgress({commit,state},{category,ref}){
-        commit('m_RemoveOrderProgress',{category,ref})
+    ac_RemoveOrderProgress({commit,state},{category,date}){
+        commit('m_RemoveOrderProgress',{category,date})
         localStorage.setItem('Progress', JSON.stringify(state))
 
         /**

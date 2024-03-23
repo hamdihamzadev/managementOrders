@@ -78,24 +78,27 @@
 
       SendOrder(data) {
 
-        this.allValues
-        let orderSelected = {}
-        for (const category in this.StoreOrdersInProgress) {
-          this.StoreOrdersInProgress[category].forEach(order => {
-            order.ref === data.ref ? (orderSelected.category = category, orderSelected.order = order) : ''
+        let orderSelected = {
+          category: null,
+          order: data.order
+        }
+
+        for (const categoryKey in this.StoreOrdersInProgress) {
+          this.StoreOrdersInProgress[categoryKey].forEach(order => {
+            order.date === data.order.date ? orderSelected.category = categoryKey : null
           })
         }
 
-        let valueselected = document.querySelector(`#select${data.index}`).value
-        valueselected === 'Shipped' ? (this.ac_addOrderShipped(orderSelected), this.ac_addInAllOrder({
-            status: 'shipped',
-            order: orderSelected
-          }),
-          this.ac_RemoveOrderProgress({
-            category: orderSelected.category,
-            ref: data.ref
-          }), this.ResetvaluesRemoSend(data.index)) : ''
+       if(data.value === 'Shipped'){
 
+          this.ac_addOrderShipped(orderSelected)
+          this.ac_addInAllOrder({status: 'shipped', order: data.order})
+          this.ac_RemoveOrderProgress({category: orderSelected.category , date: data.order.date})
+          this.ac_removeValue({status: 'progress', index: data.index })
+
+       }
+       
+          
       },
 
       // REMOVE ORDER
