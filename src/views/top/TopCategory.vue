@@ -4,41 +4,22 @@
             <h5>Top Category</h5>
             <b-form-select v-model="selected" :options="options" id="select-mois"></b-form-select>
         </div>
-        <!---------- TABLE --------------->
-        <b-table-simple responsive id="table-Order" hover class="mt-5">
-            <b-thead>
-                <b-tr>
-                    <b-th class="border-top-0">Name</b-th>
-                    <b-th class="border-top-0">Orders</b-th>
-                    <b-th class="border-top-0">Percentage</b-th>
-                    <b-th class="border-top-0">revenue</b-th>
-                    <b-th class="border-top-0">Progress</b-th>
-                </b-tr>
-            </b-thead>
-
-            <!----------------TBODY-------------->
-
-            <b-tbody ref="myTable" id="tbody">
-                <b-tr>
-                    <td><i class='bx bxs-watch-alt' id="icon-category"></i>Smart watch</td>
-                    <td>9836</td>
-                    <td>
-                        <b-progress :max="max">
-                            <b-progress-bar :value="value" :label="`${((value / max) * 100)}%`">
-                            </b-progress-bar>
-                        </b-progress>
-                    </td>
-                    <td>58 989 $</td>
-                    <td>+ 13%</td>
-                </b-tr>
-            </b-tbody>
-
-        </b-table-simple>
+        <p>The top categories have over <strong>200 orders</strong> for the month</p>
+        <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
+            <template #cell(Percentage)="data">
+                <b-progress :max="max">
+                    <b-progress-bar :value="data.item.Percentage" :label="`${data.item.Percentage}%`">
+                    </b-progress-bar>
+                </b-progress>
+            </template>
+        </b-table>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+    import {
+        mapState
+    } from 'vuex';
     export default {
         name: 'TopCategory',
         data() {
@@ -68,28 +49,72 @@ import { mapState } from 'vuex';
                         text: 'June'
                     },
                 ],
+                fields: [{
+                        key: 'Name',
+                        sortable: false
+                    },
+                    {
+                        key: 'Orders',
+                        sortable: true
+                    },
+                    {
+                        key: 'Percentage',
+                        sortable: false
+                    },
+
+                    {
+                        key: 'Revenue',
+                        sortable: true
+                    },
+
+
+                ],
                 selected: 'January',
-                value: 30,
-                max: 100
+                max: 100,
+                sortBy:'Orders',
+                sortDesc:true
             }
 
             /**
-             * get all category ===> 
-             * all product ==> loop ===> push 
-             * product 
+             * if ===> orders >200 ===> push in objet and array
+             * 
              */
+
         },
 
-        computed:{
+        computed: {
 
-            ...mapState('ProductsModule', {
-                productModuleStates: state => state
+            // STORE NEW ORDERS
+            ...mapState('DelivredOrders', {
+                storeOrdersDelivred: state => state
             }),
 
-            // allCategory(){
-            //     let singleCategory={class:'bx bxs-watch-alt', name:'airpods', orders:3127, value:26 , revenue:'5822 $', Progress:3.15 }
-            // }
-        }
+            items() {
+                let allCategory = []
+                let allOrders=Object.values(this.storeOrdersDelivred).reduce((accu,table)=>{return accu+table.length},0)
+                for (const category in this.storeOrdersDelivred) {
+
+                    if(this.storeOrdersDelivred[category].length>=2){
+                        let numbesOrders=this.storeOrdersDelivred[category].length
+                        
+                        let objectCategory = {
+                        Name: category,
+                        Orders: numbesOrders,
+                        Percentage:  Math.round(numbesOrders/allOrders*100) ,
+                        Revenue: `${this.storeOrdersDelivred[category].reduce((accu, order) => {
+                            return accu + order.total
+                        }, 0)} $`
+                    }
+                    allCategory.push(objectCategory)
+                    
+                    }
+                }
+
+                return allCategory
+            }
+        },
+
+    
     }
 </script>
 
