@@ -4,6 +4,7 @@ let state={
     shipped:JSON.parse(localStorage.getItem('valuesStatus')).shipped,
     postpond:JSON.parse(localStorage.getItem('valuesStatus')).postpond,
     progress:JSON.parse(localStorage.getItem('valuesStatus')).progress,
+   
 }
 
 let mutations={

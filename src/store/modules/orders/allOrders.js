@@ -8,6 +8,7 @@ const state={
     postpond:JSON.parse(localStorage.getItem('allOrder')).postpond,
     progress:JSON.parse(localStorage.getItem('allOrder')).progress,
     return:JSON.parse(localStorage.getItem('allOrder')).return,
+
    
 }
 

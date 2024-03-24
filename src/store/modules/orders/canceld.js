@@ -4,6 +4,8 @@ const state={
     powerbank: JSON.parse(localStorage.getItem('CancelledOrders')).powerbank,
     airpods: JSON.parse(localStorage.getItem('CancelledOrders')).airpods,
     keyboard: JSON.parse(localStorage.getItem('CancelledOrders')).keyboard
+
+  
 }
 
 const mutations={

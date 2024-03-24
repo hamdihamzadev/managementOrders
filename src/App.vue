@@ -33,7 +33,7 @@
     },
 
     mounted(){
-      
+    
       let headCont=document.querySelector('.head-cont')
       this.$route.path==='/Login' ? headCont.style.marginLeft ='0px' :''
       this.$route.path==='/Signup' ? headCont.style.marginLeft ='0px' :''
@@ -46,6 +46,7 @@
       },
    
     },
+
 
  
   }
