@@ -1,41 +1,67 @@
 <template>
     <div class="mb-4">
-        <CardGlobal 
-        :carts="AllCarts"
-        />
+        <CardGlobal :carts="cards" />
     </div>
 </template>
 
 <script>
-import CardGlobal from '@/components/CardGlobal.vue'
-export default{
-    name:'CardsReturn',
-    components:{
-        CardGlobal,
-    },
-    data() {
-            return {
-                AllCarts: [
-                    {
+    import CardGlobal from '@/components/CardGlobal.vue'
+    import {
+        mapState
+    } from 'vuex'
+    export default {
+        name: 'CardsReturn',
+        components: {
+            CardGlobal,
+        },
+
+        computed: {
+            cards() {
+                let allCards = [{
                         classicon: 'Shipped',
                         icon: 'bx bx-trip',
                         title: 'Order Return',
-                        number: '23/147',
+                        number: `${this.NumberOrdersReturn} / ${this.NumberOrdersShipped}`,
                         pourcentage: 5.43,
-                        duration:'Days'
+                        duration: 'Days'
                     },
 
                     {
                         classicon: 'income',
                         icon: 'bx bx-money',
-                        title: 'Delivery Rate',
-                        number: '3.23 %',
+                        title: 'Return Rate',
+                        number: `${this.returnRate} %`,
                         pourcentage: 2.43,
-                        duration:'Days'
+                        duration: 'Days'
                     },
 
                 ]
+
+                return allCards
+            },
+
+            ...mapState('allOrder', {
+                AllOrdersShipped: state => state.shipped
+            }),
+
+            ...mapState('allOrder', {
+                AllOrdersReturn: state => state.return
+            }),
+
+            NumberOrdersShipped() {
+                let numbers = this.AllOrdersShipped.length
+                return numbers
+            },
+
+            NumberOrdersReturn() {
+                let numbers = this.AllOrdersReturn.length
+                return numbers
+            },
+
+            returnRate(){
+                let percentage= Math.floor((this.NumberOrdersReturn/this.NumberOrdersShipped)*100)
+                return percentage
             }
-        }  
-}
+        }
+    }
 </script>
