@@ -28,8 +28,8 @@
                     {
                         classicon: 'delivery-rate',
                         icon: 'bx bx-money',
-                        title: 'Delivery Rate',
-                        number: '3.23 %',
+                        title: 'Shipped Rate',
+                        number: `${this.shippedRate} %`,
                    
                     },
 
@@ -54,6 +54,11 @@
             NumberOrdersConfirmed(){
                 let numbers=this.AllOrdersConfirmed.length
                 return numbers
+            },
+
+            shippedRate(){
+                let percentage= Math.floor((this.NumberOrdersShipped / this.NumberOrdersConfirmed) * 100)
+                return percentage
             },
 
         }
