@@ -8,7 +8,6 @@
     import CardGlobal from '@/components/CardGlobal.vue'
     import {
         mapState,
-        mapActions
     } from 'vuex'
     export default {
         name: 'CartsAllorders',
@@ -22,14 +21,14 @@
                         classicon: 'allorders',
                         icon: 'bx bx-shopping-bag',
                         title: 'All Orders',
-                        number: this.numbersOrders,
+                        number: this.newOrder,
                         pourcentage: 2.43
                     },
                     {
                         classicon: 'income',
                         icon: 'bx bx-money',
-                        title: 'Income',
-                        number: 23328,
+                        title: 'Sales',
+                        number: this.sales,
                         dollar: '$',
                         pourcentage: 2.43
                     },
@@ -40,65 +39,35 @@
                         number: 6085,
                         pourcentage: 2.43
                     },
-                    {
-                        classicon: 'sales',
-                        icon: 'bx bx-wallet',
-                        title: 'Sales',
-                        dollar: '$',
-                        number: 15854,
-                        pourcentage: 2.43
-                    },
+                    // {
+                    //     classicon: 'sales',
+                    //     icon: 'bx bx-wallet',
+                    //     title: 'Sales',
+                    //     dollar: '$',
+                    //     number: 15854,
+                    //     pourcentage: 2.43
+                    // },
 
                 ]
                 return allcards
             },
 
             ...mapState('allOrder', {
-                storeAllOrder: state => state
+                AllNewOrders: state => state.new
             }),
 
-            numbersOrders(){
-                let orders=Object.values(this.storeAllOrder).reduce((accu,table)=>{
-                    return accu+table.length
+            newOrder(){
+                let numbersOrders=this.AllNewOrders.length
+                return numbersOrders
+            },
+
+            sales(){
+                let totalSales=this.AllNewOrders.reduce((accu,order)=>{
+                    return accu + order.total
                 },0)
-                return orders
+                return totalSales
             }
         },
-
-        mounted() {
-            this.getAllOrders()
-            console.log(Object.values(this.storeAllOrder))
-        },
-
-        methods: {
-            // GET FUNCTION ACTIONS IN VUEX ALL ORDERS
-            ...mapActions('allOrder', ['ac_addInAllOrder']),
-
-            getAllOrders() {
-                let OrdersLocal = JSON.parse(localStorage.getItem('allOrder'))
-
-                let numbersOrderLocal = Object.values(OrdersLocal).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-
-                let numbersOrderStore = Object.values(this.storeAllOrder).reduce((acc, tableCtg) => {
-                    return acc + tableCtg.length;
-                }, 0);
-
-                if (OrdersLocal && numbersOrderLocal > numbersOrderStore) {
-                    for (const statusOrder in OrdersLocal) {
-                        OrdersLocal[statusOrder].forEach(order => {
-                            this.ac_addInAllOrder({
-                                status: statusOrder,
-                                order: order
-                            })
-                        })
-                    }
-                }
-
-            },
-        }
-
 
     }
 </script>
