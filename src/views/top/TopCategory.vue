@@ -2,7 +2,7 @@
     <div class="p-3" id="top-category">
         <div class="d-flex justify-content-between mt-5 mb-5">
             <h5>Top Category</h5>
-            <b-form-select v-model="selected" :options="options" id="select-mois"></b-form-select>
+            <b-form-select v-model="month" :options="options" id="select-mois" @change="ordersMonth"></b-form-select>
         </div>
         <p>The top categories have over <strong>200 orders</strong> for the month</p>
         <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
@@ -13,6 +13,8 @@
                 </b-progress>
             </template>
         </b-table>
+        <p class="text-center" v-show="items.length===0" ><strong>No orders in this month</strong></p>
+
     </div>
 </template>
 
@@ -25,27 +27,27 @@
         data() {
             return {
                 options: [{
-                        value: 'January',
+                        value: '1',
                         text: 'January'
                     },
                     {
-                        value: 'February',
+                        value: '2',
                         text: 'February'
                     },
                     {
-                        value: 'March',
+                        value: '3',
                         text: 'March'
                     },
                     {
-                        value: 'April',
+                        value: '4',
                         text: 'April'
                     },
                     {
-                        value: 'May',
+                        value: '5',
                         text: 'May'
                     },
                     {
-                        value: 'June',
+                        value: '6',
                         text: 'June'
                     },
                 ],
@@ -69,16 +71,13 @@
 
 
                 ],
-                selected: 'January',
+                month: '1',
                 max: 100,
-                sortBy:'Orders',
-                sortDesc:true
+                sortBy: 'Orders',
+                sortDesc: true,
+                respo: ""
             }
 
-            /**
-             * if ===> orders >200 ===> push in objet and array
-             * 
-             */
 
         },
 
@@ -91,30 +90,54 @@
 
             items() {
                 let allCategory = []
-                let allOrders=Object.values(this.storeOrdersDelivred).reduce((accu,table)=>{return accu+table.length},0)
-                for (const category in this.storeOrdersDelivred) {
+                for (const category in this.ordersMonth) {
 
-                    if(this.storeOrdersDelivred[category].length>=2){
-                        let numbesOrders=this.storeOrdersDelivred[category].length
-                        
+                    if (this.ordersMonth[category].length >= 2) {
+                        let numbesOrders = this.ordersMonth[category].length
+
                         let objectCategory = {
-                        Name: category,
-                        Orders: numbesOrders,
-                        Percentage:  Math.round(numbesOrders/allOrders*100) ,
-                        Revenue: `${this.storeOrdersDelivred[category].reduce((accu, order) => {
+                            Name: category,
+                            Orders: numbesOrders,
+                            Percentage: Math.round(numbesOrders / this.numbOrders * 100),
+                            Revenue: `${this.ordersMonth[category].reduce((accu, order) => {
                             return accu + order.total
                         }, 0)} $`
-                    }
-                    allCategory.push(objectCategory)
-                    
+                        }
+
+                        allCategory.push(objectCategory)
+
                     }
                 }
 
                 return allCategory
+            },
+
+            ordersMonth() {
+                let orders = {}
+                for(const categoryKey in this.storeOrdersDelivred){
+                    let filterOrder=this.storeOrdersDelivred[categoryKey].filter(order=>{
+                        return order.date.split('/')[1]===this.month
+                    })
+                    Object.defineProperty(orders,categoryKey,{
+                        value:filterOrder,
+                        writable:true,
+                        enumerable: true,
+                        configurable: true
+                    })
+                }
+                return orders
+            },
+
+            numbOrders(){
+               let orders= Object.values(this.ordersMonth).reduce((accu,table)=>{
+                return accu+table.length
+                },0)
+               return orders
             }
         },
-
-    
+        mounted(){
+            
+        }
     }
 </script>
 
