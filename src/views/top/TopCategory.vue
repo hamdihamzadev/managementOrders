@@ -25,7 +25,7 @@
                             <div id="select-filter" class="d-flex align-items-center justify-content-center  ">
                                 <b-icon icon="bag" aria-hidden="true" id="icon-bag"></b-icon>
                             </div>
-                            <b-form-input id="input-filter" type="number" placeholder="200 orders" v-model="numberInput">
+                            <b-form-input id="input-filter" type="number" placeholder="200 orders" v-model="numberInput" :state="stateInput">
                             </b-form-input>
                         </div>
 
@@ -138,8 +138,10 @@
                 sortDesc: true,
                 respo: "",
                 formFilter:false,
-                numberInput:0,
-                numberOrdersFilter:1
+                numberInput:1,
+                numberOrdersFilter:1,
+                stateInput:null
+
 
             }
 
@@ -221,8 +223,15 @@
 
             changeNumber(event){
                 event.preventDefault()
-                this.numberOrdersFilter=this.numberInput
-                this.hideForm()
+                if(this.numberInput!==''){
+                    this.stateInput=null
+                    this.numberOrdersFilter=this.numberInput
+                    this.hideForm()
+                    
+                }else{
+                    this.stateInput=false
+                }
+                
             }
         },
 
